@@ -1,0 +1,84 @@
+{
+    "app": {
+        "claim": "Bestell alles. Iss nichts.",
+        "skipToContent": "Zum Inhalt springen",
+        "notFound": "Diese Seite gibt es nicht. Wie das Essen.",
+        "backHome": "Zur Startseite",
+        "error": "Da ist etwas schiefgegangen. Bitte versuch es gleich noch einmal.",
+        "retry": "Erneut versuchen",
+        "loading": "Lädt …"
+    },
+    "nav": {
+        "main": "Hauptnavigation",
+        "restaurants": "Restaurants",
+        "login": "Anmelden",
+        "register": "Registrieren",
+        "account": "Konto"
+    },
+    "language": {
+        "switch": "Sprache: Deutsch. Auf Englisch wechseln",
+        "short": "EN"
+    },
+    "theme": {
+        "label": "Farbschema: {mode, select, light {hell} dark {dunkel} other {wie das System}}. Wechseln",
+        "light": "Hell",
+        "dark": "Dunkel",
+        "system": "System"
+    },
+    "home": {
+        "title": "Hunger auf nichts?",
+        "lead": "{count, plural, one {# Restaurant liefert} other {# Restaurants liefern}} gerade nichts nach Hamburg. Mit echter Bestellung, echter Lieferzeit und null Kalorien.",
+        "cuisines": "Küchen",
+        "allCuisines": "Alle",
+        "loadMore": "Mehr Restaurants",
+        "empty": "Keine Restaurants für diese Küche."
+    },
+    "restaurant": {
+        "menu": "Speisekarte",
+        "minimumOrder": "Mindestbestellwert {amount}",
+        "deliveryMinutes": "{minutes} Min. Lieferzeit",
+        "deliveryFee": "Lieferung {fee}",
+        "freeDelivery": "Gratis-Lieferung",
+        "back": "Alle Restaurants",
+        "notFound": "Dieses Restaurant gibt es nicht. Noch weniger als die anderen.",
+        "addedTitle": "{dish} kommt (nicht).",
+        "addedDescription": "Der Warenkorb ist noch im Ofen. Bis dahin hast du schon mal nichts gegessen."
+    },
+    "auth": {
+        "email": "E-Mail",
+        "password": "Passwort",
+        "passwordHint": "Mindestens 10 Zeichen.",
+        "loginTitle": "Anmelden",
+        "loginSubmit": "Anmelden",
+        "loginNoAccount": "Noch kein Konto?",
+        "registerTitle": "Konto erstellen",
+        "registerLead": "Ein Konto für alles, was du nie essen wirst.",
+        "registerSubmit": "Registrieren",
+        "registerHasAccount": "Schon registriert?",
+        "registerDone": "Fast geschafft: Wir haben dir eine E-Mail geschickt. Bestätige darin deine Adresse, dann kannst du dich anmelden.",
+        "verifyTitle": "E-Mail bestätigen",
+        "verifying": "Wir bestätigen deine E-Mail-Adresse …",
+        "verified": "Deine E-Mail-Adresse ist bestätigt. Willkommen bei NothingEats!",
+        "verifyMissingToken": "Dem Link fehlt etwas. Öffne ihn bitte direkt aus der E-Mail.",
+        "logout": "Abmelden",
+        "accountTitle": "Dein Konto",
+        "accountLanguage": "Sprache",
+        "accountRoles": "Rollen",
+        "errors": {
+            "required": "Bitte füll dieses Feld aus.",
+            "emailInvalid": "Bitte gib eine gültige E-Mail-Adresse ein.",
+            "INVALID_CREDENTIALS": "E-Mail oder Passwort stimmen nicht.",
+            "EMAIL_NOT_VERIFIED": "Bitte bestätige zuerst deine E-Mail-Adresse. Der Link steht in unserer E-Mail.",
+            "REGISTRATION_INVALID": "Bitte prüfe deine Angaben.",
+            "VERIFICATION_TOKEN_INVALID": "Dieser Link ist ungültig oder abgelaufen. Registriere dich einfach noch einmal.",
+            "generic": "Das hat nicht geklappt. Bitte versuch es noch einmal."
+        }
+    },
+    "consent": {
+        "title": "Darf NothingEats mitzählen?",
+        "text": "Wir möchten anonym messen, wie NothingEats genutzt wird (mit PostHog in der EU), um es besser zu machen. Ohne deine Zustimmung speichern wir nichts davon.",
+        "accept": "Einverstanden",
+        "decline": "Lieber nicht",
+        "settings": "Datenschutz-Einstellungen"
+    }
+}

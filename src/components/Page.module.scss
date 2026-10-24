@@ -1,0 +1,9 @@
+.page {
+    display: grid;
+    gap: var(--spacing-6);
+    max-width: var(--page-width);
+    padding: var(--spacing-8) var(--page-gutter);
+    margin: 0 auto;
+}
+
+.narrow { max-width: 28rem; }

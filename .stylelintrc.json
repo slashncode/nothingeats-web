@@ -1,0 +1,17 @@
+{
+    "extends": [
+        "stylelint-config-standard-scss",
+        "stylelint-config-recess-order"
+    ],
+    "rules": {
+        "rule-empty-line-before": null,
+        "no-descending-specificity": null,
+        "selector-class-pattern": null,
+        "selector-pseudo-class-no-unknown": [
+            true,
+            {
+                "ignorePseudoClasses": ["global"]
+            }
+        ]
+    }
+}

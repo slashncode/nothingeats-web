@@ -1,0 +1,29 @@
+.banner {
+    position: fixed;
+    right: var(--spacing-4);
+    bottom: var(--spacing-4);
+    z-index: 20;
+    display: grid;
+    gap: var(--spacing-3);
+    max-width: min(26rem, calc(100vw - 2 * var(--spacing-4)));
+    padding: var(--spacing-4);
+    color: var(--popover-foreground);
+    background: var(--popover);
+    border: var(--border-width-1) solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+}
+
+.title {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--font-size-lg-line-height);
+}
+
+.text { margin: 0; }
+
+.actions {
+    display: flex;
+    gap: var(--spacing-2);
+    justify-content: flex-end;
+}

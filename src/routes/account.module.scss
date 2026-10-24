@@ -1,0 +1,13 @@
+.details {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--spacing-2) var(--spacing-6);
+    margin: 0;
+
+    dt { color: var(--muted-foreground); }
+
+    dd {
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+}

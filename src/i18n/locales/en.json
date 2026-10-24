@@ -1,0 +1,84 @@
+{
+    "app": {
+        "claim": "Order everything. Eat nothing.",
+        "skipToContent": "Skip to content",
+        "notFound": "This page doesn't exist. Just like the food.",
+        "backHome": "Back to the start",
+        "error": "Something went wrong. Please try again in a moment.",
+        "retry": "Try again",
+        "loading": "Loading …"
+    },
+    "nav": {
+        "main": "Main navigation",
+        "restaurants": "Restaurants",
+        "login": "Log in",
+        "register": "Sign up",
+        "account": "Account"
+    },
+    "language": {
+        "switch": "Language: English. Switch to German",
+        "short": "DE"
+    },
+    "theme": {
+        "label": "Colour scheme: {mode, select, light {light} dark {dark} other {system}}. Change",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+    },
+    "home": {
+        "title": "Craving nothing?",
+        "lead": "{count, plural, one {# restaurant is} other {# restaurants are}} delivering nothing to Hamburg right now. Real orders, real delivery times, zero calories.",
+        "cuisines": "Cuisines",
+        "allCuisines": "All",
+        "loadMore": "More restaurants",
+        "empty": "No restaurants for this cuisine."
+    },
+    "restaurant": {
+        "menu": "Menu",
+        "minimumOrder": "Minimum order {amount}",
+        "deliveryMinutes": "{minutes} min delivery",
+        "deliveryFee": "Delivery {fee}",
+        "freeDelivery": "Free delivery",
+        "back": "All restaurants",
+        "notFound": "This restaurant doesn't exist. Even less than the others.",
+        "addedTitle": "{dish} is (not) coming.",
+        "addedDescription": "The cart is still in the oven. Until then, you've already eaten nothing."
+    },
+    "auth": {
+        "email": "Email",
+        "password": "Password",
+        "passwordHint": "At least 10 characters.",
+        "loginTitle": "Log in",
+        "loginSubmit": "Log in",
+        "loginNoAccount": "No account yet?",
+        "registerTitle": "Create an account",
+        "registerLead": "One account for everything you'll never eat.",
+        "registerSubmit": "Sign up",
+        "registerHasAccount": "Already signed up?",
+        "registerDone": "Almost there: we've sent you an email. Confirm your address there, then you can log in.",
+        "verifyTitle": "Confirm your email",
+        "verifying": "Confirming your email address …",
+        "verified": "Your email address is confirmed. Welcome to NothingEats!",
+        "verifyMissingToken": "This link is incomplete. Please open it straight from the email.",
+        "logout": "Log out",
+        "accountTitle": "Your account",
+        "accountLanguage": "Language",
+        "accountRoles": "Roles",
+        "errors": {
+            "required": "Please fill in this field.",
+            "emailInvalid": "Please enter a valid email address.",
+            "INVALID_CREDENTIALS": "Email or password is wrong.",
+            "EMAIL_NOT_VERIFIED": "Please confirm your email address first. The link is in our email.",
+            "REGISTRATION_INVALID": "Please check your details.",
+            "VERIFICATION_TOKEN_INVALID": "This link is invalid or has expired. Just sign up again.",
+            "generic": "That didn't work. Please try again."
+        }
+    },
+    "consent": {
+        "title": "May NothingEats count along?",
+        "text": "We'd like to measure anonymously how NothingEats is used (with PostHog in the EU) to make it better. Without your consent, none of it is stored.",
+        "accept": "Sure",
+        "decline": "Rather not",
+        "settings": "Privacy settings"
+    }
+}

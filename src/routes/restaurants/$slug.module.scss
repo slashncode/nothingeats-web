@@ -1,0 +1,86 @@
+.back {
+    display: inline-flex;
+    gap: var(--spacing-1);
+    align-items: center;
+    justify-self: start;
+}
+
+.header {
+    display: grid;
+    overflow: hidden;
+    background: var(--card);
+    border: var(--border-width-1) solid var(--border);
+    border-radius: var(--radius-xl);
+}
+
+.cover {
+    height: clamp(10rem, 24vw, 16rem);
+    aspect-ratio: auto;
+}
+
+.intro {
+    display: grid;
+    gap: var(--spacing-3);
+    padding: var(--spacing-6);
+}
+
+.cuisine {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.name {
+    margin: 0;
+    font-size: clamp(var(--font-size-3xl), 5vw, var(--font-size-4xl));
+}
+
+.description {
+    max-width: 40rem;
+    margin: 0;
+    font-size: var(--font-size-md);
+    color: var(--muted-foreground);
+}
+
+.facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2) var(--spacing-6);
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    font-size: var(--font-size-sm);
+    list-style: none;
+
+    li {
+        display: inline-flex;
+        gap: var(--spacing-1);
+        align-items: center;
+    }
+}
+
+.menuTitle { margin: var(--spacing-4) 0 0; }
+
+.section {
+    display: grid;
+    gap: var(--spacing-3);
+}
+
+.sectionTitle {
+    margin: 0;
+    font-size: var(--font-size-xl);
+}
+
+.dishes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
+    gap: var(--spacing-3);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    > li { display: grid; }
+}

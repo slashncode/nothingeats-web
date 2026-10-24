@@ -1,0 +1,45 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions: {}
+
+jobs:
+  pnpm:
+    uses: slashncode/nothingeats-ci/.github/workflows/pnpm.yml@main
+    permissions:
+      contents: read
+    with:
+      checkout-ui: true # nothingeats-ui comes from a sibling checkout (file:../nothingeats-ui)
+
+  image:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: pnpm
+    uses: slashncode/nothingeats-ci/.github/workflows/web-image.yml@main
+    permissions:
+      contents: read
+      packages: write # push the image to GHCR
+      id-token: write # keyless cosign signing
+
+  codeql:
+    uses: slashncode/nothingeats-ci/.github/workflows/codeql.yml@main
+    permissions:
+      contents: read
+      security-events: write
+    with:
+      language: javascript-typescript
+
+  pr:
+    if: github.event_name == 'pull_request'
+    uses: slashncode/nothingeats-ci/.github/workflows/pr-hygiene.yml@main
+    permissions:
+      contents: read
+      pull-requests: write

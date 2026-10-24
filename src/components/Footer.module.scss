@@ -1,0 +1,20 @@
+.footer {
+    margin-top: var(--spacing-12);
+    border-top: var(--border-width-1) solid var(--border);
+}
+
+.inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+    align-items: center;
+    max-width: var(--page-width);
+    padding: var(--spacing-6) var(--page-gutter);
+    margin: 0 auto;
+}
+
+.claim {
+    flex: 1;
+    margin: 0;
+    color: var(--muted-foreground);
+}

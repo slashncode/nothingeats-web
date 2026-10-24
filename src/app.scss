@@ -1,0 +1,26 @@
+// App-wide layout tokens and helpers; colours and type come from nothingeats-ui.
+
+:root {
+    --page-width: 72rem;
+    --page-gutter: var(--spacing-4);
+}
+
+@media (width >= 768px) {
+    :root { --page-gutter: var(--spacing-8); }
+}
+
+main:focus { outline: none; }
+
+.skip-link {
+    position: absolute;
+    top: var(--spacing-2);
+    left: var(--spacing-2);
+    z-index: 100;
+    padding: var(--spacing-2) var(--spacing-3);
+    color: var(--primary-foreground);
+    background: var(--primary);
+    border-radius: var(--radius-md);
+    transform: translateY(-200%);
+
+    &:focus { transform: none; }
+}

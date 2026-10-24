@@ -1,0 +1,26 @@
+.form {
+    display: grid;
+    gap: var(--spacing-4);
+}
+
+.alert,
+.success {
+    padding: var(--spacing-3) var(--spacing-4);
+    margin: 0;
+    border-radius: var(--radius-md);
+}
+
+.alert {
+    color: var(--destructive);
+    background: color-mix(in oklch, var(--destructive) 10%, var(--background));
+}
+
+.success {
+    color: var(--accent-foreground);
+    background: var(--accent);
+}
+
+.hint {
+    margin: 0;
+    color: var(--muted-foreground);
+}

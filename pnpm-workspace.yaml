@@ -1,0 +1,20 @@
+# pnpm settings (no workspace packages). pnpm writes some of these itself.
+
+# Install scripts stay off: @parcel/watcher and esbuild ship prebuilt binaries through optional
+# dependencies; core-js only prints a funding message.
+allowBuilds:
+  '@parcel/watcher': false
+  core-js: false
+  esbuild: false
+
+minimumReleaseAgeExclude:
+  - i18next@26.5.10
+  - react-i18next@17.1.8
+minimumReleaseAgeExcludePrune: true
+shellEmulator: true
+trustPolicy: no-downgrade
+
+# semver 6.3.1 (July 2023, required by @babel/core) predates npm provenance, while newer
+# semver 7 releases have it; the no-downgrade trust policy reads that as a takeover.
+trustPolicyExclude:
+  - semver@6.3.1
