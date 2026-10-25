@@ -43,4 +43,16 @@ export const identity = {
     logout: () => request<void>('/api/identity/v1/sessions/current', { method: 'DELETE' }),
 
     me: () => request<User>('/api/identity/v1/me', { auth: true }),
+
+    requestPasswordReset: (email: string) =>
+        request<{ message: string }>('/api/identity/v1/password-resets', {
+            method: 'POST',
+            body: { email },
+        }),
+
+    resetPassword: (token: string, password: string) =>
+        request<void>('/api/identity/v1/password-resets/confirmations', {
+            method: 'POST',
+            body: { token, password },
+        }),
 };

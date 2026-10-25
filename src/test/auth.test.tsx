@@ -94,3 +94,56 @@ describe('accounts', () => {
         expect(await screen.findByRole('alert')).toHaveTextContent('Dieser Link ist ungültig oder abgelaufen.');
     });
 });
+
+describe('forgotten passwords', () => {
+    it('asks for a link from the login page', async () => {
+        const { user } = renderApp('/login');
+
+        await user.click(await screen.findByRole('link', { name: 'Passwort vergessen?' }));
+        await user.type(await screen.findByRole('textbox', { name: 'E-Mail' }), 'ghost@nothingeats.dev');
+        await user.click(screen.getByRole('button', { name: 'Link schicken' }));
+
+        expect(await screen.findByRole('status')).toHaveTextContent('Wenn es zu dieser Adresse ein Konto gibt, ist ein Link unterwegs.');
+    });
+
+    it('sets a new password with the link from the mail', async () => {
+        const { user } = renderApp('/reset-password?token=reset-token');
+
+        await user.type(await screen.findByLabelText('Neues Passwort'), 'a brand new passphrase');
+        await user.click(screen.getByRole('button', { name: 'Passwort speichern' }));
+
+        expect(await screen.findByRole('status')).toHaveTextContent('Dein Passwort ist geändert.');
+    });
+
+    it('offers a new link when the old one is used up', async () => {
+        const { user } = renderApp('/reset-password?token=used-token');
+
+        await user.type(await screen.findByLabelText('Neues Passwort'), 'a brand new passphrase');
+        await user.click(screen.getByRole('button', { name: 'Passwort speichern' }));
+
+        expect(await screen.findByRole('alert')).toHaveTextContent('Dieser Link ist ungültig, abgelaufen oder schon benutzt worden.');
+        expect(screen.getByRole('link', { name: 'Neuen Link anfordern' })).toHaveAttribute('href', '/forgot-password');
+    });
+
+    it('says how long to wait after too many attempts', async () => {
+        server.use(http.post('/api/identity/v1/sessions', () => HttpResponse.json(
+            {
+                type: 'about:blank',
+                title: 'Too many attempts',
+                status: 429,
+                code: 'TOO_MANY_ATTEMPTS',
+            },
+            {
+                status: 429,
+                headers: { 'Retry-After': '540' },
+            },
+        )));
+        const { user } = renderApp('/login');
+
+        await user.type(await screen.findByRole('textbox', { name: 'E-Mail' }), 'ghost@nothingeats.dev');
+        await user.type(screen.getByLabelText('Passwort'), 'any password at all');
+        await user.click(screen.getByRole('button', { name: 'Anmelden' }));
+
+        expect(await screen.findByRole('alert')).toHaveTextContent('Zu viele Versuche. Bitte warte 9 Minuten und versuch es dann noch einmal.');
+    });
+});

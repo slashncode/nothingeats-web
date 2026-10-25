@@ -12,6 +12,8 @@ export class ApiError extends Error {
         readonly code: string,
         message: string,
         readonly violations: Violation[] = [],
+        /** From `Retry-After` on 429 answers. */
+        readonly retryAfterSeconds?: number,
     ) {
         super(message);
         this.name = 'ApiError';
@@ -85,5 +87,6 @@ async function parse<T>(response: Response): Promise<T> {
         problem?.code ?? `HTTP_${response.status}`,
         problem?.detail ?? problem?.title ?? response.statusText,
         problem?.violations ?? [],
+        Number(response.headers.get('Retry-After')) || undefined,
     );
 }

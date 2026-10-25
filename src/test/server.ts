@@ -50,6 +50,20 @@ export const handlers = [
     }),
     http.delete('/api/identity/v1/sessions/current', () => new HttpResponse(null, { status: 204 })),
     http.post('/api/identity/v1/registrations', () => HttpResponse.json({ message: 'Check your inbox' }, { status: 202 })),
+    http.post('/api/identity/v1/password-resets', () => HttpResponse.json({ message: 'If the address has an account…' }, { status: 202 })),
+    http.post('/api/identity/v1/password-resets/confirmations', async ({ request }) => {
+        const body = await request.json() as { token: string };
+        return body.token === 'reset-token'
+            ? new HttpResponse(null, { status: 204 })
+            : problem(422, 'PASSWORD_RESET_TOKEN_INVALID');
+    }),
+    http.post('/api/identity/v1/password-resets', () => HttpResponse.json({ message: 'If the address has an account…' }, { status: 202 })),
+    http.post('/api/identity/v1/password-resets/confirmations', async ({ request }) => {
+        const body = await request.json() as { token: string };
+        return body.token === 'reset-token'
+            ? new HttpResponse(null, { status: 204 })
+            : problem(422, 'PASSWORD_RESET_TOKEN_INVALID');
+    }),
     http.post('/api/identity/v1/verifications', async ({ request }) => {
         const body = await request.json() as { token: string };
         return body.token === 'valid-token'

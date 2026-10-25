@@ -66,6 +66,7 @@ function Login() {
                 <TextField name="password" type="password" label={t('auth.password')} autoComplete="current-password" isRequired validate={validateRequired(t)} />
                 <Button type="submit" isPending={pending}>{t('auth.loginSubmit')}</Button>
             </Form>
+            <Link href="/forgot-password">{t('auth.forgotLink')}</Link>
             <p className={styles.hint}>
                 {`${t('auth.loginNoAccount')} `}
                 <Link href="/register">{t('nav.register')}</Link>

@@ -64,6 +64,16 @@
         "accountTitle": "Your account",
         "accountLanguage": "Language",
         "accountRoles": "Roles",
+        "forgotLink": "Forgot your password?",
+        "forgotTitle": "Forgot password",
+        "forgotLead": "Enter your email address. If it has an account, we'll send you a link to choose a new password.",
+        "forgotSubmit": "Send link",
+        "forgotDone": "If this address has an account, a link is on its way. It is valid for one hour.",
+        "resetTitle": "New password",
+        "resetSubmit": "Save password",
+        "resetDone": "Your password is changed. To be safe, every device was logged out.",
+        "resetNewLink": "Request a new link",
+        "newPassword": "New password",
         "errors": {
             "required": "Please fill in this field.",
             "emailInvalid": "Please enter a valid email address.",
@@ -71,7 +81,10 @@
             "EMAIL_NOT_VERIFIED": "Please confirm your email address first. The link is in our email.",
             "REGISTRATION_INVALID": "Please check your details.",
             "VERIFICATION_TOKEN_INVALID": "This link is invalid or has expired. Just sign up again.",
-            "generic": "That didn't work. Please try again."
+            "generic": "That didn't work. Please try again.",
+            "TOO_MANY_ATTEMPTS": "Too many attempts. Please wait {minutes, plural, one {# minute} other {# minutes}} and try again.",
+            "PASSWORD_RESET_TOKEN_INVALID": "This link is invalid, has expired or was used already.",
+            "PASSWORD_INVALID": "The password needs at least 10 characters."
         }
     },
     "consent": {

@@ -7,7 +7,12 @@ export function authErrorMessage(t: TFunction, error: unknown): string {
     const code = error instanceof ApiError
         ? error.code
         : 'generic';
+    // For TOO_MANY_ATTEMPTS: the wait from Retry-After, rounded up to whole minutes.
+    const minutes = error instanceof ApiError && error.retryAfterSeconds
+        ? Math.ceil(error.retryAfterSeconds / 60)
+        : 1;
     return t(`auth.errors.${code}`, {
+        minutes,
         defaultValue: t('auth.errors.generic'),
     });
 }
