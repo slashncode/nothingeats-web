@@ -74,6 +74,23 @@
         "resetDone": "Your password is changed. To be safe, every device was logged out.",
         "resetNewLink": "Request a new link",
         "newPassword": "New password",
+        "magicLink": "Log in with an email link",
+        "magicTitle": "Log in without a password",
+        "magicLead": "We'll send you a link that logs you in without a password. It is valid for 15 minutes.",
+        "magicSubmit": "Send link",
+        "magicDone": "If this address has an account, the login link is on its way.",
+        "magicLoggingIn": "Logging you in …",
+        "privacyTitle": "Privacy",
+        "analyticsConsent": "Allow usage analytics",
+        "analyticsConsentHint": "Anonymous measurement with PostHog in the EU, so we can make NothingEats better. Applies on all your devices.",
+        "exportTitle": "Your data",
+        "exportHint": "Everything we store about your account, as a file.",
+        "exportButton": "Download data",
+        "deleteTitle": "Delete account",
+        "deleteHint": "Your account and all logins are deleted right away, analytics data shortly after. This cannot be undone.",
+        "deleteConfirm": "Your password, to confirm",
+        "deleteButton": "Delete account for good",
+        "deleted": "Your account is deleted. Thanks for eating nothing.",
         "errors": {
             "required": "Please fill in this field.",
             "emailInvalid": "Please enter a valid email address.",
@@ -84,7 +101,9 @@
             "generic": "That didn't work. Please try again.",
             "TOO_MANY_ATTEMPTS": "Too many attempts. Please wait {minutes, plural, one {# minute} other {# minutes}} and try again.",
             "PASSWORD_RESET_TOKEN_INVALID": "This link is invalid, has expired or was used already.",
-            "PASSWORD_INVALID": "The password needs at least 10 characters."
+            "PASSWORD_INVALID": "The password needs at least 10 characters.",
+            "MAGIC_LINK_INVALID": "This login link is invalid, has expired or was used already.",
+            "PASSWORD_CONFIRMATION_FAILED": "The password is wrong."
         }
     },
     "consent": {

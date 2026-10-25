@@ -9,6 +9,8 @@ export interface User {
     locale: string;
     roles: string[];
     verified: boolean;
+    /** The analytics decision kept with the account; null until decided. */
+    analyticsConsent?: boolean | null;
 }
 
 export interface Session {
@@ -48,6 +50,34 @@ export const identity = {
         request<{ message: string }>('/api/identity/v1/password-resets', {
             method: 'POST',
             body: { email },
+        }),
+
+    requestMagicLink: (email: string) =>
+        request<{ message: string }>('/api/identity/v1/magic-links', {
+            method: 'POST',
+            body: { email },
+        }),
+
+    loginWithMagicLink: (token: string) =>
+        request<Session>('/api/identity/v1/magic-links/sessions', {
+            method: 'POST',
+            body: { token },
+        }),
+
+    exportAccount: () => request<unknown>('/api/identity/v1/me/export', { auth: true }),
+
+    setConsent: (analytics: boolean) =>
+        request<User>('/api/identity/v1/me/consent', {
+            method: 'PUT',
+            body: { analytics },
+            auth: true,
+        }),
+
+    deleteAccount: (password: string) =>
+        request<void>('/api/identity/v1/me/deletion', {
+            method: 'POST',
+            body: { password },
+            auth: true,
         }),
 
     resetPassword: (token: string, password: string) =>

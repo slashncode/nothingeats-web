@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as MagicLinkRouteImport } from './routes/magic-link'
+import { Route as MagicLoginRouteImport } from './routes/magic-login'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as VerifyRouteImport } from './routes/verify'
@@ -36,6 +38,16 @@ const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MagicLinkRoute = MagicLinkRouteImport.update({
+  id: '/magic-link',
+  path: '/magic-link',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MagicLoginRoute = MagicLoginRouteImport.update({
+  id: '/magic-login',
+  path: '/magic-login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
@@ -64,6 +76,8 @@ export interface FileRoutesByFullPath {
   '/account': typeof AccountRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/magic-link': typeof MagicLinkRoute
+  '/magic-login': typeof MagicLoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/verify': typeof VerifyRoute
@@ -74,6 +88,8 @@ export interface FileRoutesByTo {
   '/account': typeof AccountRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/magic-link': typeof MagicLinkRoute
+  '/magic-login': typeof MagicLoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/verify': typeof VerifyRoute
@@ -85,6 +101,8 @@ export interface FileRoutesById {
   '/account': typeof AccountRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/magic-link': typeof MagicLinkRoute
+  '/magic-login': typeof MagicLoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/verify': typeof VerifyRoute
@@ -97,6 +115,8 @@ export interface FileRouteTypes {
     | '/account'
     | '/forgot-password'
     | '/login'
+    | '/magic-link'
+    | '/magic-login'
     | '/register'
     | '/reset-password'
     | '/verify'
@@ -107,6 +127,8 @@ export interface FileRouteTypes {
     | '/account'
     | '/forgot-password'
     | '/login'
+    | '/magic-link'
+    | '/magic-login'
     | '/register'
     | '/reset-password'
     | '/verify'
@@ -117,6 +139,8 @@ export interface FileRouteTypes {
     | '/account'
     | '/forgot-password'
     | '/login'
+    | '/magic-link'
+    | '/magic-login'
     | '/register'
     | '/reset-password'
     | '/verify'
@@ -128,6 +152,8 @@ export interface RootRouteChildren {
   AccountRoute: typeof AccountRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
+  MagicLinkRoute: typeof MagicLinkRoute
+  MagicLoginRoute: typeof MagicLoginRoute
   RegisterRoute: typeof RegisterRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   VerifyRoute: typeof VerifyRoute
@@ -162,6 +188,20 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/magic-link': {
+      id: '/magic-link'
+      path: '/magic-link'
+      fullPath: '/magic-link'
+      preLoaderRoute: typeof MagicLinkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/magic-login': {
+      id: '/magic-login'
+      path: '/magic-login'
+      fullPath: '/magic-login'
+      preLoaderRoute: typeof MagicLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -200,6 +240,8 @@ const rootRouteChildren: RootRouteChildren = {
   AccountRoute: AccountRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
+  MagicLinkRoute: MagicLinkRoute,
+  MagicLoginRoute: MagicLoginRoute,
   RegisterRoute: RegisterRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   VerifyRoute: VerifyRoute,

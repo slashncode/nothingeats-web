@@ -50,6 +50,23 @@ export const handlers = [
     }),
     http.delete('/api/identity/v1/sessions/current', () => new HttpResponse(null, { status: 204 })),
     http.post('/api/identity/v1/registrations', () => HttpResponse.json({ message: 'Check your inbox' }, { status: 202 })),
+    http.post('/api/identity/v1/magic-links', () => HttpResponse.json({ message: 'If the address has an account…' }, { status: 202 })),
+    http.post('/api/identity/v1/magic-links/sessions', async ({ request }) => {
+        const body = await request.json() as { token: string };
+        return body.token === 'magic-token'
+            ? HttpResponse.json(session)
+            : problem(401, 'MAGIC_LINK_INVALID');
+    }),
+    http.put('/api/identity/v1/me/consent', async ({ request }) => {
+        const body = await request.json() as { analytics: boolean };
+        return HttpResponse.json({ ...session.user, analyticsConsent: body.analytics });
+    }),
+    http.post('/api/identity/v1/me/deletion', async ({ request }) => {
+        const body = await request.json() as { password: string };
+        return body.password === 'correct horse battery'
+            ? new HttpResponse(null, { status: 204 })
+            : problem(403, 'PASSWORD_CONFIRMATION_FAILED');
+    }),
     http.post('/api/identity/v1/password-resets', () => HttpResponse.json({ message: 'If the address has an account…' }, { status: 202 })),
     http.post('/api/identity/v1/password-resets/confirmations', async ({ request }) => {
         const body = await request.json() as { token: string };

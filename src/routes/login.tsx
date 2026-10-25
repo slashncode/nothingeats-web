@@ -67,6 +67,7 @@ function Login() {
                 <Button type="submit" isPending={pending}>{t('auth.loginSubmit')}</Button>
             </Form>
             <Link href="/forgot-password">{t('auth.forgotLink')}</Link>
+            <Link href="/magic-link">{t('auth.magicLink')}</Link>
             <p className={styles.hint}>
                 {`${t('auth.loginNoAccount')} `}
                 <Link href="/register">{t('nav.register')}</Link>

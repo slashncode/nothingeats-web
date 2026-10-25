@@ -1,7 +1,7 @@
 import type { Session, User } from '../api/identity';
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { identifyUser, resetAnalytics } from '../analytics/analytics';
+import { currentConsent, identifyUser, onConsentDecided, resetAnalytics, setConsent } from '../analytics/analytics';
 import { setAccessToken, setUnauthorizedHandler } from '../api/http';
 import { identity } from '../api/identity';
 import { hasRememberedLanguage, i18next, isLanguage } from '../i18n';
@@ -14,7 +14,10 @@ export type SessionState
 interface SessionApi {
     state: SessionState;
     login: (email: string, password: string) => Promise<User>;
+    loginWithMagicLink: (token: string) => Promise<User>;
     logout: () => Promise<void>;
+    /** After the account was deleted: the server session is gone already, forget it here too. */
+    forget: () => void;
 }
 
 const SessionContext = createContext<SessionApi | undefined>(undefined);
@@ -54,6 +57,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         }
         setState({ status: 'authenticated', user: session.user });
         identifyUser(session.user);
+        syncConsent(session.user);
         if (!hasRememberedLanguage() && isLanguage(session.user.locale))
             void i18next.changeLanguage(session.user.locale);
         // Renew a minute before the access token expires.
@@ -76,14 +80,61 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         return session.user;
     }, [apply]);
 
+    const loginWithMagicLink = useCallback(async (token: string) => {
+        const session = await identity.loginWithMagicLink(token);
+        apply(session);
+        return session.user;
+    }, [apply]);
+
+    const forget = useCallback(() => {
+        resetAnalytics();
+        apply(undefined);
+    }, [apply]);
+
+    // Decisions made here while logged in are kept with the account.
+    useEffect(() => onConsentDecided((granted) => {
+        if (state.status === 'authenticated')
+            void identity.setConsent(granted).catch(() => undefined);
+    }), [state.status]);
+
     const logout = useCallback(async () => {
         await identity.logout().catch(() => undefined);
         resetAnalytics();
         apply(undefined);
     }, [apply]);
 
-    const api = useMemo(() => ({ state, login, logout }), [state, login, logout]);
+    const api = useMemo(
+        () => ({
+            state,
+            login,
+            loginWithMagicLink,
+            logout,
+            forget,
+        }),
+        [
+            state,
+            login,
+            loginWithMagicLink,
+            logout,
+            forget,
+        ],
+    );
     return <SessionContext value={api}>{children}</SessionContext>;
+}
+
+/**
+ * The account's decision wins on a new device; a decision made here before logging in is stored
+ * with an account that has none yet.
+ */
+function syncConsent(user: User) {
+    const local = currentConsent();
+    if (user.analyticsConsent !== undefined && user.analyticsConsent !== null) {
+        if (local !== (user.analyticsConsent ? 'granted' : 'denied'))
+            setConsent(user.analyticsConsent, { fromAccount: true });
+    }
+    else if (local !== 'pending') {
+        void identity.setConsent(local === 'granted').catch(() => undefined);
+    }
 }
 
 export function useSession(): SessionApi {

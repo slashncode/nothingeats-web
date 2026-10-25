@@ -74,6 +74,23 @@
         "resetDone": "Dein Passwort ist geändert. Zur Sicherheit wurden alle Geräte abgemeldet.",
         "resetNewLink": "Neuen Link anfordern",
         "newPassword": "Neues Passwort",
+        "magicLink": "Mit E-Mail-Link anmelden",
+        "magicTitle": "Anmelden ohne Passwort",
+        "magicLead": "Wir schicken dir einen Link, mit dem du dich ohne Passwort anmeldest. Er gilt 15 Minuten.",
+        "magicSubmit": "Link schicken",
+        "magicDone": "Wenn es zu dieser Adresse ein Konto gibt, ist der Anmeldelink unterwegs.",
+        "magicLoggingIn": "Du wirst angemeldet …",
+        "privacyTitle": "Privatsphäre",
+        "analyticsConsent": "Nutzungsanalyse erlauben",
+        "analyticsConsentHint": "Anonyme Messung mit PostHog in der EU, damit wir NothingEats besser machen. Gilt auf allen deinen Geräten.",
+        "exportTitle": "Deine Daten",
+        "exportHint": "Alles, was wir zu deinem Konto speichern, als Datei.",
+        "exportButton": "Daten herunterladen",
+        "deleteTitle": "Konto löschen",
+        "deleteHint": "Dein Konto und alle Anmeldungen werden sofort gelöscht, Analysedaten kurz danach. Das lässt sich nicht rückgängig machen.",
+        "deleteConfirm": "Zur Bestätigung dein Passwort",
+        "deleteButton": "Konto endgültig löschen",
+        "deleted": "Dein Konto ist gelöscht. Danke fürs Nichtessen.",
         "errors": {
             "required": "Bitte füll dieses Feld aus.",
             "emailInvalid": "Bitte gib eine gültige E-Mail-Adresse ein.",
@@ -84,7 +101,9 @@
             "generic": "Das hat nicht geklappt. Bitte versuch es noch einmal.",
             "TOO_MANY_ATTEMPTS": "Zu viele Versuche. Bitte warte {minutes, plural, one {# Minute} other {# Minuten}} und versuch es dann noch einmal.",
             "PASSWORD_RESET_TOKEN_INVALID": "Dieser Link ist ungültig, abgelaufen oder schon benutzt worden.",
-            "PASSWORD_INVALID": "Das Passwort braucht mindestens 10 Zeichen."
+            "PASSWORD_INVALID": "Das Passwort braucht mindestens 10 Zeichen.",
+            "MAGIC_LINK_INVALID": "Dieser Anmeldelink ist ungültig, abgelaufen oder schon benutzt worden.",
+            "PASSWORD_CONFIRMATION_FAILED": "Das Passwort stimmt nicht."
         }
     },
     "consent": {

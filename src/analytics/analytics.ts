@@ -20,6 +20,8 @@ export type Consent = 'granted' | 'denied' | 'pending';
 
 const CONSENT_KEY = 'ne.consent';
 const listeners = new Set<() => void>();
+/** Told about decisions the visitor makes here, so a logged-in account can keep them. */
+const decisionListeners = new Set<(granted: boolean) => void>();
 
 export const analyticsEnabled = config.posthogKey !== '';
 
@@ -74,7 +76,19 @@ export function initAnalytics() {
         void load();
 }
 
-export function setConsent(granted: boolean) {
+export function onConsentDecided(listener: (granted: boolean) => void) {
+    decisionListeners.add(listener);
+    return () => {
+        decisionListeners.delete(listener);
+    };
+}
+
+export function currentConsent(): Consent {
+    return readConsent();
+}
+
+/** [fromAccount]: applying the decision stored with the account, so it is not sent back there. */
+export function setConsent(granted: boolean, { fromAccount = false } = {}) {
     try {
         localStorage.setItem(CONSENT_KEY, granted ? 'granted' : 'denied');
     }
@@ -90,6 +104,8 @@ export function setConsent(granted: boolean) {
         posthog.reset();
     }
     listeners.forEach(listener => listener());
+    if (!fromAccount)
+        decisionListeners.forEach(listener => listener(granted));
 }
 
 /** Asks again; nothing is captured until the visitor decides. */
