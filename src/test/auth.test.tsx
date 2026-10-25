@@ -100,7 +100,9 @@ describe('forgotten passwords', () => {
         const { user } = renderApp('/login');
 
         await user.click(await screen.findByRole('link', { name: 'Passwort vergessen?' }));
-        await user.type(await screen.findByRole('textbox', { name: 'E-Mail' }), 'ghost@nothingeats.dev');
+        // The login form stays mounted until the new route renders; type into the right one.
+        await screen.findByRole('heading', { name: 'Passwort vergessen' });
+        await user.type(screen.getByRole('textbox', { name: 'E-Mail' }), 'ghost@nothingeats.dev');
         await user.click(screen.getByRole('button', { name: 'Link schicken' }));
 
         expect(await screen.findByRole('status')).toHaveTextContent('Wenn es zu dieser Adresse ein Konto gibt, ist ein Link unterwegs.');
