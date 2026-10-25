@@ -4,9 +4,10 @@ import { useSyncExternalStore } from 'react';
 
 import { config } from '../config';
 
-// PostHog, consent first: until the visitor agrees, PostHog runs opted out with in-memory
-// persistence, so nothing is sent and nothing is stored. Without a project key the SDK is never
-// downloaded; with one, it loads as its own chunk after the app started.
+// PostHog, consent first: the SDK is neither downloaded nor initialised before the visitor agrees.
+// Even an opted-out PostHog loads its remote config and extension scripts from PostHog's servers,
+// so the visitor's IP would reach a third party before deciding (record 028). Without a project
+// key it never loads at all.
 // Event names follow TRACKING_PLAN.md: snake_case object_verb, typed below.
 
 export type ProductEvent
@@ -24,6 +25,7 @@ export const analyticsEnabled = config.posthogKey !== '';
 
 let identified: { id: string; locale: string } | undefined;
 let posthog: PostHog | undefined;
+let loading: Promise<void> | undefined;
 
 function readConsent(): Consent {
     try {
@@ -37,25 +39,35 @@ function readConsent(): Consent {
     }
 }
 
-export async function initAnalytics() {
+function load(): Promise<void> {
     if (!analyticsEnabled)
-        return;
-    const { default: client } = await import('posthog-js');
-    const granted = readConsent() === 'granted';
-    client.init(config.posthogKey, {
-        api_host: config.posthogHost,
-        defaults: '2026-08-30',
-        capture_pageview: 'history_change',
-        person_profiles: 'identified_only',
-        opt_out_capturing_by_default: !granted,
-        persistence: granted ? 'localStorage+cookie' : 'memory',
-        // The backend links its events to this session through these headers (ktor-posthog).
-        tracing_headers: [globalThis.location.hostname],
-        session_recording: { maskAllInputs: true },
+        return Promise.resolve();
+    loading ??= import('posthog-js').then(({ default: client }) => {
+        client.init(config.posthogKey, {
+            api_host: config.posthogHost,
+            defaults: '2026-08-30',
+            // Also captures the page the visitor consented on.
+            capture_pageview: 'history_change',
+            person_profiles: 'identified_only',
+            persistence: 'localStorage+cookie',
+            // The backend links its events to this session through these headers (ktor-posthog).
+            tracing_headers: [globalThis.location.hostname],
+            session_recording: { maskAllInputs: true },
+        });
+        // A consent withdrawn earlier left PostHog's own opt-out behind.
+        if (client.has_opted_out_capturing())
+            client.opt_in_capturing();
+        if (identified)
+            client.identify(identified.id, { locale: identified.locale });
+        posthog = client;
     });
-    posthog = client;
-    if (granted && identified)
-        client.identify(identified.id, { locale: identified.locale });
+    return loading;
+}
+
+/** On start: PostHog only for visitors who already agreed. */
+export function initAnalytics() {
+    if (readConsent() === 'granted')
+        void load();
 }
 
 export function setConsent(granted: boolean) {
@@ -63,31 +75,26 @@ export function setConsent(granted: boolean) {
         localStorage.setItem(CONSENT_KEY, granted ? 'granted' : 'denied');
     }
     catch {}
-    if (posthog) {
-        if (granted) {
-            posthog.set_config({ persistence: 'localStorage+cookie' });
+    if (granted) {
+        if (posthog)
             posthog.opt_in_capturing();
-            if (identified)
-                posthog.identify(identified.id, { locale: identified.locale });
-        }
-        else {
-            posthog.opt_out_capturing();
-            posthog.set_config({ persistence: 'memory' });
-        }
+        else
+            void load();
+    }
+    else if (posthog) {
+        posthog.opt_out_capturing();
+        posthog.reset();
     }
     listeners.forEach(listener => listener());
 }
 
-/** Asks again: back to opted out until the visitor decides. */
+/** Asks again; nothing is captured until the visitor decides. */
 export function resetConsent() {
     try {
         localStorage.removeItem(CONSENT_KEY);
     }
     catch {}
-    if (posthog) {
-        posthog.opt_out_capturing();
-        posthog.set_config({ persistence: 'memory' });
-    }
+    posthog?.opt_out_capturing();
     listeners.forEach(listener => listener());
 }
 
@@ -105,7 +112,7 @@ export function capture<E extends ProductEvent>(event: E['event'], properties: E
     posthog?.capture(event, properties);
 }
 
-/** Links events to the account; held back until consent, then sent. */
+/** Links events to the account; remembered until PostHog is loaded after consent. */
 export function identifyUser(user: { id: string; locale: string }) {
     identified = { id: user.id, locale: user.locale };
     if (readConsent() === 'granted')

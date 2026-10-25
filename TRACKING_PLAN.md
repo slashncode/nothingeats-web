@@ -25,6 +25,7 @@ Events the services send through `ktor-posthog`, linked to the browser session b
 
 ## Consent
 
-- Before a decision PostHog runs opted out with in-memory persistence: no events, no cookies, no local storage.
-- "Einverstanden" switches to `localStorage+cookie` and opts in; "Lieber nicht" keeps it off. The footer's privacy settings ask again.
-- No project key configured (local development): the SDK is never downloaded.
+- Before a decision PostHog is **not loaded**: no SDK download, no remote config, no tracing headers, no cookies. (An opted-out PostHog would still fetch its config and extension scripts from PostHog's servers.)
+- "Einverstanden" loads and initialises it (the current page counts as the first `$pageview`) and identifies a user who logged in before. "Lieber nicht" keeps it unloaded; withdrawing later opts out and resets PostHog's stored ids. The footer's privacy settings ask again.
+- No project key configured (local development): never loaded.
+- Headless browsers (Playwright's default user agent) are filtered as bots by posthog-js; use a normal user agent to see events in tests.

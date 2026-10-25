@@ -11,7 +11,7 @@ import '@slashncode/nothingeats-ui/style.css';
 import './app.scss';
 import './i18n';
 
-void initAnalytics();
+initAnalytics();
 
 const queryClient = createQueryClient();
 const router = createAppRouter(queryClient);
