@@ -51,6 +51,16 @@ describe('consent gate', () => {
         expect(localStorage.getItem('ne.consent')).toBe('granted');
     });
 
+    it('keeps events from the moment of consent until the SDK has loaded', async () => {
+        const { setConsent, capture } = await analytics();
+
+        setConsent(true);
+        capture('dish_add_clicked', { dish_id: 'dish-1', restaurant_slug: 'phantom-pizza', price_cents: 1090 });
+        await settle();
+
+        expect(client.capture).toHaveBeenCalledWith('dish_add_clicked', { dish_id: 'dish-1', restaurant_slug: 'phantom-pizza', price_cents: 1090 });
+    });
+
     it('loads on start for visitors who agreed earlier, and undoes an old opt-out', async () => {
         localStorage.setItem('ne.consent', 'granted');
         client.has_opted_out_capturing.mockReturnValueOnce(true);

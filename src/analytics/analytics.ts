@@ -26,6 +26,8 @@ export const analyticsEnabled = config.posthogKey !== '';
 let identified: { id: string; locale: string } | undefined;
 let posthog: PostHog | undefined;
 let loading: Promise<void> | undefined;
+/** Events from the moment of consent until the SDK chunk has loaded. */
+const pending: [string, Record<string, unknown>][] = [];
 
 function readConsent(): Consent {
     try {
@@ -60,6 +62,8 @@ function load(): Promise<void> {
         if (identified)
             client.identify(identified.id, { locale: identified.locale });
         posthog = client;
+        for (const [event, properties] of pending.splice(0))
+            client.capture(event, properties);
     });
     return loading;
 }
@@ -109,7 +113,10 @@ export function useConsent(): Consent {
 }
 
 export function capture<E extends ProductEvent>(event: E['event'], properties: E['properties']) {
-    posthog?.capture(event, properties);
+    if (posthog)
+        posthog.capture(event, properties);
+    else if (loading && readConsent() === 'granted')
+        pending.push([event, properties]);
 }
 
 /** Links events to the account; remembered until PostHog is loaded after consent. */
