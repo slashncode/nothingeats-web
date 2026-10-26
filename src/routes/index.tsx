@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { capture } from '../analytics/analytics';
 import { catalogQueries } from '../api/catalog';
 import { Page } from '../components/Page';
+import { SiteSearch } from '../components/SiteSearch';
 import { currentLanguage } from '../i18n';
 import { ErrorState } from './__root';
 import styles from './index.module.scss';
@@ -54,6 +55,7 @@ function Home() {
             <section className={styles.hero}>
                 <h1 className={styles.title}>{t('home.title')}</h1>
                 {overview.data && <p className={styles.lead}>{t('home.lead', { count: overview.data.count })}</p>}
+                <SiteSearch className={styles.search} />
             </section>
 
             {overview.data && (

@@ -37,6 +37,7 @@ export function Header() {
                 </AriaLink>
                 <nav aria-label={t('nav.main')} className={styles.nav}>
                     <Link href="/" variant="secondary">{t('nav.restaurants')}</Link>
+                    <Link href="/search" variant="secondary">{t('nav.search')}</Link>
                 </nav>
                 <div className={styles.actions}>
                     <Button variant="ghost" size="sm" aria-label={t('language.switch')} onPress={switchLanguage}>

@@ -17,6 +17,7 @@ import { Route as MagicLinkRouteImport } from './routes/magic-link'
 import { Route as MagicLoginRouteImport } from './routes/magic-login'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as VerifyRouteImport } from './routes/verify'
 import { Route as RestaurantsSlugRouteImport } from './routes/restaurants/$slug'
 
@@ -60,6 +61,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VerifyRoute = VerifyRouteImport.update({
   id: '/verify',
   path: '/verify',
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/magic-login': typeof MagicLoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
 }
@@ -92,6 +99,7 @@ export interface FileRoutesByTo {
   '/magic-login': typeof MagicLoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
 }
@@ -105,6 +113,7 @@ export interface FileRoutesById {
   '/magic-login': typeof MagicLoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
 }
@@ -119,6 +128,7 @@ export interface FileRouteTypes {
     | '/magic-login'
     | '/register'
     | '/reset-password'
+    | '/search'
     | '/verify'
     | '/restaurants/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
     | '/magic-login'
     | '/register'
     | '/reset-password'
+    | '/search'
     | '/verify'
     | '/restaurants/$slug'
   id:
@@ -143,6 +154,7 @@ export interface FileRouteTypes {
     | '/magic-login'
     | '/register'
     | '/reset-password'
+    | '/search'
     | '/verify'
     | '/restaurants/$slug'
   fileRoutesById: FileRoutesById
@@ -156,6 +168,7 @@ export interface RootRouteChildren {
   MagicLoginRoute: typeof MagicLoginRoute
   RegisterRoute: typeof RegisterRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SearchRoute: typeof SearchRoute
   VerifyRoute: typeof VerifyRoute
   RestaurantsSlugRoute: typeof RestaurantsSlugRoute
 }
@@ -218,6 +231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/verify': {
       id: '/verify'
       path: '/verify'
@@ -244,6 +264,7 @@ const rootRouteChildren: RootRouteChildren = {
   MagicLoginRoute: MagicLoginRoute,
   RegisterRoute: RegisterRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SearchRoute: SearchRoute,
   VerifyRoute: VerifyRoute,
   RestaurantsSlugRoute: RestaurantsSlugRoute,
 }

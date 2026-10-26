@@ -12,9 +12,11 @@ import { config } from '../config';
 
 export type ProductEvent
     = | { event: 'cuisine_filter_changed'; properties: { cuisine: string } }
-        | { event: 'dish_add_clicked'; properties: { dish_id: string; restaurant_slug: string; price_cents: number } }
+        | { event: 'dish_add_clicked'; properties: { dish_id: string; restaurant_slug: string; price_cents: number; source: 'menu' | 'search' } }
         | { event: 'language_changed'; properties: { from: Language; to: Language } }
-        | { event: 'login_failed'; properties: { code: string } };
+        | { event: 'login_failed'; properties: { code: string } }
+        | { event: 'search_filter_changed'; properties: { filter: string; value: string } }
+        | { event: 'search_suggestion_selected'; properties: { kind: 'dish' | 'restaurant'; position: number } };
 
 export type Consent = 'granted' | 'denied' | 'pending';
 

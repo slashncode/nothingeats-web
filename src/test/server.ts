@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
-import { margherita, restaurants, session } from './fixtures';
+import { gyrosPlate, margherita, restaurants, searchPage, session, truffleFries } from './fixtures';
 
 function problem(status: number, code: string) {
     return HttpResponse.json({
@@ -39,6 +39,36 @@ export const handlers = [
                 },
             ],
         });
+    }),
+    // A tiny search: "pommes" finds both dishes; filters narrow by cuisine and diet.
+    http.get('/api/search/v1/dishes', ({ request }) => {
+        const url = new URL(request.url);
+        const q = url.searchParams.get('q')?.toLowerCase() ?? '';
+        const cuisines = url.searchParams.get('cuisine')?.split(',') ?? [];
+        const diets = url.searchParams.get('diet')?.split(',') ?? [];
+        const items = [truffleFries, gyrosPlate]
+            .filter(dish => q === '' || `${dish.name} ${dish.description}`.toLowerCase().includes(q))
+            .filter(dish => cuisines.length === 0 || cuisines.includes(dish.restaurant.cuisine))
+            .filter(dish => diets.every(diet => dish.dietary.includes(diet)));
+        return HttpResponse.json(searchPage(items));
+    }),
+    http.get('/api/search/v1/suggestions', ({ request }) => {
+        const q = new URL(request.url).searchParams.get('q')?.toLowerCase() ?? '';
+        const items = [
+            {
+                text: 'Air Burger',
+                kind: 'restaurant',
+                target: 'air-burger',
+                restaurantSlug: 'air-burger',
+            },
+            {
+                text: 'Trüffelpommes von morgen',
+                kind: 'dish',
+                target: truffleFries.id,
+                restaurantSlug: 'air-burger',
+            },
+        ].filter(suggestion => suggestion.text.toLowerCase().split(/\s/).some(word => word.startsWith(q)) || suggestion.text.toLowerCase().startsWith(q));
+        return HttpResponse.json({ items });
     }),
     // No session cookie by default.
     http.post('/api/identity/v1/sessions/refresh', () => problem(401, 'REFRESH_TOKEN_INVALID')),

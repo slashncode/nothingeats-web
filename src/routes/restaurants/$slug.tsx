@@ -1,15 +1,14 @@
-import type { DishSummary } from '@slashncode/nothingeats-ui';
 import type { ErrorComponentProps } from '@tanstack/react-router';
-import { DishCard, FoodCover, Link, OpenStatus, Rating, toastQueue, useCatalogLabels } from '@slashncode/nothingeats-ui';
+import { DishCard, FoodCover, Link, OpenStatus, Rating, useCatalogLabels } from '@slashncode/nothingeats-ui';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { ArrowLeft, Bike, Clock } from 'lucide-react';
 import { useNumberFormatter } from 'react-aria';
 import { useTranslation } from 'react-i18next';
 
-import { capture } from '../../analytics/analytics';
 import { catalogQueries } from '../../api/catalog';
 import { ApiError } from '../../api/http';
+import { useAddDish } from '../../components/addDish';
 import { Page } from '../../components/Page';
 import { currentLanguage } from '../../i18n';
 import { ErrorState } from '../__root';
@@ -27,21 +26,10 @@ function Restaurant() {
     const money = useNumberFormatter({ style: 'currency', currency: 'EUR' });
     const { slug } = Route.useParams();
     const menu = useQuery(catalogQueries.menu(currentLanguage(), slug));
+    const addDish = useAddDish();
     if (!menu.data)
         return null;
     const { restaurant, sections } = menu.data;
-
-    function add(dish: DishSummary) {
-        toastQueue.add(
-            {
-                title: t('restaurant.addedTitle', { dish: dish.name }),
-                description: t('restaurant.addedDescription'),
-                variant: 'info',
-            },
-            { timeout: 6000 },
-        );
-        capture('dish_add_clicked', { dish_id: dish.id, restaurant_slug: restaurant.slug, price_cents: dish.priceCents });
-    }
 
     return (
         <Page>
@@ -86,7 +74,7 @@ function Restaurant() {
                     <ul className={styles.dishes}>
                         {section.dishes.map(dish => (
                             <li key={dish.id}>
-                                <DishCard dish={dish} onAdd={add} headingLevel={4} />
+                                <DishCard dish={dish} onAdd={dish => addDish(dish, restaurant.slug, 'menu')} headingLevel={4} />
                             </li>
                         ))}
                     </ul>

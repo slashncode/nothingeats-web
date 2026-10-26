@@ -13,7 +13,8 @@
         "restaurants": "Restaurants",
         "login": "Log in",
         "register": "Sign up",
-        "account": "Account"
+        "account": "Account",
+        "search": "Search"
     },
     "language": {
         "switch": "Language: English. Switch to German",
@@ -31,7 +32,8 @@
         "cuisines": "Cuisines",
         "allCuisines": "All",
         "loadMore": "More restaurants",
-        "empty": "No restaurants for this cuisine."
+        "empty": "No restaurants for this cuisine.",
+        "searchLead": "Or search straight for what you won't eat."
     },
     "restaurant": {
         "menu": "Menu",
@@ -112,5 +114,25 @@
         "accept": "Sure",
         "decline": "Rather not",
         "settings": "Privacy settings"
+    },
+    "search": {
+        "placeholder": "Pizza, fries, pho …",
+        "title": "Search",
+        "titleFor": "Search for “{query}”",
+        "filters": "Filters",
+        "openNow": "Open now",
+        "cuisine": "Cuisine",
+        "diet": "Diet",
+        "mood": "Mood",
+        "spice": "Heat",
+        "price": "Price",
+        "without": "Without",
+        "any": "Any",
+        "upTo": "up to {value}",
+        "priceUpTo": "up to {amount} ({count})",
+        "reset": "Reset filters",
+        "total": "{count, plural, =0 {No dishes} one {# dish} other {# dishes}}",
+        "empty": "Nothing found. For once, that's not the point. Try fewer filters or another word.",
+        "more": "More dishes"
     }
 }

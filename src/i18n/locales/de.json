@@ -13,7 +13,8 @@
         "restaurants": "Restaurants",
         "login": "Anmelden",
         "register": "Registrieren",
-        "account": "Konto"
+        "account": "Konto",
+        "search": "Suche"
     },
     "language": {
         "switch": "Sprache: Deutsch. Auf Englisch wechseln",
@@ -31,7 +32,8 @@
         "cuisines": "Küchen",
         "allCuisines": "Alle",
         "loadMore": "Mehr Restaurants",
-        "empty": "Keine Restaurants für diese Küche."
+        "empty": "Keine Restaurants für diese Küche.",
+        "searchLead": "Oder such direkt nach dem, was du nicht essen willst."
     },
     "restaurant": {
         "menu": "Speisekarte",
@@ -112,5 +114,25 @@
         "accept": "Einverstanden",
         "decline": "Lieber nicht",
         "settings": "Datenschutz-Einstellungen"
+    },
+    "search": {
+        "placeholder": "Pizza, Pommes, Pho …",
+        "title": "Suche",
+        "titleFor": "Suche nach „{query}“",
+        "filters": "Filter",
+        "openNow": "Jetzt geöffnet",
+        "cuisine": "Küche",
+        "diet": "Ernährung",
+        "mood": "Stimmung",
+        "spice": "Schärfe",
+        "price": "Preis",
+        "without": "Ohne",
+        "any": "Egal",
+        "upTo": "bis {value}",
+        "priceUpTo": "bis {amount} ({count})",
+        "reset": "Filter zurücksetzen",
+        "total": "{count, plural, =0 {Keine Gerichte} one {# Gericht} other {# Gerichte}}",
+        "empty": "Nichts gefunden. Was hier ausnahmsweise kein gutes Zeichen ist. Versuch es mit weniger Filtern oder einem anderen Wort.",
+        "more": "Mehr Gerichte"
     }
 }

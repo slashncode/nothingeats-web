@@ -15,13 +15,15 @@ Product events of the web app, sent to PostHog (EU) **only after consent**. Name
 | Event | When | Properties |
 |---|---|---|
 | `cuisine_filter_changed` | A cuisine is picked on the restaurant list | `cuisine` (slug or `all`) |
-| `dish_add_clicked` | "Add to cart" on a dish (the cart does not exist yet, so this measures demand) | `dish_id`, `restaurant_slug`, `price_cents` |
+| `dish_add_clicked` | "Add to cart" on a dish (the cart does not exist yet, so this measures demand) | `dish_id`, `restaurant_slug`, `price_cents`, `source` (`menu` or `search`) |
 | `language_changed` | The language switch is used | `from`, `to` (`de`/`en`) |
 | `login_failed` | A login attempt fails | `code` (API error code, e.g. `INVALID_CREDENTIALS`) |
+| `search_filter_changed` | A filter on the search page changes | `filter` (`cuisine`, `diet`, `mood`, `without`, `max_spice`, `max_price`, `open_now`, `reset`), `value` (comma-separated, `none` when cleared) |
+| `search_suggestion_selected` | A completion in the search box is picked | `kind` (`dish` or `restaurant`), `position` (1-based) |
 
 ## Server side (same distinct id)
 
-Events the services send through `ktor-posthog`, linked to the browser session by the `X-POSTHOG-*` tracing headers posthog-js adds to API requests: `user_signed_up`, `email_verified`, `user_logged_in` (identity), `email_sent` (notification).
+Events the services send through `ktor-posthog`, linked to the browser session by the `X-POSTHOG-*` tracing headers posthog-js adds to API requests: `user_signed_up`, `email_verified`, `user_logged_in` (identity), `email_sent` (notification), `search_performed` (search: normalised query, language, result count, filters used, page; zero-result searches included, so they show what the catalog is missing).
 
 ## Consent
 
