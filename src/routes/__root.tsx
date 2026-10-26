@@ -10,6 +10,7 @@ import { Footer } from '../components/Footer';
 import { Header } from '../components/Header';
 import { Page } from '../components/Page';
 import { currentLanguage, RAC_LOCALES } from '../i18n';
+import { LiveStream } from '../live/LiveStream';
 
 export const Route = createRootRouteWithContext<RouterContext>()({
     component: RootLayout,
@@ -34,6 +35,7 @@ function RootLayout() {
                 </main>
                 <Footer />
                 <ConsentBanner />
+                <LiveStream />
                 <ToastRegion position="bottom-left" />
             </I18nProvider>
         </AriaRouterProvider>

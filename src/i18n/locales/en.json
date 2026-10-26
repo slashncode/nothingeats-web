@@ -14,7 +14,9 @@
         "login": "Log in",
         "register": "Sign up",
         "account": "Account",
-        "search": "Search"
+        "search": "Search",
+        "cart": "{count, plural, =0 {Cart, empty} one {Cart, # dish} other {Cart, # dishes}}",
+        "orders": "Orders"
     },
     "language": {
         "switch": "Language: English. Switch to German",
@@ -42,9 +44,7 @@
         "deliveryFee": "Delivery {fee}",
         "freeDelivery": "Free delivery",
         "back": "All restaurants",
-        "notFound": "This restaurant doesn't exist. Even less than the others.",
-        "addedTitle": "{dish} is (not) coming.",
-        "addedDescription": "The cart is still in the oven. Until then, you've already eaten nothing."
+        "notFound": "This restaurant doesn't exist. Even less than the others."
     },
     "auth": {
         "email": "Email",
@@ -134,5 +134,86 @@
         "total": "{count, plural, =0 {No dishes} one {# dish} other {# dishes}}",
         "empty": "Nothing found. For once, that's not the point. Try fewer filters or another word.",
         "more": "More dishes"
+    },
+    "cart": {
+        "added": "{dish} is in your cart.",
+        "addedDescription": "It still won't come. Promise.",
+        "loginFirst": "Log in and it goes into your cart.",
+        "failed": "That didn't work. Please try again in a moment.",
+        "otherRestaurantTitle": "Start a new cart?",
+        "otherRestaurantBody": "Your cart already holds something from {restaurant}. Per order, one restaurant delivers nothing.",
+        "keep": "Keep it",
+        "startOver": "Start over"
+    },
+    "checkout": {
+        "title": "Checkout",
+        "empty": "Your cart is empty. Almost as empty as the delivery.",
+        "browse": "Browse restaurants",
+        "from": "From {restaurant}",
+        "soldOut": "Not available right now",
+        "less": "One {dish} less",
+        "more": "One more {dish}",
+        "quantity": "{count, plural, one {# piece} other {# pieces}}",
+        "subtotal": "Subtotal",
+        "deliveryFee": "Delivery fee",
+        "notSpent": "Not spent",
+        "calories": "Not eaten",
+        "kcal": "{calories} kcal",
+        "problems": {
+            "DISH_UNAVAILABLE": "A dish is not available right now. Take it out of the cart.",
+            "MINIMUM_NOT_REACHED": "The minimum order is not reached yet.",
+            "RESTAURANT_CLOSED": "The restaurant is closed right now."
+        },
+        "dropOff": "Drop-off",
+        "where": "Where should nothing arrive?",
+        "onMap": "Picked on the map",
+        "map": "Map: restaurant and drop-off",
+        "mapHint": "Or tap the map to pick a place of your own.",
+        "label": "Doorbell, backyard, note (optional)",
+        "quoting": "Asking a courier …",
+        "eta": "Arriving in about {minutes, plural, one {# minute} other {# minutes}}.",
+        "realCourier": "A real courier would need {minutes} minutes.",
+        "estimate": "Estimated: the courier service isn't answering right now.",
+        "shortage": "Lots of couriers are busy right now.",
+        "pay": "Pay with willpower",
+        "payHint": "Nothing is charged. Nothing arrives.",
+        "errors": {
+            "empty": "The cart is empty.",
+            "minimum": "The minimum order is not reached yet.",
+            "closed": "The restaurant is closed right now.",
+            "unavailable": "A dish is not available right now.",
+            "outOfRange": "Too far away. Even for nothing.",
+            "generic": "That didn't work. Please try again in a moment."
+        }
+    },
+    "tracking": {
+        "notFound": "There is no such order.",
+        "allOrders": "All orders",
+        "title": "Your order from {restaurant}",
+        "arrived": "Nothing has arrived. Enjoy!",
+        "eta": "Arriving in {minutes}:{seconds}",
+        "anyMoment": "Any moment now …",
+        "vehicle": {
+            "BIKE": "{name} is coming by bike.",
+            "CARGO_BIKE": "{name} is coming by cargo bike.",
+            "SCOOTER": "{name} is coming by scooter."
+        },
+        "map": "Map: courier, restaurant and drop-off",
+        "summary": "Ordered",
+        "saved": "{amount} not spent, {calories} kcal not eaten."
+    },
+    "orders": {
+        "title": "Your orders",
+        "empty": "No orders yet. Missing nothing?",
+        "saved": "Not spent so far: {amount}",
+        "status": {
+            "PLACED": "Ordered",
+            "ACCEPTED": "Courier found",
+            "COOKING": "In the kitchen",
+            "PICKED_UP": "Picked up",
+            "EN_ROUTE": "On the way",
+            "DELIVERED": "Nothing has arrived"
+        },
+        "more": "Older orders"
     }
 }

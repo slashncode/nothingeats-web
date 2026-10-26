@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountRouteImport } from './routes/account'
+import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MagicLinkRouteImport } from './routes/magic-link'
@@ -19,6 +20,8 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as VerifyRouteImport } from './routes/verify'
+import { Route as OrdersIndexRouteImport } from './routes/orders/index'
+import { Route as OrdersOrderIdRouteImport } from './routes/orders/$orderId'
 import { Route as RestaurantsSlugRouteImport } from './routes/restaurants/$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +32,11 @@ const IndexRoute = IndexRouteImport.update({
 const AccountRoute = AccountRouteImport.update({
   id: '/account',
   path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -71,6 +79,16 @@ const VerifyRoute = VerifyRouteImport.update({
   path: '/verify',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrdersIndexRoute = OrdersIndexRouteImport.update({
+  id: '/orders/',
+  path: '/orders/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrdersOrderIdRoute = OrdersOrderIdRouteImport.update({
+  id: '/orders/$orderId',
+  path: '/orders/$orderId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RestaurantsSlugRoute = RestaurantsSlugRouteImport.update({
   id: '/restaurants/$slug',
   path: '/restaurants/$slug',
@@ -80,6 +98,7 @@ const RestaurantsSlugRoute = RestaurantsSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/checkout': typeof CheckoutRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/magic-link': typeof MagicLinkRoute
@@ -88,11 +107,14 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
+  '/orders/$orderId': typeof OrdersOrderIdRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
+  '/orders/': typeof OrdersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/checkout': typeof CheckoutRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/magic-link': typeof MagicLinkRoute
@@ -101,12 +123,15 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
+  '/orders/$orderId': typeof OrdersOrderIdRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
+  '/orders': typeof OrdersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/checkout': typeof CheckoutRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/magic-link': typeof MagicLinkRoute
@@ -115,13 +140,16 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
+  '/orders/$orderId': typeof OrdersOrderIdRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
+  '/orders/': typeof OrdersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/account'
+    | '/checkout'
     | '/forgot-password'
     | '/login'
     | '/magic-link'
@@ -130,11 +158,14 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/search'
     | '/verify'
+    | '/orders/$orderId'
     | '/restaurants/$slug'
+    | '/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/account'
+    | '/checkout'
     | '/forgot-password'
     | '/login'
     | '/magic-link'
@@ -143,11 +174,14 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/search'
     | '/verify'
+    | '/orders/$orderId'
     | '/restaurants/$slug'
+    | '/orders'
   id:
     | '__root__'
     | '/'
     | '/account'
+    | '/checkout'
     | '/forgot-password'
     | '/login'
     | '/magic-link'
@@ -156,12 +190,15 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/search'
     | '/verify'
+    | '/orders/$orderId'
     | '/restaurants/$slug'
+    | '/orders/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRoute: typeof AccountRoute
+  CheckoutRoute: typeof CheckoutRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   MagicLinkRoute: typeof MagicLinkRoute
@@ -170,7 +207,9 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SearchRoute: typeof SearchRoute
   VerifyRoute: typeof VerifyRoute
+  OrdersOrderIdRoute: typeof OrdersOrderIdRoute
   RestaurantsSlugRoute: typeof RestaurantsSlugRoute
+  OrdersIndexRoute: typeof OrdersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -187,6 +226,13 @@ declare module '@tanstack/react-router' {
       path: '/account'
       fullPath: '/account'
       preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -245,6 +291,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/orders/': {
+      id: '/orders/'
+      path: '/orders'
+      fullPath: '/orders/'
+      preLoaderRoute: typeof OrdersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/orders/$orderId': {
+      id: '/orders/$orderId'
+      path: '/orders/$orderId'
+      fullPath: '/orders/$orderId'
+      preLoaderRoute: typeof OrdersOrderIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/restaurants/$slug': {
       id: '/restaurants/$slug'
       path: '/restaurants/$slug'
@@ -258,6 +318,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRoute: AccountRoute,
+  CheckoutRoute: CheckoutRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   MagicLinkRoute: MagicLinkRoute,
@@ -266,7 +327,9 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SearchRoute: SearchRoute,
   VerifyRoute: VerifyRoute,
+  OrdersOrderIdRoute: OrdersOrderIdRoute,
   RestaurantsSlugRoute: RestaurantsSlugRoute,
+  OrdersIndexRoute: OrdersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

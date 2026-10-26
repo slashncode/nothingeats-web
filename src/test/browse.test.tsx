@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import { renderApp } from './render';
@@ -31,8 +31,8 @@ describe('browsing', () => {
         expect(localStorage.getItem('ne.language')).toBe('en');
     });
 
-    it('shows a menu, and "adding" a dish explains that nothing comes', async () => {
-        const { user } = renderApp('/restaurants/phantom-pizza');
+    it('shows a menu; adding a dish asks visitors to log in first', async () => {
+        const { user, router } = renderApp('/restaurants/phantom-pizza');
 
         expect(await screen.findByRole('heading', { level: 1, name: 'Phantom Pizza' })).toBeInTheDocument();
         const pizza = screen.getByRole('region', { name: 'Pizza' });
@@ -40,7 +40,9 @@ describe('browsing', () => {
 
         await user.click(within(pizza).getByRole('button', { name: 'Margherita des Nichts in den Warenkorb' }));
 
-        expect(await screen.findByText('Margherita des Nichts kommt (nicht).')).toBeInTheDocument();
+        expect(await screen.findByText('Melde dich an, dann landet es im Warenkorb.')).toBeInTheDocument();
+        await waitFor(() => expect(router.state.location.pathname).toBe('/login'));
+        expect(router.state.location.search).toEqual({ redirect: '/restaurants/phantom-pizza' });
     });
 
     it('says so when a restaurant does not exist', async () => {

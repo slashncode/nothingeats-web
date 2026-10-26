@@ -70,6 +70,11 @@ export const handlers = [
         ].filter(suggestion => suggestion.text.toLowerCase().split(/\s/).some(word => word.startsWith(q)) || suggestion.text.toLowerCase().startsWith(q));
         return HttpResponse.json({ items });
     }),
+    // The live stream: says it is ready, then ends (the app reconnects; tests that need events replace it).
+    http.get('/api/notification/v1/stream', () =>
+        new HttpResponse('event: ready\ndata: {}\n\n', {
+            headers: { 'Content-Type': 'text/event-stream' },
+        })),
     // No session cookie by default.
     http.post('/api/identity/v1/sessions/refresh', () => problem(401, 'REFRESH_TOKEN_INVALID')),
     http.post('/api/identity/v1/sessions', async ({ request }) => {

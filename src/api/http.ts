@@ -34,12 +34,24 @@ export function setUnauthorizedHandler(handler: typeof onUnauthorized) {
     onUnauthorized = handler;
 }
 
+/** For connections outside `request` (the live stream); the token itself never leaves memory. */
+export function currentAccessToken(): string | undefined {
+    return accessToken;
+}
+
+/** A fresh token after a 401 elsewhere, through the same serialized refresh as `request`. */
+export async function refreshAccessToken(): Promise<string | undefined> {
+    return onUnauthorized?.();
+}
+
 interface RequestOptions {
     method?: string;
     body?: unknown;
     query?: Record<string, string | number | undefined>;
     /** Send the access token (and retry once with a refreshed one on 401). */
     auth?: boolean;
+    /** Extra request headers, e.g. `Idempotency-Key`. */
+    headers?: Record<string, string>;
     signal?: AbortSignal;
 }
 
@@ -63,6 +75,7 @@ function send(path: string, options: RequestOptions, token: string | undefined) 
     const headers = new Headers({
         Accept: 'application/json',
         ...analyticsHeaders(),
+        ...options.headers,
     });
     if (options.body !== undefined)
         headers.set('Content-Type', 'application/json');

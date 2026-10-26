@@ -1,12 +1,13 @@
 import type { ColorScheme } from './colorScheme';
 import { Button, Link, Logo } from '@slashncode/nothingeats-ui';
-import { Monitor, Moon, Sun, UserRound } from 'lucide-react';
+import { Monitor, Moon, ShoppingBag, Sun, UserRound } from 'lucide-react';
 import { Link as AriaLink } from 'react-aria-components';
 import { useTranslation } from 'react-i18next';
 
 import { capture } from '../analytics/analytics';
 import { useSession } from '../auth/session';
 import { currentLanguage, i18next, rememberLanguage } from '../i18n';
+import { useCart } from './cart';
 import { setColorScheme, useColorScheme } from './colorScheme';
 import styles from './Header.module.scss';
 
@@ -17,6 +18,8 @@ export function Header() {
     const { t } = useTranslation();
     const { state } = useSession();
     const scheme = useColorScheme();
+    const cart = useCart();
+    const items = cart.data?.itemCount ?? 0;
     const SchemeIcon = SCHEME_ICON[scheme];
 
     function switchLanguage() {
@@ -38,6 +41,7 @@ export function Header() {
                 <nav aria-label={t('nav.main')} className={styles.nav}>
                     <Link href="/" variant="secondary">{t('nav.restaurants')}</Link>
                     <Link href="/search" variant="secondary">{t('nav.search')}</Link>
+                    {state.status === 'authenticated' && <Link href="/orders" variant="secondary">{t('nav.orders')}</Link>}
                 </nav>
                 <div className={styles.actions}>
                     <Button variant="ghost" size="sm" aria-label={t('language.switch')} onPress={switchLanguage}>
@@ -51,6 +55,12 @@ export function Header() {
                     >
                         <SchemeIcon aria-hidden size={18} />
                     </Button>
+                    {state.status === 'authenticated' && (
+                        <Link href="/checkout" className={styles.account} aria-label={t('nav.cart', { count: items })}>
+                            <ShoppingBag aria-hidden size={18} />
+                            {items > 0 && <span className={styles.badge} aria-hidden>{items}</span>}
+                        </Link>
+                    )}
                     {state.status === 'authenticated'
                         ? (
                                 <Link href="/account" className={styles.account}>

@@ -52,3 +52,15 @@
 
     .actions { margin-left: auto; }
 }
+
+.badge {
+    min-width: 1.25rem;
+    padding: 0 var(--spacing-1);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.25rem;
+    color: var(--primary-foreground);
+    text-align: center;
+    background: var(--primary);
+    border-radius: var(--radius-full);
+}

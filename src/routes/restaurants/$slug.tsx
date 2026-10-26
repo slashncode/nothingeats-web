@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 import { catalogQueries } from '../../api/catalog';
 import { ApiError } from '../../api/http';
-import { useAddDish } from '../../components/addDish';
+import { useAddToCart } from '../../components/cart';
 import { Page } from '../../components/Page';
 import { currentLanguage } from '../../i18n';
 import { ErrorState } from '../__root';
@@ -26,7 +26,7 @@ function Restaurant() {
     const money = useNumberFormatter({ style: 'currency', currency: 'EUR' });
     const { slug } = Route.useParams();
     const menu = useQuery(catalogQueries.menu(currentLanguage(), slug));
-    const addDish = useAddDish();
+    const { add: addDish, dialog: cartDialog } = useAddToCart();
     if (!menu.data)
         return null;
     const { restaurant, sections } = menu.data;
@@ -80,6 +80,7 @@ function Restaurant() {
                     </ul>
                 </section>
             ))}
+            {cartDialog}
         </Page>
     );
 }

@@ -16,7 +16,11 @@ export type ProductEvent
         | { event: 'language_changed'; properties: { from: Language; to: Language } }
         | { event: 'login_failed'; properties: { code: string } }
         | { event: 'search_filter_changed'; properties: { filter: string; value: string } }
-        | { event: 'search_suggestion_selected'; properties: { kind: 'dish' | 'restaurant'; position: number } };
+        | { event: 'search_suggestion_selected'; properties: { kind: 'dish' | 'restaurant'; position: number } }
+        | { event: 'cart_replaced'; properties: { restaurant_slug: string } }
+        | { event: 'checkout_started'; properties: { item_count: number; total_cents: number } }
+        | { event: 'drop_off_selected'; properties: { method: 'preset' | 'map' } }
+        | { event: 'order_tracking_viewed'; properties: { order_id: string; status: string } };
 
 export type Consent = 'granted' | 'denied' | 'pending';
 

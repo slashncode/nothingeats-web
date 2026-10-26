@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 import { analyticsReady, capture } from '../analytics/analytics';
 import { searchQueries } from '../api/search';
-import { useAddDish } from '../components/addDish';
+import { useAddToCart } from '../components/cart';
 import { Page } from '../components/Page';
 import { SiteSearch } from '../components/SiteSearch';
 import { currentLanguage } from '../i18n';
@@ -60,7 +60,7 @@ function Search() {
     const money = useNumberFormatter({ style: 'currency', currency: 'EUR', minimumFractionDigits: 0 });
     const search = Route.useSearch();
     const navigate = useNavigate({ from: '/search' });
-    const addDish = useAddDish();
+    const { add: addDish, dialog: cartDialog } = useAddToCart();
     const results = useInfiniteQuery(searchQueries.dishes(currentLanguage(), search));
 
     const pages = results.data?.pages ?? [];
@@ -228,6 +228,7 @@ function Search() {
                     )}
                 </section>
             </div>
+            {cartDialog}
         </Page>
     );
 }

@@ -14,7 +14,9 @@
         "login": "Anmelden",
         "register": "Registrieren",
         "account": "Konto",
-        "search": "Suche"
+        "search": "Suche",
+        "cart": "{count, plural, =0 {Warenkorb, leer} one {Warenkorb, # Gericht} other {Warenkorb, # Gerichte}}",
+        "orders": "Bestellungen"
     },
     "language": {
         "switch": "Sprache: Deutsch. Auf Englisch wechseln",
@@ -42,9 +44,7 @@
         "deliveryFee": "Lieferung {fee}",
         "freeDelivery": "Gratis-Lieferung",
         "back": "Alle Restaurants",
-        "notFound": "Dieses Restaurant gibt es nicht. Noch weniger als die anderen.",
-        "addedTitle": "{dish} kommt (nicht).",
-        "addedDescription": "Der Warenkorb ist noch im Ofen. Bis dahin hast du schon mal nichts gegessen."
+        "notFound": "Dieses Restaurant gibt es nicht. Noch weniger als die anderen."
     },
     "auth": {
         "email": "E-Mail",
@@ -134,5 +134,86 @@
         "total": "{count, plural, =0 {Keine Gerichte} one {# Gericht} other {# Gerichte}}",
         "empty": "Nichts gefunden. Was hier ausnahmsweise kein gutes Zeichen ist. Versuch es mit weniger Filtern oder einem anderen Wort.",
         "more": "Mehr Gerichte"
+    },
+    "cart": {
+        "added": "{dish} liegt im Warenkorb.",
+        "addedDescription": "Kommt trotzdem nicht. Versprochen.",
+        "loginFirst": "Melde dich an, dann landet es im Warenkorb.",
+        "failed": "Das hat nicht geklappt. Versuch es gleich noch einmal.",
+        "otherRestaurantTitle": "Neuen Warenkorb anfangen?",
+        "otherRestaurantBody": "Im Warenkorb liegt schon etwas von {restaurant}. Pro Bestellung liefert ein Restaurant nichts.",
+        "keep": "Behalten",
+        "startOver": "Neu anfangen"
+    },
+    "checkout": {
+        "title": "Kasse",
+        "empty": "Dein Warenkorb ist leer. Fast so leer wie die Lieferung.",
+        "browse": "Zu den Restaurants",
+        "from": "Von {restaurant}",
+        "soldOut": "Gerade nicht verfügbar",
+        "less": "Ein {dish} weniger",
+        "more": "Ein {dish} mehr",
+        "quantity": "{count, plural, one {# Stück} other {# Stück}}",
+        "subtotal": "Zwischensumme",
+        "deliveryFee": "Liefergebühr",
+        "notSpent": "Nicht ausgegeben",
+        "calories": "Nicht gegessen",
+        "kcal": "{calories} kcal",
+        "problems": {
+            "DISH_UNAVAILABLE": "Ein Gericht ist gerade nicht verfügbar. Nimm es aus dem Warenkorb.",
+            "MINIMUM_NOT_REACHED": "Der Mindestbestellwert ist noch nicht erreicht.",
+            "RESTAURANT_CLOSED": "Das Restaurant hat gerade geschlossen."
+        },
+        "dropOff": "Lieferadresse",
+        "where": "Wohin soll nichts kommen?",
+        "onMap": "Auf der Karte gewählt",
+        "map": "Karte: Restaurant und Lieferadresse",
+        "mapHint": "Oder tipp auf die Karte, um einen eigenen Ort zu wählen.",
+        "label": "Klingel, Hinterhof, Notiz (optional)",
+        "quoting": "Wir fragen einen Kurier …",
+        "eta": "Ankunft in etwa {minutes, plural, one {# Minute} other {# Minuten}}.",
+        "realCourier": "Ein echter Kurier bräuchte {minutes} Minuten.",
+        "estimate": "Geschätzt: Der Kurierdienst antwortet gerade nicht.",
+        "shortage": "Gerade sind viele Kuriere unterwegs.",
+        "pay": "Mit Willenskraft bezahlen",
+        "payHint": "Es wird nichts abgebucht. Es kommt nur nichts.",
+        "errors": {
+            "empty": "Der Warenkorb ist leer.",
+            "minimum": "Der Mindestbestellwert ist noch nicht erreicht.",
+            "closed": "Das Restaurant hat gerade geschlossen.",
+            "unavailable": "Ein Gericht ist gerade nicht verfügbar.",
+            "outOfRange": "Zu weit weg. Selbst für nichts.",
+            "generic": "Das hat nicht geklappt. Versuch es gleich noch einmal."
+        }
+    },
+    "tracking": {
+        "notFound": "Diese Bestellung gibt es nicht.",
+        "allOrders": "Alle Bestellungen",
+        "title": "Deine Bestellung bei {restaurant}",
+        "arrived": "Nichts ist angekommen. Guten Appetit!",
+        "eta": "Ankunft in {minutes}:{seconds}",
+        "anyMoment": "Jeden Moment …",
+        "vehicle": {
+            "BIKE": "{name} kommt mit dem Fahrrad.",
+            "CARGO_BIKE": "{name} kommt mit dem Lastenrad.",
+            "SCOOTER": "{name} kommt mit dem Roller."
+        },
+        "map": "Karte: Kurier, Restaurant und Lieferadresse",
+        "summary": "Bestellt",
+        "saved": "{amount} nicht ausgegeben, {calories} kcal nicht gegessen."
+    },
+    "orders": {
+        "title": "Deine Bestellungen",
+        "empty": "Noch keine Bestellung. Nichts verpasst?",
+        "saved": "Bisher nicht ausgegeben: {amount}",
+        "status": {
+            "PLACED": "Bestellt",
+            "ACCEPTED": "Kurier gefunden",
+            "COOKING": "In der Küche",
+            "PICKED_UP": "Abgeholt",
+            "EN_ROUTE": "Unterwegs",
+            "DELIVERED": "Nichts ist da"
+        },
+        "more": "Ältere Bestellungen"
     }
 }
