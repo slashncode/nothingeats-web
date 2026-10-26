@@ -56,8 +56,6 @@ function load(): Promise<void> {
             capture_pageview: 'history_change',
             person_profiles: 'identified_only',
             persistence: 'localStorage+cookie',
-            // The backend links its events to this session through these headers (ktor-posthog).
-            tracing_headers: [globalThis.location.hostname],
             session_recording: { maskAllInputs: true },
         });
         // A consent withdrawn earlier left PostHog's own opt-out behind.
@@ -76,6 +74,23 @@ function load(): Promise<void> {
 export function initAnalytics() {
     if (readConsent() === 'granted')
         void load();
+}
+
+/**
+ * The ids the services link their server-side events with (ktor-posthog reads them), once PostHog
+ * is loaded. Set by our own fetch layer rather than posthog-js's tracing extension, which loads
+ * from PostHog's servers after init and so missed the first requests of a page.
+ */
+export function analyticsHeaders(): Record<string, string> {
+    if (!posthog)
+        return {};
+    const headers: Record<string, string> = {
+        'X-POSTHOG-DISTINCT-ID': posthog.get_distinct_id(),
+    };
+    const session = posthog.get_session_id();
+    if (session)
+        headers['X-POSTHOG-SESSION-ID'] = session;
+    return headers;
 }
 
 /**

@@ -1,3 +1,5 @@
+import { analyticsHeaders } from '../analytics/analytics';
+
 // Thin fetch wrapper for the NothingEats APIs on the same origin. Errors are RFC 9457 problems
 // with a stable `code`; the access token lives only in memory (never in storage).
 
@@ -57,7 +59,11 @@ function send(path: string, options: RequestOptions, token: string | undefined) 
         if (value !== undefined && value !== '')
             url.searchParams.set(key, String(value));
     }
-    const headers = new Headers({ Accept: 'application/json' });
+    // After consent, the PostHog ids, so server-side events join the visitor's session.
+    const headers = new Headers({
+        Accept: 'application/json',
+        ...analyticsHeaders(),
+    });
     if (options.body !== undefined)
         headers.set('Content-Type', 'application/json');
     if (options.auth && token)

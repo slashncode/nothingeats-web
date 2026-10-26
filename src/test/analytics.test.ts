@@ -9,6 +9,8 @@ const client = {
     opt_out_capturing: vi.fn(),
     has_opted_out_capturing: vi.fn(() => false),
     reset: vi.fn(),
+    get_distinct_id: vi.fn(() => 'visitor-1'),
+    get_session_id: vi.fn(() => 'session-1'),
 };
 vi.mock('posthog-js', () => ({ default: client }));
 
@@ -37,6 +39,16 @@ describe('consent gate', () => {
         expect(client.init).not.toHaveBeenCalled();
         expect(client.capture).not.toHaveBeenCalled();
         expect(client.identify).not.toHaveBeenCalled();
+    });
+
+    it('adds the PostHog ids to API requests only once the visitor agreed and PostHog is loaded', async () => {
+        const { analyticsHeaders, setConsent } = await analytics();
+        expect(analyticsHeaders()).toEqual({});
+
+        setConsent(true);
+        await settle();
+
+        expect(analyticsHeaders()).toEqual({ 'X-POSTHOG-DISTINCT-ID': 'visitor-1', 'X-POSTHOG-SESSION-ID': 'session-1' });
     });
 
     it('lets loaders wait for PostHog only when the visitor agreed', async () => {
