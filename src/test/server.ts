@@ -72,7 +72,7 @@ export const handlers = [
     }),
     // The live stream: says it is ready, then ends (the app reconnects; tests that need events replace it).
     http.get('/api/notification/v1/stream', () =>
-        new HttpResponse('event: ready\ndata: {}\n\n', {
+        new HttpResponse('event: ready\r\ndata: {}\r\n\r\n', {
             headers: { 'Content-Type': 'text/event-stream' },
         })),
     // No session cookie by default.

@@ -156,10 +156,11 @@ function orderingWorld() {
             serverTime: new Date().toISOString(),
         })),
         http.get('/api/notification/v1/stream', () => {
+            // CRLF line endings, like the real server (Ktor).
             const encoder = new TextEncoder();
             const stream = new ReadableStream<Uint8Array>({
                 start(controller) {
-                    push = (event, data) => controller.enqueue(encoder.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`));
+                    push = (event, data) => controller.enqueue(encoder.encode(`event: ${event}\r\ndata: ${JSON.stringify(data)}\r\n\r\n`));
                     push('ready', {});
                 },
             });

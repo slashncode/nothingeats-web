@@ -50,16 +50,28 @@ function sleep(ms: number, signal: AbortSignal) {
     });
 }
 
-/** Splits the byte stream into SSE events (`event:` and `data:` lines, blank line ends one). */
-async function read(body: ReadableStream<Uint8Array>, dispatch: (event: LiveEvent) => void) {
+/**
+ * Splits the byte stream into SSE events (`event:` and `data:` lines, blank line ends one). Lines
+ * may end in CRLF, LF or CR (the server sends CRLF); a CR at the end of a chunk waits for the next
+ * one, which may start with its LF.
+ */
+export async function read(body: ReadableStream<Uint8Array>, dispatch: (event: LiveEvent) => void) {
     const reader = body.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
+    let carriageReturn = false;
     for (;;) {
         const { value, done } = await reader.read();
         if (done)
             return;
-        buffer += decoder.decode(value, { stream: true });
+        const decoded = decoder.decode(value, { stream: true });
+        let text: string = carriageReturn
+            ? `\r${decoded}`
+            : decoded;
+        carriageReturn = text.endsWith('\r');
+        if (carriageReturn)
+            text = text.slice(0, -1);
+        buffer += text.replace(/\r\n?/g, '\n');
         let end = buffer.indexOf('\n\n');
         while (end >= 0) {
             const block = buffer.slice(0, end);
