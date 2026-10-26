@@ -6,7 +6,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useNumberFormatter } from 'react-aria';
 import { useTranslation } from 'react-i18next';
 
-import { capture } from '../analytics/analytics';
+import { analyticsReady, capture } from '../analytics/analytics';
 import { searchQueries } from '../api/search';
 import { useAddDish } from '../components/addDish';
 import { Page } from '../components/Page';
@@ -46,7 +46,11 @@ export const Route = createFileRoute('/search')({
             : undefined,
     }),
     loaderDeps: ({ search }) => search,
-    loader: ({ context, deps }) => context.queryClient.ensureInfiniteQueryData(searchQueries.dishes(currentLanguage(), deps)),
+    // The search API counts every search for the visitor (search_performed), so wait for the tracing headers.
+    loader: async ({ context, deps }) => {
+        await analyticsReady();
+        return context.queryClient.ensureInfiniteQueryData(searchQueries.dishes(currentLanguage(), deps));
+    },
     component: Search,
 });
 

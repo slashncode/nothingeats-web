@@ -29,7 +29,11 @@ export function SiteSearch({ initial = '', keepFilters = false, className }: { i
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [value, setValue] = useState(initial);
-    const prefix = useDebounced(value.trim(), DEBOUNCE_MS);
+    // Completions only for what the visitor types, not for the query a page starts with.
+    const [typed, setTyped] = useState(false);
+    const prefix = useDebounced(typed
+        ? value.trim()
+        : '', DEBOUNCE_MS);
     const suggestions = useQuery(searchQueries.suggestions(currentLanguage(), prefix));
 
     function search(text: string) {
@@ -62,7 +66,10 @@ export function SiteSearch({ initial = '', keepFilters = false, className }: { i
     return (
         <SearchBox
             value={value}
-            onChange={setValue}
+            onChange={(next) => {
+                setValue(next);
+                setTyped(true);
+            }}
             suggestions={prefix.length >= 2 && value.trim().length >= 2
                 ? suggestions.data?.items ?? []
                 : []}

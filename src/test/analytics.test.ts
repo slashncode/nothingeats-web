@@ -39,6 +39,17 @@ describe('consent gate', () => {
         expect(client.identify).not.toHaveBeenCalled();
     });
 
+    it('lets loaders wait for PostHog only when the visitor agreed', async () => {
+        const first = await analytics();
+        await first.analyticsReady();
+        expect(client.init).not.toHaveBeenCalled();
+
+        localStorage.setItem('ne.consent', 'granted');
+        const second = await analytics();
+        await second.analyticsReady();
+        expect(client.init).toHaveBeenCalledOnce();
+    });
+
     it('loads on "yes" and identifies a user who logged in before', async () => {
         const { setConsent, identifyUser } = await analytics();
         identifyUser({ id: 'user-1', locale: 'de' });

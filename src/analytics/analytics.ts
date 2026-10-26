@@ -78,6 +78,20 @@ export function initAnalytics() {
         void load();
 }
 
+/**
+ * Resolves once PostHog is loaded for a visitor who agreed (at most [timeoutMs]), at once otherwise.
+ * Loaders whose API calls produce server-side events await it, so the very first request of a
+ * deep link already carries the tracing headers that link those events to the visitor.
+ */
+export function analyticsReady(timeoutMs = 1500): Promise<void> {
+    if (readConsent() !== 'granted' || !analyticsEnabled)
+        return Promise.resolve();
+    return Promise.race([
+        load(),
+        new Promise<void>(resolve => setTimeout(resolve, timeoutMs)),
+    ]);
+}
+
 export function onConsentDecided(listener: (granted: boolean) => void) {
     decisionListeners.add(listener);
     return () => {
