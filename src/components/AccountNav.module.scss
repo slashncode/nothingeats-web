@@ -1,0 +1,27 @@
+.nav {
+    display: flex;
+    gap: var(--spacing-1);
+    justify-self: start;
+    padding: var(--spacing-1);
+    background: var(--muted);
+    border-radius: var(--radius-full);
+}
+
+.link {
+    padding: var(--spacing-1) var(--spacing-4);
+    font-weight: var(--font-weight-medium);
+    color: var(--muted-foreground);
+    text-decoration: none;
+    outline: none;
+    border-radius: var(--radius-full);
+
+    &[data-hovered] { color: var(--foreground); }
+
+    &[data-focus-visible] { box-shadow: 0 0 0 2px var(--ring); }
+}
+
+.current {
+    color: var(--foreground);
+    background: var(--card);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 8%);
+}

@@ -54,11 +54,12 @@ export function useAddToCart() {
         );
     }
 
-    async function add(dish: DishSummary, restaurantSlug: string, source: 'menu' | 'search') {
+    async function add(dish: DishSummary, restaurantSlug: string, source: 'menu' | 'search' | 'deals') {
         capture('dish_add_clicked', {
             dish_id: dish.id,
             restaurant_slug: restaurantSlug,
-            price_cents: dish.priceCents,
+            price_cents: dish.deal?.priceCents ?? dish.priceCents,
+            on_deal: Boolean(dish.deal),
             source,
         });
         if (state.status !== 'authenticated') {

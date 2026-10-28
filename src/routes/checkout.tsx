@@ -1,6 +1,7 @@
 import type { MapPoint } from '@slashncode/nothingeats-ui';
+import type { Coupon } from '../api/loyalty';
 import type { Cart, DropOff } from '../api/ordering';
-import { Button, DeliveryMap, Link, Radio, RadioGroup, TextField } from '@slashncode/nothingeats-ui';
+import { Button, CouponCard, DeliveryMap, Link, PriceTag, Radio, RadioGroup, TextField, useCouponText } from '@slashncode/nothingeats-ui';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { createFileRoute, Navigate, useNavigate } from '@tanstack/react-router';
 import { Minus, Plus } from 'lucide-react';
@@ -10,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 import { capture } from '../analytics/analytics';
 import { ApiError } from '../api/http';
+import { loyaltyQueries } from '../api/loyalty';
 import { ordering, orderingKeys, orderingQueries } from '../api/ordering';
 import { useSession } from '../auth/session';
 import { useCart } from '../components/cart';
@@ -60,8 +62,30 @@ const ORDER_ERRORS: Record<string, string> = {
     CART_MINIMUM_NOT_REACHED: 'checkout.errors.minimum',
     CART_RESTAURANT_CLOSED: 'checkout.errors.closed',
     CART_DISH_UNAVAILABLE: 'checkout.errors.unavailable',
+    CART_COUPON_NOT_APPLICABLE: 'checkout.errors.coupon',
     DELIVERY_OUT_OF_RANGE: 'checkout.errors.outOfRange',
+    COUPON_IN_USE: 'checkout.coupon.problems.COUPON_IN_USE',
+    COUPON_USED: 'checkout.coupon.problems.COUPON_USED',
+    COUPON_EXPIRED: 'checkout.coupon.problems.COUPON_EXPIRED',
+    COUPON_UNAVAILABLE: 'checkout.coupon.problems.COUPON_UNAVAILABLE',
 };
+
+/** Loyalty's reasons a coupon does not apply, as the customer should read them. */
+const COUPON_PROBLEMS = new Set([
+    'COUPON_NOT_FOUND',
+    'COUPON_USED',
+    'COUPON_EXPIRED',
+    'COUPON_IN_USE',
+    'COUPON_OTHER_RESTAURANT',
+    'COUPON_MINIMUM_NOT_REACHED',
+    'COUPON_UNAVAILABLE',
+]);
+
+function couponProblem(code: string | null | undefined): string {
+    return `checkout.coupon.problems.${code && COUPON_PROBLEMS.has(code)
+        ? code
+        : 'generic'}`;
+}
 
 function Checkout() {
     const { t } = useTranslation();
@@ -192,7 +216,15 @@ function CheckoutForm({ cart }: { cart: Cart }) {
                                         <Plus aria-hidden size={16} />
                                     </Button>
                                 </span>
-                                <span className={styles.price}>{money.format(line.totalCents / 100)}</span>
+                                <span className={styles.price}>
+                                    <PriceTag
+                                        cents={line.totalCents}
+                                        previousCents={line.regularUnitPriceCents
+                                            ? line.regularUnitPriceCents * line.quantity
+                                            : undefined}
+                                        size="sm"
+                                    />
+                                </span>
                             </li>
                         ))}
                     </ul>
@@ -201,12 +233,21 @@ function CheckoutForm({ cart }: { cart: Cart }) {
                         <dd>{money.format(cart.subtotalCents / 100)}</dd>
                         <dt>{t('checkout.deliveryFee')}</dt>
                         <dd>{money.format(cart.deliveryFeeCents / 100)}</dd>
+                        {cart.discountCents > 0 && (
+                            <>
+                                <dt>{t('checkout.discount', { code: cart.coupon?.code })}</dt>
+                                <dd>{money.format(-cart.discountCents / 100)}</dd>
+                            </>
+                        )}
                         <dt className={styles.total}>{t('checkout.notSpent')}</dt>
                         <dd className={styles.total}>{money.format(cart.totalCents / 100)}</dd>
                         <dt>{t('checkout.calories')}</dt>
                         <dd>{t('checkout.kcal', { calories: cart.calories })}</dd>
                     </dl>
-                    {cart.problems.map(problem => <p key={problem} role="alert" className={styles.problem}>{t(`checkout.problems.${problem}`)}</p>)}
+                    {cart.problems
+                        .filter(problem => problem !== 'COUPON_NOT_APPLICABLE')
+                        .map(problem => <p key={problem} role="alert" className={styles.problem}>{t(`checkout.problems.${problem}`)}</p>)}
+                    <CouponPicker cart={cart} />
                 </section>
 
                 <section aria-labelledby="drop-off-heading" className={styles.panel}>
@@ -264,5 +305,95 @@ function CheckoutForm({ cart }: { cart: Cart }) {
                 </section>
             </div>
         </Page>
+    );
+}
+
+/** The cart's coupon: the applied one with its discount (or why it does not apply), else the customer's usable ones. */
+function CouponPicker({ cart }: { cart: Cart }) {
+    const { t } = useTranslation();
+    const queryClient = useQueryClient();
+    const couponText = useCouponText();
+    const money = useNumberFormatter({ style: 'currency', currency: 'EUR' });
+    const language = currentLanguage();
+    const coupons = useQuery(loyaltyQueries.coupons());
+    const [busy, setBusy] = useState<string>();
+    const [error, setError] = useState<string>();
+
+    async function change(update: () => Promise<Cart>, code: string) {
+        setBusy(code);
+        setError(undefined);
+        try {
+            queryClient.setQueryData(orderingQueries.cart(language).queryKey, await update());
+        }
+        catch (failure) {
+            setError(couponProblem(failure instanceof ApiError
+                ? failure.code
+                : undefined));
+        }
+        finally {
+            setBusy(undefined);
+        }
+    }
+
+    function apply(coupon: Coupon) {
+        capture('coupon_apply_clicked', { kind: coupon.kind });
+        void change(() => ordering.applyCoupon(coupon.code, language), coupon.code);
+    }
+
+    const applied = cart.coupon;
+    const usable = (coupons.data ?? []).filter(coupon => !coupon.restaurant || coupon.restaurant.slug === cart.restaurant?.slug);
+    if (!applied && usable.length === 0)
+        return null;
+    return (
+        <section aria-labelledby="coupon-heading" className={styles.coupons}>
+            <h3 id="coupon-heading" className={styles.couponTitle}>{t('checkout.coupon.title')}</h3>
+            {applied
+                ? (
+                        <div className={styles.applied}>
+                            <p>
+                                {applied.kind
+                                    ? t('checkout.coupon.applied', {
+                                            coupon: couponText.title({ kind: applied.kind, value: applied.value, maxDiscountCents: applied.maxDiscountCents }),
+                                            code: applied.code,
+                                        })
+                                    : applied.code}
+                                {!applied.problem && ` (${money.format(-applied.discountCents / 100)})`}
+                            </p>
+                            {applied.problem && <p role="alert" className={styles.problem}>{t(couponProblem(applied.problem))}</p>}
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                isPending={busy === applied.code}
+                                onPress={() => void change(() => ordering.removeCoupon(language), applied.code)}
+                            >
+                                {t('checkout.coupon.remove')}
+                            </Button>
+                        </div>
+                    )
+                : (
+                        <ul className={styles.couponList}>
+                            {usable.map(coupon => (
+                                <li key={coupon.code}>
+                                    <CouponCard
+                                        coupon={coupon}
+                                        headingLevel={4}
+                                        action={(
+                                            <Button
+                                                size="sm"
+                                                variant="secondary"
+                                                isPending={busy === coupon.code}
+                                                aria-label={t('checkout.coupon.applyLabel', { code: coupon.code })}
+                                                onPress={() => apply(coupon)}
+                                            >
+                                                {t('checkout.coupon.apply')}
+                                            </Button>
+                                        )}
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+            {error && <p role="alert" className={styles.problem}>{t(error)}</p>}
+        </section>
     );
 }

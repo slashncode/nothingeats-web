@@ -1,11 +1,12 @@
 import type { Key } from 'react-aria-components';
-import { Button, RestaurantCard, Tag, TagGroup, useCatalogLabels } from '@slashncode/nothingeats-ui';
+import { Button, DishCard, RestaurantCard, Tag, TagGroup, useCatalogLabels } from '@slashncode/nothingeats-ui';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 
 import { capture } from '../analytics/analytics';
 import { catalogQueries } from '../api/catalog';
+import { useAddToCart } from '../components/cart';
 import { Page } from '../components/Page';
 import { SiteSearch } from '../components/SiteSearch';
 import { currentLanguage } from '../i18n';
@@ -35,6 +36,8 @@ function Home() {
     const language = currentLanguage();
     const overview = useQuery(catalogQueries.overview(language));
     const restaurants = useInfiniteQuery(catalogQueries.restaurants(language, cuisine));
+    const deals = useQuery(catalogQueries.deals(language));
+    const { add: addDish, dialog: cartDialog } = useAddToCart();
 
     function selectCuisine(keys: 'all' | Set<Key>) {
         const key = keys === 'all'
@@ -57,6 +60,26 @@ function Home() {
                 {overview.data && <p className={styles.lead}>{t('home.lead', { count: overview.data.count })}</p>}
                 <SiteSearch className={styles.search} />
             </section>
+
+            {deals.data && deals.data.length > 0 && (
+                <section aria-labelledby="deals" className={styles.deals}>
+                    <div>
+                        <h2 id="deals" className={styles.dealsTitle}>{t('home.deals')}</h2>
+                        <p className={styles.dealsLead}>{t('home.dealsLead')}</p>
+                    </div>
+                    <ul className={styles.dealGrid}>
+                        {deals.data.map(offer => (
+                            <li key={offer.dish.id}>
+                                <DishCard
+                                    dish={offer.dish}
+                                    restaurant={{ name: offer.restaurant.name, href: `/restaurants/${offer.restaurant.slug}` }}
+                                    onAdd={dish => void addDish(dish, offer.restaurant.slug, 'deals')}
+                                />
+                            </li>
+                        ))}
+                    </ul>
+                </section>
+            )}
 
             {overview.data && (
                 <TagGroup
@@ -90,6 +113,7 @@ function Home() {
                     {t('home.loadMore')}
                 </Button>
             )}
+            {cartDialog}
         </Page>
     );
 }

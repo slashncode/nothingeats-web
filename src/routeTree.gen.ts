@@ -20,6 +20,8 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as VerifyRouteImport } from './routes/verify'
+import { Route as AccountIndexRouteImport } from './routes/account.index'
+import { Route as AccountRewardsRouteImport } from './routes/account.rewards'
 import { Route as OrdersIndexRouteImport } from './routes/orders/index'
 import { Route as OrdersOrderIdRouteImport } from './routes/orders/$orderId'
 import { Route as RestaurantsSlugRouteImport } from './routes/restaurants/$slug'
@@ -79,6 +81,16 @@ const VerifyRoute = VerifyRouteImport.update({
   path: '/verify',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountIndexRoute = AccountIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AccountRoute,
+} as any)
+const AccountRewardsRoute = AccountRewardsRouteImport.update({
+  id: '/rewards',
+  path: '/rewards',
+  getParentRoute: () => AccountRoute,
+} as any)
 const OrdersIndexRoute = OrdersIndexRouteImport.update({
   id: '/orders/',
   path: '/orders/',
@@ -97,7 +109,7 @@ const RestaurantsSlugRoute = RestaurantsSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/account': typeof AccountRoute
+  '/account': typeof AccountRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
@@ -107,13 +119,14 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
+  '/account/rewards': typeof AccountRewardsRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
+  '/account/': typeof AccountIndexRoute
   '/orders/': typeof OrdersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/account': typeof AccountRoute
   '/checkout': typeof CheckoutRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
@@ -123,14 +136,16 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
+  '/account/rewards': typeof AccountRewardsRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
+  '/account': typeof AccountIndexRoute
   '/orders': typeof OrdersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/account': typeof AccountRoute
+  '/account': typeof AccountRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
@@ -140,8 +155,10 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
+  '/account/rewards': typeof AccountRewardsRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
+  '/account/': typeof AccountIndexRoute
   '/orders/': typeof OrdersIndexRoute
 }
 export interface FileRouteTypes {
@@ -158,13 +175,14 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/search'
     | '/verify'
+    | '/account/rewards'
     | '/orders/$orderId'
     | '/restaurants/$slug'
+    | '/account/'
     | '/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/account'
     | '/checkout'
     | '/forgot-password'
     | '/login'
@@ -174,8 +192,10 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/search'
     | '/verify'
+    | '/account/rewards'
     | '/orders/$orderId'
     | '/restaurants/$slug'
+    | '/account'
     | '/orders'
   id:
     | '__root__'
@@ -190,14 +210,16 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/search'
     | '/verify'
+    | '/account/rewards'
     | '/orders/$orderId'
     | '/restaurants/$slug'
+    | '/account/'
     | '/orders/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AccountRoute: typeof AccountRoute
+  AccountRoute: typeof AccountRouteWithChildren
   CheckoutRoute: typeof CheckoutRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
@@ -291,6 +313,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account/': {
+      id: '/account/'
+      path: '/'
+      fullPath: '/account/'
+      preLoaderRoute: typeof AccountIndexRouteImport
+      parentRoute: typeof AccountRoute
+    }
+    '/account/rewards': {
+      id: '/account/rewards'
+      path: '/rewards'
+      fullPath: '/account/rewards'
+      preLoaderRoute: typeof AccountRewardsRouteImport
+      parentRoute: typeof AccountRoute
+    }
     '/orders/': {
       id: '/orders/'
       path: '/orders'
@@ -315,9 +351,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AccountRouteChildren {
+  AccountRewardsRoute: typeof AccountRewardsRoute
+  AccountIndexRoute: typeof AccountIndexRoute
+}
+
+const AccountRouteChildren: AccountRouteChildren = {
+  AccountRewardsRoute: AccountRewardsRoute,
+  AccountIndexRoute: AccountIndexRoute,
+}
+
+const AccountRouteWithChildren =
+  AccountRoute._addFileChildren(AccountRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AccountRoute: AccountRoute,
+  AccountRoute: AccountRouteWithChildren,
   CheckoutRoute: CheckoutRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,

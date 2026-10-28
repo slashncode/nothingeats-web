@@ -12,7 +12,7 @@ import { config } from '../config';
 
 export type ProductEvent
     = | { event: 'cuisine_filter_changed'; properties: { cuisine: string } }
-        | { event: 'dish_add_clicked'; properties: { dish_id: string; restaurant_slug: string; price_cents: number; source: 'menu' | 'search' } }
+        | { event: 'dish_add_clicked'; properties: { dish_id: string; restaurant_slug: string; price_cents: number; on_deal: boolean; source: 'menu' | 'search' | 'deals' } }
         | { event: 'language_changed'; properties: { from: Language; to: Language } }
         | { event: 'login_failed'; properties: { code: string } }
         | { event: 'search_filter_changed'; properties: { filter: string; value: string } }
@@ -20,7 +20,10 @@ export type ProductEvent
         | { event: 'cart_replaced'; properties: { restaurant_slug: string } }
         | { event: 'checkout_started'; properties: { item_count: number; total_cents: number } }
         | { event: 'drop_off_selected'; properties: { method: 'preset' | 'map' } }
-        | { event: 'order_tracking_viewed'; properties: { order_id: string; status: string } };
+        | { event: 'order_tracking_viewed'; properties: { order_id: string; status: string } }
+        | { event: 'order_delivered_seen'; properties: { order_id: string } }
+        | { event: 'rewards_viewed'; properties: { level: number; spins_available: number } }
+        | { event: 'coupon_apply_clicked'; properties: { kind: string } };
 
 export type Consent = 'granted' | 'denied' | 'pending';
 

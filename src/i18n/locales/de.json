@@ -35,7 +35,9 @@
         "allCuisines": "Alle",
         "loadMore": "Mehr Restaurants",
         "empty": "Keine Restaurants für diese Küche.",
-        "searchLead": "Oder such direkt nach dem, was du nicht essen willst."
+        "searchLead": "Oder such direkt nach dem, was du nicht essen willst.",
+        "deals": "Blitzdeals",
+        "dealsLead": "Nur kurz günstiger. Nichts davon ist je ausverkauft."
     },
     "restaurant": {
         "menu": "Speisekarte",
@@ -162,7 +164,8 @@
         "problems": {
             "DISH_UNAVAILABLE": "Ein Gericht ist gerade nicht verfügbar. Nimm es aus dem Warenkorb.",
             "MINIMUM_NOT_REACHED": "Der Mindestbestellwert ist noch nicht erreicht.",
-            "RESTAURANT_CLOSED": "Das Restaurant hat gerade geschlossen."
+            "RESTAURANT_CLOSED": "Das Restaurant hat gerade geschlossen.",
+            "COUPON_NOT_APPLICABLE": "Der Gutschein passt nicht zum Warenkorb."
         },
         "dropOff": "Lieferadresse",
         "where": "Wohin soll nichts kommen?",
@@ -183,7 +186,26 @@
             "closed": "Das Restaurant hat gerade geschlossen.",
             "unavailable": "Ein Gericht ist gerade nicht verfügbar.",
             "outOfRange": "Zu weit weg. Selbst für nichts.",
-            "generic": "Das hat nicht geklappt. Versuch es gleich noch einmal."
+            "generic": "Das hat nicht geklappt. Versuch es gleich noch einmal.",
+            "coupon": "Der Gutschein passt nicht mehr zum Warenkorb. Nimm ihn heraus oder ändere den Warenkorb."
+        },
+        "discount": "Gutschein {code}",
+        "coupon": {
+            "title": "Gutschein",
+            "applied": "{coupon} ({code})",
+            "remove": "Gutschein entfernen",
+            "apply": "Einlösen",
+            "applyLabel": "Gutschein {code} einlösen",
+            "problems": {
+                "COUPON_NOT_FOUND": "Diesen Gutschein gibt es nicht.",
+                "COUPON_USED": "Dieser Gutschein wurde schon eingelöst.",
+                "COUPON_EXPIRED": "Dieser Gutschein ist abgelaufen.",
+                "COUPON_IN_USE": "Dieser Gutschein steckt gerade in einer anderen Bestellung. Versuch es in ein paar Minuten noch mal.",
+                "COUPON_OTHER_RESTAURANT": "Dieser Gutschein gilt bei einem anderen Restaurant.",
+                "COUPON_MINIMUM_NOT_REACHED": "Der Warenkorb ist für diesen Gutschein zu klein.",
+                "COUPON_UNAVAILABLE": "Gutscheine lassen sich gerade nicht prüfen. Nimm ihn heraus oder versuch es gleich noch mal.",
+                "generic": "Der Gutschein ließ sich nicht einlösen."
+            }
         }
     },
     "tracking": {
@@ -200,7 +222,9 @@
         },
         "map": "Karte: Kurier, Restaurant und Lieferadresse",
         "summary": "Bestellt",
-        "saved": "{amount} nicht ausgegeben, {calories} kcal nicht gegessen."
+        "saved": "{amount} nicht ausgegeben, {calories} kcal nicht gegessen.",
+        "discount": "Gutschein {code}",
+        "rewards": "Sieh nach, was du dir verdient hast"
     },
     "orders": {
         "title": "Deine Bestellungen",
@@ -215,5 +239,44 @@
             "DELIVERED": "Nichts ist da"
         },
         "more": "Ältere Bestellungen"
+    },
+    "account": {
+        "nav": {
+            "label": "Konto",
+            "settings": "Konto & Daten",
+            "rewards": "Belohnungen"
+        }
+    },
+    "rewards": {
+        "title": "Deine Belohnungen",
+        "progress": "Dein Fortschritt",
+        "stats": {
+            "notSpent": "Nicht ausgegeben",
+            "notEaten": "Nicht gegessen",
+            "kcal": "{calories} kcal",
+            "orders": "Bestellungen",
+            "restaurants": "Restaurants"
+        },
+        "wheel": "Glücksrad",
+        "spins": "{count, plural, one {Du hast einen Dreh.} other {Du hast # Drehs.}} Jedes Level bringt einen.",
+        "noSpins": "Der nächste Dreh kommt mit Level {level}.",
+        "spin": "Drehen",
+        "spinFailed": "Das Rad klemmt gerade. Versuch es gleich noch mal.",
+        "won": "Gewonnen: {prize}",
+        "bonusXp": "{xp} Bonus-XP",
+        "useCoupon": "Gutschein im Warenkorb einlösen",
+        "coupons": "Deine Gutscheine",
+        "noCoupons": "Noch keine. Volle Stempelkarten und das Glücksrad bringen welche.",
+        "stampCards": "Stempelkarten",
+        "noStamps": "Jede Lieferung bringt einen Stempel beim Restaurant. Fünf Stempel: ein Gericht gratis.",
+        "badges": "Abzeichen ({earned} von {total})",
+        "toast": {
+            "xp": "+{xp} XP für dein Nichts",
+            "level": "Level {level} erreicht, ein Dreh am Glücksrad wartet",
+            "badge": "Neues Abzeichen: {badge}",
+            "stamp": "Stempel bei {restaurant} ({stamps}/{perCard})",
+            "cardFull": "Stempelkarte bei {restaurant} voll",
+            "coupon": "Gutschein: {coupon}"
+        }
     }
 }

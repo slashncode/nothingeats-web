@@ -1,5 +1,5 @@
 import type { MapPoint, OrderStep } from '@slashncode/nothingeats-ui';
-import { DeliveryMap, Link, OrderTimeline } from '@slashncode/nothingeats-ui';
+import { DeliveryMap, Link, OrderTimeline, PriceTag } from '@slashncode/nothingeats-ui';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute, Navigate } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
@@ -55,6 +55,7 @@ function OrderTracking() {
     });
     const [courier, setCourier] = useState<MapPoint>();
     const viewed = useRef(false);
+    const deliveredSeen = useRef(false);
 
     useLiveEvent('courier.moved', (data) => {
         if (data.orderId === orderId && typeof data.latitude === 'number' && typeof data.longitude === 'number')
@@ -65,6 +66,14 @@ function OrderTracking() {
         if (order.data && !viewed.current) {
             viewed.current = true;
             capture('order_tracking_viewed', { order_id: order.data.id, status: order.data.status });
+        }
+    }, [order.data]);
+
+    // The trigger for the post-delivery survey in PostHog: once per page view that sees the arrival.
+    useEffect(() => {
+        if (order.data?.status === 'DELIVERED' && !deliveredSeen.current) {
+            deliveredSeen.current = true;
+            capture('order_delivered_seen', { order_id: order.data.id });
         }
     }, [order.data]);
 
@@ -111,6 +120,11 @@ function OrderTracking() {
                                 })
                             : t('tracking.anyMoment')}
                 </p>
+                {data.status === 'DELIVERED' && (
+                    <p className={styles.courier}>
+                        <Link href="/account/rewards">{t('tracking.rewards')}</Link>
+                    </p>
+                )}
                 {delivery.data && data.status !== 'DELIVERED' && (
                     <p className={styles.courier}>{t(`tracking.vehicle.${delivery.data.courier.vehicle}`, { name: delivery.data.courier.name })}</p>
                 )}
@@ -135,9 +149,21 @@ function OrderTracking() {
                     {data.lines.map(line => (
                         <li key={line.dishId}>
                             <span>{`${line.quantity} × ${line.name}`}</span>
-                            <span>{money.format(line.totalCents / 100)}</span>
+                            <PriceTag
+                                cents={line.totalCents}
+                                previousCents={line.regularUnitPriceCents
+                                    ? line.regularUnitPriceCents * line.quantity
+                                    : undefined}
+                                size="sm"
+                            />
                         </li>
                     ))}
+                    {data.discountCents > 0 && (
+                        <li>
+                            <span>{t('tracking.discount', { code: data.couponCode })}</span>
+                            <span>{money.format(-data.discountCents / 100)}</span>
+                        </li>
+                    )}
                 </ul>
                 <p>
                     {t('tracking.saved', {

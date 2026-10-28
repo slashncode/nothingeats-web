@@ -12,9 +12,23 @@ export interface CartLine {
     quantity: number;
     totalCents: number;
     available: boolean;
+    /** The menu price while a flash deal makes the dish cheaper. */
+    regularUnitPriceCents?: number | null;
+    deal?: { percentOff: number; endsAt: string } | null;
 }
 
-export type CartProblem = 'DISH_UNAVAILABLE' | 'MINIMUM_NOT_REACHED' | 'RESTAURANT_CLOSED';
+export type CartProblem = 'DISH_UNAVAILABLE' | 'MINIMUM_NOT_REACHED' | 'RESTAURANT_CLOSED' | 'COUPON_NOT_APPLICABLE';
+
+export interface CartCoupon {
+    code: string;
+    /** Null when the coupon could not be priced. */
+    kind?: string | null;
+    value: number;
+    maxDiscountCents?: number | null;
+    discountCents: number;
+    /** Why it does not apply (`COUPON_MINIMUM_NOT_REACHED`, `COUPON_UNAVAILABLE`, …). */
+    problem?: string | null;
+}
 
 export interface Cart {
     restaurant: {
@@ -30,8 +44,10 @@ export interface Cart {
     itemCount: number;
     subtotalCents: number;
     deliveryFeeCents: number;
+    discountCents: number;
     totalCents: number;
     calories: number;
+    coupon?: CartCoupon | null;
     problems: CartProblem[];
     orderable: boolean;
 }
@@ -60,9 +76,18 @@ export interface Order {
     statusChangedAt: string;
     estimatedArrivalAt: string;
     restaurant: { slug: string; name: string; latitude: number; longitude: number };
-    lines: { dishId: string; name: string; quantity: number; unitPriceCents: number; totalCents: number }[];
+    lines: {
+        dishId: string;
+        name: string;
+        quantity: number;
+        unitPriceCents: number;
+        totalCents: number;
+        regularUnitPriceCents?: number | null;
+    }[];
     subtotalCents: number;
     deliveryFeeCents: number;
+    discountCents: number;
+    couponCode?: string | null;
     totalCents: number;
     calories: number;
     dropOff: { latitude: number; longitude: number; label: string | null };
@@ -116,6 +141,22 @@ export const ordering = {
             auth: true,
             query: { lang: language },
             body: { quantity, replaceCart },
+        }),
+
+    /** Loyalty prices the coupon; refused ones come back as an ApiError with loyalty's code. */
+    applyCoupon: (code: string, language: Language) =>
+        request<Cart>('/api/ordering/v1/cart/coupon', {
+            method: 'PUT',
+            auth: true,
+            query: { lang: language },
+            body: { code },
+        }),
+
+    removeCoupon: (language: Language) =>
+        request<Cart>('/api/ordering/v1/cart/coupon', {
+            method: 'DELETE',
+            auth: true,
+            query: { lang: language },
         }),
 
     quote: (dropOff: DropOff, signal?: AbortSignal) =>

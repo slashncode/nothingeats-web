@@ -35,7 +35,9 @@
         "allCuisines": "All",
         "loadMore": "More restaurants",
         "empty": "No restaurants for this cuisine.",
-        "searchLead": "Or search straight for what you won't eat."
+        "searchLead": "Or search straight for what you won't eat.",
+        "deals": "Flash deals",
+        "dealsLead": "Cheaper for a little while. None of it ever sells out."
     },
     "restaurant": {
         "menu": "Menu",
@@ -162,7 +164,8 @@
         "problems": {
             "DISH_UNAVAILABLE": "A dish is not available right now. Take it out of the cart.",
             "MINIMUM_NOT_REACHED": "The minimum order is not reached yet.",
-            "RESTAURANT_CLOSED": "The restaurant is closed right now."
+            "RESTAURANT_CLOSED": "The restaurant is closed right now.",
+            "COUPON_NOT_APPLICABLE": "The coupon does not fit the cart."
         },
         "dropOff": "Drop-off",
         "where": "Where should nothing arrive?",
@@ -183,7 +186,26 @@
             "closed": "The restaurant is closed right now.",
             "unavailable": "A dish is not available right now.",
             "outOfRange": "Too far away. Even for nothing.",
-            "generic": "That didn't work. Please try again in a moment."
+            "generic": "That didn't work. Please try again in a moment.",
+            "coupon": "The coupon no longer fits the cart. Remove it or change the cart."
+        },
+        "discount": "Coupon {code}",
+        "coupon": {
+            "title": "Coupon",
+            "applied": "{coupon} ({code})",
+            "remove": "Remove coupon",
+            "apply": "Apply",
+            "applyLabel": "Apply coupon {code}",
+            "problems": {
+                "COUPON_NOT_FOUND": "There is no such coupon.",
+                "COUPON_USED": "This coupon was used already.",
+                "COUPON_EXPIRED": "This coupon has expired.",
+                "COUPON_IN_USE": "This coupon is held by another checkout right now. Try again in a few minutes.",
+                "COUPON_OTHER_RESTAURANT": "This coupon is for another restaurant.",
+                "COUPON_MINIMUM_NOT_REACHED": "The cart is too small for this coupon.",
+                "COUPON_UNAVAILABLE": "Coupons cannot be checked right now. Remove it or try again in a moment.",
+                "generic": "The coupon could not be applied."
+            }
         }
     },
     "tracking": {
@@ -200,7 +222,9 @@
         },
         "map": "Map: courier, restaurant and drop-off",
         "summary": "Ordered",
-        "saved": "{amount} not spent, {calories} kcal not eaten."
+        "saved": "{amount} not spent, {calories} kcal not eaten.",
+        "discount": "Coupon {code}",
+        "rewards": "See what you earned"
     },
     "orders": {
         "title": "Your orders",
@@ -215,5 +239,44 @@
             "DELIVERED": "Nothing has arrived"
         },
         "more": "Older orders"
+    },
+    "account": {
+        "nav": {
+            "label": "Account",
+            "settings": "Account & data",
+            "rewards": "Rewards"
+        }
+    },
+    "rewards": {
+        "title": "Your rewards",
+        "progress": "Your progress",
+        "stats": {
+            "notSpent": "Not spent",
+            "notEaten": "Not eaten",
+            "kcal": "{calories} kcal",
+            "orders": "Orders",
+            "restaurants": "Restaurants"
+        },
+        "wheel": "Wheel of fortune",
+        "spins": "{count, plural, one {You have one spin.} other {You have # spins.}} Every level brings one.",
+        "noSpins": "The next spin comes with level {level}.",
+        "spin": "Spin",
+        "spinFailed": "The wheel is stuck right now. Try again in a moment.",
+        "won": "You won: {prize}",
+        "bonusXp": "{xp} bonus XP",
+        "useCoupon": "Use the coupon in your cart",
+        "coupons": "Your coupons",
+        "noCoupons": "None yet. Full stamp cards and the wheel bring some.",
+        "stampCards": "Stamp cards",
+        "noStamps": "Every delivery brings a stamp at its restaurant. Five stamps: one dish free.",
+        "badges": "Badges ({earned} of {total})",
+        "toast": {
+            "xp": "+{xp} XP for your nothing",
+            "level": "Level {level} reached, a spin of the wheel awaits",
+            "badge": "New badge: {badge}",
+            "stamp": "Stamp at {restaurant} ({stamps}/{perCard})",
+            "cardFull": "Stamp card at {restaurant} full",
+            "coupon": "Coupon: {coupon}"
+        }
     }
 }

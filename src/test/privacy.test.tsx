@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { session } from './fixtures';
 import { renderApp } from './render';
@@ -81,5 +81,37 @@ describe('privacy', () => {
         expect(await screen.findByText('Dein Konto ist gelöscht. Danke fürs Nichtessen.')).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Anmelden' })).toBeInTheDocument();
         expect(router.state.location.pathname).toBe('/');
+    });
+
+    it('downloads what identity, ordering and loyalty hold, in one file', async () => {
+        loggedIn();
+        const asked: string[] = [];
+        server.use(
+            http.get('/api/identity/v1/me/export', () => {
+                asked.push('identity');
+                return HttpResponse.json({ email: session.user.email });
+            }),
+            http.get('/api/ordering/v1/me/export', () => {
+                asked.push('ordering');
+                return HttpResponse.json([]);
+            }),
+            http.get('/api/loyalty/v1/me/export', () => {
+                asked.push('loyalty');
+                return HttpResponse.json({ member: null });
+            }),
+        );
+        const files: Blob[] = [];
+        URL.createObjectURL = vi.fn((blob: Blob) => {
+            files.push(blob);
+            return 'blob:export';
+        });
+        URL.revokeObjectURL = vi.fn();
+        const { user } = renderApp('/account');
+
+        await user.click(await screen.findByRole('button', { name: 'Daten herunterladen' }));
+
+        await expect.poll(() => files.length).toBe(1);
+        expect(asked.sort()).toEqual(['identity', 'loyalty', 'ordering']);
+        expect(Object.keys(JSON.parse(await files[0]!.text()) as object)).toEqual(['account', 'orders', 'rewards']);
     });
 });

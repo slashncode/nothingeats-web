@@ -11,6 +11,12 @@ export interface RestaurantPage {
     nextCursor: string | null;
 }
 
+export interface DealOffer {
+    dish: DishSummary;
+    restaurant: { slug: string; name: string; cuisine: string };
+    startsAt: string;
+}
+
 export interface Menu {
     restaurant: RestaurantSummary;
     sections: { name: string; dishes: DishSummary[] }[];
@@ -55,6 +61,16 @@ export const catalogQueries = {
             };
         },
         staleTime: 5 * 60_000,
+    }),
+
+    /** Running flash deals; refreshed every minute, a new one starts when one ends. */
+    deals: (language: Language) => queryOptions({
+        queryKey: ['catalog', 'deals', language],
+        queryFn: ({ signal }) => request<{ items: DealOffer[] }>('/api/catalog/v1/deals', {
+            query: { lang: language },
+            signal,
+        }).then(page => page.items),
+        refetchInterval: 60_000,
     }),
 
     menu: (language: Language, slug: string) => queryOptions({

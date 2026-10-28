@@ -40,6 +40,7 @@ function cartWith(quantity: number): Cart {
         deliveryFeeCents: quantity > 0
             ? 199
             : 0,
+        discountCents: 0,
         totalCents: quantity > 0
             ? subtotal + 199
             : 0,
@@ -112,6 +113,7 @@ function orderingWorld() {
                 })),
                 subtotalCents: cart.subtotalCents,
                 deliveryFeeCents: cart.deliveryFeeCents,
+                discountCents: 0,
                 totalCents: cart.totalCents,
                 calories: cart.calories,
                 dropOff: { latitude: 53.5636, longitude: 9.9654, label: 'Sternschanze' },
@@ -265,6 +267,7 @@ describe('ordering nothing', () => {
             lines: [],
             subtotalCents: 2180,
             deliveryFeeCents: 199,
+            discountCents: 0,
             totalCents: 2379,
             calories: 1640,
             dropOff: { latitude: 53.56, longitude: 9.96, label: null },

@@ -34,3 +34,26 @@
 }
 
 .more { justify-self: center; }
+
+.deals {
+    display: grid;
+    gap: var(--spacing-4);
+}
+
+.dealsTitle { margin: 0; }
+
+.dealsLead {
+    margin: var(--spacing-1) 0 0;
+    color: var(--muted-foreground);
+}
+
+.dealGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: var(--spacing-4);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    > li { display: grid; }
+}

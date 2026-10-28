@@ -1,0 +1,105 @@
+.title { margin: 0; }
+
+.summary {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: var(--spacing-6);
+    align-items: center;
+    padding: var(--spacing-6);
+    background: var(--card);
+    border: var(--border-width-1) solid var(--border);
+    border-radius: var(--radius);
+
+    @media (width < 48rem) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.xp { min-width: 0; }
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-column: 1 / -1;
+    gap: var(--spacing-4);
+    margin: 0;
+
+    @media (width < 48rem) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    dt {
+        font-size: var(--font-size-sm);
+        color: var(--muted-foreground);
+    }
+
+    dd {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-semibold);
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+.wheel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+    gap: var(--spacing-6);
+    align-items: center;
+    padding: var(--spacing-6);
+    background: var(--secondary);
+    border-radius: var(--radius);
+
+    h2 { margin: 0; }
+
+    @media (width < 48rem) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.wheelText {
+    display: grid;
+    gap: var(--spacing-3);
+    justify-items: start;
+
+    p { margin: 0; }
+}
+
+.wheelGraphic { justify-self: center; }
+
+.announcement {
+    min-height: 1.5em;
+    font-weight: var(--font-weight-semibold);
+}
+
+.section {
+    display: grid;
+    gap: var(--spacing-3);
+
+    h2 { margin: 0; }
+}
+
+.empty {
+    margin: 0;
+    color: var(--muted-foreground);
+}
+
+.list {
+    display: grid;
+    gap: var(--spacing-3);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: var(--spacing-3);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    > li { display: grid; }
+}

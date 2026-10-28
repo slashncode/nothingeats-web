@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { analyticsHeaders } from '../analytics/analytics';
 import { deliveryKeys } from '../api/delivery';
 import { currentAccessToken, refreshAccessToken } from '../api/http';
+import { loyaltyKeys } from '../api/loyalty';
 import { orderingKeys } from '../api/ordering';
 import { useSession } from '../auth/session';
 
@@ -155,6 +156,8 @@ export function LiveStream() {
                 });
                 void queryClient.invalidateQueries({ queryKey: orderingKeys.orders });
             }
+            if (event.type === 'reward.earned')
+                void queryClient.invalidateQueries({ queryKey: loyaltyKeys.all });
         });
         return () => controller.abort();
     }, [signedIn, queryClient]);
