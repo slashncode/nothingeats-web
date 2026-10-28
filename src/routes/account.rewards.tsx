@@ -21,6 +21,7 @@ import { capture } from '../analytics/analytics';
 import { loyalty, loyaltyKeys, loyaltyQueries } from '../api/loyalty';
 import { AccountNav } from '../components/AccountNav';
 import { celebrate } from '../components/celebrate';
+import { Leaderboard } from '../components/Leaderboard';
 import { Page } from '../components/Page';
 import { currentLanguage } from '../i18n';
 import { ErrorState } from './__root';
@@ -97,6 +98,8 @@ function Rewards() {
             </section>
 
             <Wheel spins={rewards.data.spinsAvailable} nextLevel={level.level + 1} />
+
+            <Leaderboard />
 
             <section aria-labelledby="coupons" className={styles.section}>
                 <h2 id="coupons">{t('rewards.coupons')}</h2>

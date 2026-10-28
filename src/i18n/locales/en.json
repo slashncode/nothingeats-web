@@ -278,5 +278,21 @@
             "cardFull": "Stamp card at {restaurant} full",
             "coupon": "Coupon: {coupon}"
         }
+    },
+    "feed": {
+        "title": "Not eaten right now",
+        "order": "Someone did not eat {count, plural, one {# dish} other {# dishes}} from {restaurant} and saved {amount}.",
+        "level": "Someone reached level {level}.",
+        "badge": "Someone earned the “{badge}” badge."
+    },
+    "leaderboard": {
+        "title": "This week's leaderboard",
+        "optIn": "Join under a pseudonym",
+        "optInHint": "Others only see a random pseudonym and your XP this week. XP count from the moment you join.",
+        "you": "You are {pseudonym}: rank {rank} with {xp} XP.",
+        "youNoXp": "You are {pseudonym}. Your next order puts you on the board.",
+        "listLabel": "This week's best",
+        "xp": "{xp} XP",
+        "empty": "Nobody has joined this week yet."
     }
 }

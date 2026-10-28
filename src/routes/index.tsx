@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { capture } from '../analytics/analytics';
 import { catalogQueries } from '../api/catalog';
 import { useAddToCart } from '../components/cart';
+import { LiveFeed } from '../components/LiveFeed';
 import { Page } from '../components/Page';
 import { SiteSearch } from '../components/SiteSearch';
 import { currentLanguage } from '../i18n';
@@ -60,6 +61,8 @@ function Home() {
                 {overview.data && <p className={styles.lead}>{t('home.lead', { count: overview.data.count })}</p>}
                 <SiteSearch className={styles.search} />
             </section>
+
+            <LiveFeed />
 
             {deals.data && deals.data.length > 0 && (
                 <section aria-labelledby="deals" className={styles.deals}>

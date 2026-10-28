@@ -315,3 +315,100 @@ describe('coupons at checkout', () => {
         expect(await screen.findByRole('button', { name: 'Gutschein NE-7KQ3-M9XD einlösen' })).toBeInTheDocument();
     });
 });
+
+describe('social', () => {
+    it('shows what nobody is eating right now, and new lines as they happen', async () => {
+        let push: (event: string, data: object) => void = () => {};
+        server.use(
+            http.get('/api/social/v1/feed', () => HttpResponse.json({
+                items: [
+                    {
+                        id: 'f-1',
+                        kind: 'ORDER',
+                        at: new Date(Date.now() - 120_000).toISOString(),
+                        restaurantName: 'Phantom Pizza',
+                        items: 2,
+                        moneyNotSpentCents: 2379,
+                    },
+                ],
+            })),
+            http.get('/api/social/v1/feed/stream', () => {
+                const encoder = new TextEncoder();
+                return new HttpResponse(new ReadableStream<Uint8Array>({
+                    start(controller) {
+                        push = (event, data) => controller.enqueue(encoder.encode(`event: ${event}\r\ndata: ${JSON.stringify(data)}\r\n\r\n`));
+                        push('ready', {});
+                    },
+                }), {
+                    headers: { 'Content-Type': 'text/event-stream' },
+                });
+            }),
+        );
+        renderApp('/');
+
+        const feed = await screen.findByRole('region', { name: 'Gerade nicht gegessen' });
+        expect(within(feed).getByText(/Jemand hat 2 Gerichte von Phantom Pizza nicht gegessen und 23,79\s€ gespart\./)).toBeInTheDocument();
+        expect(within(feed).getByText('vor 2 Minuten')).toBeInTheDocument();
+
+        await waitFor(() => push('feed.item', {
+            id: 'f-2',
+            kind: 'LEVEL',
+            at: new Date().toISOString(),
+            level: 4,
+        }));
+        expect(await within(feed).findByText('Jemand hat Level 4 erreicht.')).toBeInTheDocument();
+    });
+
+    it('joins the leaderboard only when asked, under a pseudonym', async () => {
+        signedIn();
+        let joined = false;
+        server.use(
+            http.get('/api/loyalty/v1/me', () => HttpResponse.json(rewards)),
+            http.get('/api/social/v1/me', () => HttpResponse.json(joined
+                ? {
+                        onLeaderboard: true,
+                        pseudonym: 'Satter Seehund 42',
+                        week: '2026-W45',
+                        xp: 55,
+                        rank: 2,
+                    }
+                : {
+                        onLeaderboard: false,
+                        pseudonym: null,
+                        week: '2026-W45',
+                        xp: 0,
+                        rank: null,
+                    })),
+            http.put('/api/social/v1/me/leaderboard', async ({ request }) => {
+                joined = (await request.json() as { join: boolean }).join;
+                return HttpResponse.json({
+                    onLeaderboard: true,
+                    pseudonym: 'Satter Seehund 42',
+                    week: '2026-W45',
+                    xp: 55,
+                    rank: 2,
+                });
+            }),
+            http.get('/api/social/v1/leaderboard', () => HttpResponse.json({
+                week: '2026-W45',
+                top: joined
+                    ? [
+                            { rank: 1, pseudonym: 'Kluger Kranich 7', xp: 180 },
+                            { rank: 2, pseudonym: 'Satter Seehund 42', xp: 55 },
+                        ]
+                    : [
+                            { rank: 1, pseudonym: 'Kluger Kranich 7', xp: 180 },
+                        ],
+            })),
+        );
+        const { user } = renderApp('/account/rewards');
+
+        const optIn = await screen.findByRole('switch', { name: 'Mit Pseudonym mitmachen' });
+        expect(optIn).not.toBeChecked();
+        await user.click(optIn);
+
+        expect(await screen.findByText('Du bist Satter Seehund 42: Platz 2 mit 55 XP.')).toBeInTheDocument();
+        const list = await screen.findByRole('list', { name: 'Die Besten dieser Woche' });
+        await waitFor(() => expect(within(list).getAllByRole('listitem')).toHaveLength(2));
+    });
+});

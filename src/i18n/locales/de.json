@@ -278,5 +278,21 @@
             "cardFull": "Stempelkarte bei {restaurant} voll",
             "coupon": "Gutschein: {coupon}"
         }
+    },
+    "feed": {
+        "title": "Gerade nicht gegessen",
+        "order": "Jemand hat {count, plural, one {# Gericht} other {# Gerichte}} von {restaurant} nicht gegessen und {amount} gespart.",
+        "level": "Jemand hat Level {level} erreicht.",
+        "badge": "Jemand hat das Abzeichen „{badge}“ verdient."
+    },
+    "leaderboard": {
+        "title": "Bestenliste dieser Woche",
+        "optIn": "Mit Pseudonym mitmachen",
+        "optInHint": "Andere sehen nur ein zufälliges Pseudonym und deine XP dieser Woche. XP zählen ab dem Mitmachen.",
+        "you": "Du bist {pseudonym}: Platz {rank} mit {xp} XP.",
+        "youNoXp": "Du bist {pseudonym}. Deine nächste Bestellung bringt dich auf die Liste.",
+        "listLabel": "Die Besten dieser Woche",
+        "xp": "{xp} XP",
+        "empty": "Diese Woche hat noch niemand mitgemacht."
     }
 }

@@ -73,6 +73,20 @@ export const handlers = [
     // No flash deals and no coupons unless a test says otherwise.
     http.get('/api/catalog/v1/deals', () => HttpResponse.json({ items: [] })),
     http.get('/api/loyalty/v1/coupons', () => HttpResponse.json({ items: [] })),
+    // An empty feed whose stream says it is ready, then ends; nobody on the board.
+    http.get('/api/social/v1/feed', () => HttpResponse.json({ items: [] })),
+    http.get('/api/social/v1/feed/stream', () =>
+        new HttpResponse('event: ready\r\ndata: {}\r\n\r\n', {
+            headers: { 'Content-Type': 'text/event-stream' },
+        })),
+    http.get('/api/social/v1/leaderboard', () => HttpResponse.json({ week: '2026-W45', top: [] })),
+    http.get('/api/social/v1/me', () => HttpResponse.json({
+        onLeaderboard: false,
+        pseudonym: null,
+        week: '2026-W45',
+        xp: 0,
+        rank: null,
+    })),
     http.get('/api/ordering/v1/me/export', () => HttpResponse.json([])),
     http.get('/api/loyalty/v1/me/export', () => HttpResponse.json({
         member: null,
