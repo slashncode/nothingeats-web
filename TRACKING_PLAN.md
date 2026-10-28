@@ -32,7 +32,7 @@ Product events of the web app, sent to PostHog (EU) **only after consent**. Name
 
 Events the services send through `ktor-posthog`, linked to the browser session by the `X-POSTHOG-DISTINCT-ID` and `X-POSTHOG-SESSION-ID` headers that the web app's fetch layer adds to API requests once PostHog is loaded (the search page waits for that on a deep link): `user_signed_up`, `email_verified`, `user_logged_in` (identity), `email_sent` (notification), `dish_added_to_cart` and `order_placed` (ordering: `money_not_spent_cents`, `calories_avoided`, quote source), `delivery_completed` (delivery), `coupon_applied` (ordering), `xp_earned` (with `loyalty_level`, `loyalty_xp`, `loyalty_streak_days` as person properties), `level_reached`, `badge_earned`, `stamp_card_completed`, `wheel_spun` (loyalty: the wheel's odds are the flag `spin-wheel-odds`), `search_performed` (search: normalised query, language, result count, filters used, page; zero-result searches included, so they show what the catalog is missing).
 
-Server events only go out for people who agreed to analytics: a request carries their distinct id only after "yes", and events between services carry an `analytics` flag (record 035).
+Server events only go out for people who agreed to analytics: a request carries their distinct id only after "yes", and events between services carry an `analytics` flag (record 036).
 
 ## Consent
 
