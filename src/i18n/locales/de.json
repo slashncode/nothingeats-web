@@ -283,7 +283,8 @@
         "title": "Gerade nicht gegessen",
         "order": "Jemand hat {count, plural, one {# Gericht} other {# Gerichte}} von {restaurant} nicht gegessen und {amount} gespart.",
         "level": "Jemand hat Level {level} erreicht.",
-        "badge": "Jemand hat das Abzeichen „{badge}“ verdient."
+        "badge": "Jemand hat das Abzeichen „{badge}“ verdient.",
+        "justNow": "gerade eben"
     },
     "leaderboard": {
         "title": "Bestenliste dieser Woche",

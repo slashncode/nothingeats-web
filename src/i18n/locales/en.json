@@ -283,7 +283,8 @@
         "title": "Not eaten right now",
         "order": "Someone did not eat {count, plural, one {# dish} other {# dishes}} from {restaurant} and saved {amount}.",
         "level": "Someone reached level {level}.",
-        "badge": "Someone earned the “{badge}” badge."
+        "badge": "Someone earned the “{badge}” badge.",
+        "justNow": "just now"
     },
     "leaderboard": {
         "title": "This week's leaderboard",

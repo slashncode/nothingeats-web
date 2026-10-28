@@ -90,6 +90,8 @@ export function LiveFeed() {
 
     function ago(at: string) {
         const minutes = Math.round((Date.parse(at) - Date.now()) / 60_000);
+        if (minutes === 0)
+            return t('feed.justNow');
         return Math.abs(minutes) < 60
             ? relative.format(minutes, 'minute')
             : relative.format(Math.round(minutes / 60), 'hour');
