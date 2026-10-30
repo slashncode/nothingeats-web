@@ -20,8 +20,9 @@ jobs:
     with:
       checkout-ui: true # nothingeats-ui comes from a sibling checkout (file:../nothingeats-ui)
 
+  # main only; a manual run (workflow_dispatch) also ships, e.g. when a push event got lost.
   image:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: pnpm
     uses: slashncode/nothingeats-ci/.github/workflows/pnpm-image.yml@main
     permissions:
