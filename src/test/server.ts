@@ -89,6 +89,7 @@ export const handlers = [
     })),
     http.get('/api/ordering/v1/me/export', () => HttpResponse.json([])),
     http.get('/api/assistant/v1/me/export', () => HttpResponse.json({ conversations: [] })),
+    http.get('/api/assistant/v1/availability', () => HttpResponse.json({ enabled: true })),
     http.get('/api/loyalty/v1/me/export', () => HttpResponse.json({
         member: null,
         badges: [],

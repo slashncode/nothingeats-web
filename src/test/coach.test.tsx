@@ -177,4 +177,21 @@ describe('the craving coach', () => {
 
         expect(await within(dialog).findByRole('alert')).toHaveTextContent('Du hast für den Moment genug gefragt.');
     });
+
+    it('stays hidden for customers the flag leaves out', async () => {
+        let answered = false;
+        server.use(
+            http.post('/api/identity/v1/sessions/refresh', () => HttpResponse.json(session)),
+            http.get('/api/assistant/v1/availability', () => {
+                answered = true;
+                return HttpResponse.json({ enabled: false });
+            }),
+        );
+        renderApp('/');
+
+        expect(await screen.findByRole('link', { name: 'Konto' })).toBeInTheDocument();
+        await waitFor(() => expect(answered).toBe(true));
+        await new Promise(resolve => setTimeout(resolve, 100));
+        expect(screen.queryByRole('button', { name: 'Craving Coach' })).not.toBeInTheDocument();
+    });
 });

@@ -85,9 +85,23 @@ export function CravingCoach() {
     const { state } = useSession();
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
+    const signedIn = state.status === 'authenticated';
+    // The flag's rollout and kill switch; visitors always see the invitation to sign in.
+    const availability = useQuery({
+        queryKey: [
+            'assistant',
+            'availability',
+            signedIn ? state.user.id : null,
+        ],
+        queryFn: assistant.availability,
+        enabled: signedIn,
+        staleTime: 5 * 60_000,
+    });
 
     // At checkout the corner belongs to the pay button.
     if (location.pathname === '/checkout')
+        return null;
+    if (signedIn && availability.data?.enabled !== true)
         return null;
 
     return (
@@ -96,7 +110,7 @@ export function CravingCoach() {
                 className={styles.launcher}
                 onPress={() => {
                     setIsOpen(true);
-                    capture('coach_opened', { signed_in: state.status === 'authenticated' });
+                    capture('coach_opened', { signed_in: signedIn });
                 }}
             >
                 <MessageCircleHeart aria-hidden />

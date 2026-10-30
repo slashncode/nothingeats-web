@@ -73,6 +73,8 @@ export async function coachFetch(input: RequestInfo | URL, init: RequestInit = {
 }
 
 export const assistant = {
+    /** Whether the coach is on for this customer (the `craving-coach` flag, decided by the assistant). */
+    availability: () => request<{ enabled: boolean }>('/api/assistant/v1/availability', { auth: true }),
     conversation: (id: string) => request<Conversation>(`/api/assistant/v1/conversations/${encodeURIComponent(id)}`, { auth: true }),
     exportConversations: () => request<unknown>('/api/assistant/v1/me/export', { auth: true }),
 };
