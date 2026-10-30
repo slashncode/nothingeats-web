@@ -8,7 +8,8 @@ Product events of the web app, sent to PostHog (EU) **only after consent**. Name
 |---|---|
 | `$pageview`, `$pageleave` | posthog-js on every route change (`capture_pageview: 'history_change'`) |
 | `$autocapture` | clicks and form submits; cards carry `data-ph-capture-attribute-dish-id` / `-restaurant-slug` (nothingeats-ui) |
-| `$identify` | after login or session restore, with the account id as distinct id and `locale` as person property |
+| `$identify` | after login or session restore, with the account id as distinct id; person properties `locale` (the account's language, also for mails) and `ui_language` (the language on screen) |
+| `$set` | a logged-in user switches the UI language: `ui_language` (the post-delivery survey targets it) |
 
 ## Custom
 

@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const client = {
     init: vi.fn(),
     identify: vi.fn(),
+    setPersonProperties: vi.fn(),
     capture: vi.fn(),
     opt_in_capturing: vi.fn(),
     opt_out_capturing: vi.fn(),
@@ -70,7 +71,7 @@ describe('consent gate', () => {
         await settle();
 
         expect(client.init).toHaveBeenCalledWith('phc_test', expect.objectContaining({ persistence: 'localStorage+cookie' }));
-        expect(client.identify).toHaveBeenCalledWith('user-1', { locale: 'de' });
+        expect(client.identify).toHaveBeenCalledWith('user-1', expect.objectContaining({ locale: 'de' }));
         expect(localStorage.getItem('ne.consent')).toBe('granted');
     });
 

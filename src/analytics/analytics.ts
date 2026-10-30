@@ -1,8 +1,10 @@
 import type { PostHog } from 'posthog-js';
 import type { Language } from '../i18n';
+import i18next from 'i18next';
 import { useSyncExternalStore } from 'react';
 
 import { config } from '../config';
+import { currentLanguage } from '../i18n';
 
 // PostHog, consent first: the SDK is neither downloaded nor initialised before the visitor agrees.
 // Even an opted-out PostHog loads its remote config and extension scripts from PostHog's servers,
@@ -69,7 +71,7 @@ function load(): Promise<void> {
         if (client.has_opted_out_capturing())
             client.opt_in_capturing();
         if (identified)
-            client.identify(identified.id, { locale: identified.locale });
+            client.identify(identified.id, personProperties(identified));
         posthog = client;
         for (const [event, properties] of pending.splice(0))
             client.capture(event, properties);
@@ -173,12 +175,29 @@ export function capture<E extends ProductEvent>(event: E['event'], properties: E
         pending.push([event, properties]);
 }
 
+/**
+ * `locale` is the account's language (mails use it); `ui_language` is what the header switch shows
+ * right now, so surveys can speak the language on screen.
+ */
+function personProperties(user: { locale: string }) {
+    return {
+        locale: user.locale,
+        ui_language: currentLanguage(),
+    };
+}
+
 /** Links events to the account; remembered until PostHog is loaded after consent. */
 export function identifyUser(user: { id: string; locale: string }) {
     identified = { id: user.id, locale: user.locale };
     if (readConsent() === 'granted')
-        posthog?.identify(user.id, { locale: user.locale });
+        posthog?.identify(user.id, personProperties(identified));
 }
+
+// Only people with a profile: an anonymous visitor's switch would create one (`identified_only`).
+i18next.on('languageChanged', (language) => {
+    if (posthog && identified && readConsent() === 'granted')
+        posthog.setPersonProperties({ ui_language: language });
+});
 
 export function resetAnalytics() {
     identified = undefined;
