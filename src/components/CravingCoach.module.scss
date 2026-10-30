@@ -107,12 +107,15 @@
 }
 
 .composer {
-    display: flex;
-    flex-direction: row;
-    gap: var(--spacing-2);
-    align-items: flex-end;
     padding: var(--spacing-3) var(--spacing-4) var(--spacing-4);
     border-top: var(--border-width-1) solid var(--border);
+}
+
+// Its own row: the form itself stacks its children (soren-ui's Form).
+.composerRow {
+    display: flex;
+    gap: var(--spacing-2);
+    align-items: flex-end;
 }
 
 .input {

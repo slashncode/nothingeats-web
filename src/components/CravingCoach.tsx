@@ -258,16 +258,18 @@ function ChatSession({ id, initial }: { id: string; initial: CoachMessage[] }) {
                     send(text, false);
                 }}
             >
-                <TextField
-                    aria-label={t('coach.inputLabel')}
-                    placeholder={t('coach.placeholder')}
-                    value={text}
-                    onChange={setText}
-                    maxLength={MAX_MESSAGE}
-                    autoComplete="off"
-                    className={styles.input}
-                />
-                <Button type="submit" isDisabled={busy || text.trim() === ''}>{t('coach.send')}</Button>
+                <div className={styles.composerRow}>
+                    <TextField
+                        aria-label={t('coach.inputLabel')}
+                        placeholder={t('coach.placeholder')}
+                        value={text}
+                        onChange={setText}
+                        maxLength={MAX_MESSAGE}
+                        autoComplete="off"
+                        className={styles.input}
+                    />
+                    <Button type="submit" isDisabled={busy || text.trim() === ''}>{t('coach.send')}</Button>
+                </div>
             </Form>
             {cart.dialog}
         </>
