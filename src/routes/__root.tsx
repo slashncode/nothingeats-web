@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useColorScheme } from '../components/colorScheme';
 import { ConsentBanner } from '../components/ConsentBanner';
+import { CravingCoach } from '../components/CravingCoach';
 import { Footer } from '../components/Footer';
 import { Header } from '../components/Header';
 import { Page } from '../components/Page';
@@ -38,6 +39,7 @@ function RootLayout() {
                 <ConsentBanner />
                 <LiveStream />
                 <RewardToasts />
+                <CravingCoach />
                 <ToastRegion position="bottom-left" />
             </I18nProvider>
         </AriaRouterProvider>

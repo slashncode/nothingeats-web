@@ -14,7 +14,7 @@ import { currentLanguage } from '../i18n';
 
 export type ProductEvent
     = | { event: 'cuisine_filter_changed'; properties: { cuisine: string } }
-        | { event: 'dish_add_clicked'; properties: { dish_id: string; restaurant_slug: string; price_cents: number; on_deal: boolean; source: 'menu' | 'search' | 'deals' } }
+        | { event: 'dish_add_clicked'; properties: { dish_id: string; restaurant_slug: string; price_cents: number; on_deal: boolean; source: 'menu' | 'search' | 'deals' | 'coach' } }
         | { event: 'language_changed'; properties: { from: Language; to: Language } }
         | { event: 'login_failed'; properties: { code: string } }
         | { event: 'search_filter_changed'; properties: { filter: string; value: string } }
@@ -25,7 +25,10 @@ export type ProductEvent
         | { event: 'order_tracking_viewed'; properties: { order_id: string; status: string } }
         | { event: 'order_delivered_seen'; properties: { order_id: string } }
         | { event: 'rewards_viewed'; properties: { level: number; spins_available: number } }
-        | { event: 'coupon_apply_clicked'; properties: { kind: string } };
+        | { event: 'coupon_apply_clicked'; properties: { kind: string } }
+        | { event: 'coach_opened'; properties: { signed_in: boolean } }
+        | { event: 'coach_message_sent'; properties: { length: number; suggestion: boolean; turn: number } }
+        | { event: 'coach_conversation_started'; properties: Record<string, never> };
 
 export type Consent = 'granted' | 'denied' | 'pending';
 

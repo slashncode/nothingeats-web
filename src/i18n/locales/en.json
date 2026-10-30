@@ -295,5 +295,33 @@
         "listLabel": "This week's best",
         "xp": "{xp} XP",
         "empty": "Nobody has joined this week yet."
+    },
+    "coach": {
+        "open": "Craving Coach",
+        "title": "Craving Coach",
+        "subtitle": "Tell me what you crave. I'll find something you won't eat.",
+        "close": "Close",
+        "newConversation": "New conversation",
+        "signIn": "Sign in and the Craving Coach will search for you. Every answer costs real computing time, even though the food never comes.",
+        "loading": "Loading the conversation …",
+        "welcome": "What are you craving? Vague is fine: \"something warm\", \"something to share\", \"no nuts\".",
+        "suggestionsLabel": "Suggestions",
+        "suggestions": [
+            "Something warm for a rainy evening",
+            "Vegan and under €12",
+            "Something crispy to share"
+        ],
+        "log": "Conversation with the Craving Coach",
+        "inputLabel": "Your message to the Craving Coach",
+        "placeholder": "What are you craving?",
+        "send": "Send",
+        "searching": "Searching for \"{query}\" …",
+        "searched": "Searched: \"{query}\"",
+        "recommendations": "The Craving Coach's suggestions",
+        "errors": {
+            "busy": "The Craving Coach is swamped right now. Try again in a moment.",
+            "unavailable": "The Craving Coach can't be reached right now. Try again later.",
+            "limit": "You've asked enough for now. More later."
+        }
     }
 }

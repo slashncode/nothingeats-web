@@ -22,9 +22,11 @@
         "test": "vitest run"
     },
     "dependencies": {
+        "@ai-sdk/react": "^4.0.160",
         "@slashncode/nothingeats-ui": "file:../nothingeats-ui",
         "@tanstack/react-query": "^5.104.5",
         "@tanstack/react-router": "^1.170.46",
+        "ai": "^7.0.156",
         "canvas-confetti": "^1.9.4",
         "clsx": "^2.1.1",
         "i18next": "^26.5.10",

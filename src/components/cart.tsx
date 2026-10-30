@@ -54,7 +54,7 @@ export function useAddToCart() {
         );
     }
 
-    async function add(dish: DishSummary, restaurantSlug: string, source: 'menu' | 'search' | 'deals') {
+    async function add(dish: DishSummary, restaurantSlug: string, source: 'menu' | 'search' | 'deals' | 'coach') {
         capture('dish_add_clicked', {
             dish_id: dish.id,
             restaurant_slug: restaurantSlug,

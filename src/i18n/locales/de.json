@@ -295,5 +295,33 @@
         "listLabel": "Die Besten dieser Woche",
         "xp": "{xp} XP",
         "empty": "Diese Woche hat noch niemand mitgemacht."
+    },
+    "coach": {
+        "open": "Craving Coach",
+        "title": "Craving Coach",
+        "subtitle": "Sag mir, worauf du Hunger hast. Ich finde etwas, das du nicht essen wirst.",
+        "close": "Schließen",
+        "newConversation": "Neues Gespräch",
+        "signIn": "Melde dich an, dann sucht der Craving Coach für dich. Jede Antwort kostet echte Rechenzeit, auch wenn das Essen nie kommt.",
+        "loading": "Gespräch wird geladen …",
+        "welcome": "Worauf hast du Hunger? Beschreib es ruhig ungenau: „etwas Warmes“, „was zum Teilen“, „ohne Nüsse“.",
+        "suggestionsLabel": "Vorschläge",
+        "suggestions": [
+            "Etwas Warmes für einen verregneten Abend",
+            "Vegan und unter 12 €",
+            "Was Knuspriges zum Teilen"
+        ],
+        "log": "Gespräch mit dem Craving Coach",
+        "inputLabel": "Deine Nachricht an den Craving Coach",
+        "placeholder": "Worauf hast du Hunger?",
+        "send": "Senden",
+        "searching": "Suche nach „{query}“ …",
+        "searched": "Gesucht: „{query}“",
+        "recommendations": "Vorschläge des Craving Coach",
+        "errors": {
+            "busy": "Der Craving Coach ist gerade überlaufen. Versuch es gleich noch mal.",
+            "unavailable": "Der Craving Coach ist gerade nicht erreichbar. Versuch es später noch mal.",
+            "limit": "Du hast für den Moment genug gefragt. Später geht es weiter."
+        }
     }
 }

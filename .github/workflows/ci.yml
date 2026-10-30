@@ -23,11 +23,13 @@ jobs:
   image:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: pnpm
-    uses: slashncode/nothingeats-ci/.github/workflows/web-image.yml@main
+    uses: slashncode/nothingeats-ci/.github/workflows/pnpm-image.yml@main
     permissions:
       contents: read
       packages: write # push the image to GHCR
       id-token: write # keyless cosign signing
+    with:
+      checkout-ui: true
 
   codeql:
     uses: slashncode/nothingeats-ci/.github/workflows/codeql.yml@main

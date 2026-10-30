@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { analyticsEnabled, setConsent, useConsent } from '../analytics/analytics';
+import { assistant } from '../api/assistant';
 import { identity } from '../api/identity';
 import { loyalty } from '../api/loyalty';
 import { ordering } from '../api/ordering';
@@ -37,12 +38,13 @@ function Account() {
         setExporting(true);
         try {
             // GDPR art. 15/20: what every service holds about the customer, in one file.
-            const [account, orders, rewards] = await Promise.all([
+            const [account, orders, rewards, coach] = await Promise.all([
                 identity.exportAccount(),
                 ordering.exportOrders(),
                 loyalty.exportRewards(),
+                assistant.exportConversations(),
             ]);
-            const data = { account, orders, rewards };
+            const data = { account, orders, rewards, coach };
             const url = URL.createObjectURL(new Blob([
                 JSON.stringify(data, null, 2),
             ], { type: 'application/json' }));

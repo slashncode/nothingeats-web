@@ -83,7 +83,7 @@ describe('privacy', () => {
         expect(router.state.location.pathname).toBe('/');
     });
 
-    it('downloads what identity, ordering and loyalty hold, in one file', async () => {
+    it('downloads what identity, ordering, loyalty and the coach hold, in one file', async () => {
         loggedIn();
         const asked: string[] = [];
         server.use(
@@ -99,6 +99,10 @@ describe('privacy', () => {
                 asked.push('loyalty');
                 return HttpResponse.json({ member: null });
             }),
+            http.get('/api/assistant/v1/me/export', () => {
+                asked.push('assistant');
+                return HttpResponse.json({ conversations: [] });
+            }),
         );
         const files: Blob[] = [];
         URL.createObjectURL = vi.fn((blob: Blob) => {
@@ -111,7 +115,17 @@ describe('privacy', () => {
         await user.click(await screen.findByRole('button', { name: 'Daten herunterladen' }));
 
         await expect.poll(() => files.length).toBe(1);
-        expect(asked.sort()).toEqual(['identity', 'loyalty', 'ordering']);
-        expect(Object.keys(JSON.parse(await files[0]!.text()) as object)).toEqual(['account', 'orders', 'rewards']);
+        expect(asked.sort()).toEqual([
+            'assistant',
+            'identity',
+            'loyalty',
+            'ordering',
+        ]);
+        expect(Object.keys(JSON.parse(await files[0]!.text()) as object)).toEqual([
+            'account',
+            'orders',
+            'rewards',
+            'coach',
+        ]);
     });
 });
