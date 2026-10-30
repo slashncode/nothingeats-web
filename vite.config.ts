@@ -12,6 +12,11 @@ export default defineConfig({
         tanstackRouter({ target: 'react', autoCodeSplitting: true }),
         react(),
     ],
+    optimizeDeps: {
+        // nothingeats-ui imports MapLibre's worker with `?url`, which only Vite's own pipeline
+        // resolves; the dependency pre-bundler cannot. Served as is, its imports still go through it.
+        exclude: ['@slashncode/nothingeats-ui'],
+    },
     server: {
         port: 5173,
         proxy: {
