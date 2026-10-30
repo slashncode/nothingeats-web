@@ -69,6 +69,8 @@ function load(): Promise<void> {
             person_profiles: 'identified_only',
             persistence: 'localStorage+cookie',
             session_recording: { maskAllInputs: true },
+            // Surveys show the translation of the language on screen, not of the browser.
+            override_display_language: currentLanguage(),
         });
         // A consent withdrawn earlier left PostHog's own opt-out behind.
         if (client.has_opted_out_capturing())
@@ -180,7 +182,7 @@ export function capture<E extends ProductEvent>(event: E['event'], properties: E
 
 /**
  * `locale` is the account's language (mails use it); `ui_language` is what the header switch shows
- * right now, so surveys can speak the language on screen.
+ * right now, for analysis by language on screen.
  */
 function personProperties(user: { locale: string }) {
     return {
@@ -196,8 +198,10 @@ export function identifyUser(user: { id: string; locale: string }) {
         posthog?.identify(user.id, personProperties(identified));
 }
 
-// Only people with a profile: an anonymous visitor's switch would create one (`identified_only`).
 i18next.on('languageChanged', (language) => {
+    // Survey translations follow the switch at once, for everyone.
+    posthog?.set_config({ override_display_language: language });
+    // Only people with a profile: an anonymous visitor's switch would create one (`identified_only`).
     if (posthog && identified && readConsent() === 'granted')
         posthog.setPersonProperties({ ui_language: language });
 });

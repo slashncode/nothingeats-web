@@ -9,7 +9,7 @@ Product events of the web app, sent to PostHog (EU) **only after consent**. Name
 | `$pageview`, `$pageleave` | posthog-js on every route change (`capture_pageview: 'history_change'`) |
 | `$autocapture` | clicks and form submits; cards carry `data-ph-capture-attribute-dish-id` / `-restaurant-slug` (nothingeats-ui) |
 | `$identify` | after login or session restore, with the account id as distinct id; person properties `locale` (the account's language, also for mails) and `ui_language` (the language on screen) |
-| `$set` | a logged-in user switches the UI language: `ui_language` (the post-delivery survey targets it) |
+| `$set` | a logged-in user switches the UI language: `ui_language` (analysis by language on screen) |
 
 ## Custom
 
@@ -43,4 +43,5 @@ Server events only go out for people who agreed to analytics: a request carries 
 - Before a decision PostHog is **not loaded**: no SDK download, no remote config, no PostHog headers on API requests, no cookies. (An opted-out PostHog would still fetch its config and extension scripts from PostHog's servers.)
 - "Einverstanden" loads and initialises it (the current page counts as the first `$pageview`) and identifies a user who logged in before. "Lieber nicht" keeps it unloaded; withdrawing later opts out and resets PostHog's stored ids. The footer's privacy settings ask again.
 - No project key configured (local development): never loaded.
+- Surveys show the translation of the language on screen: `override_display_language` follows the header switch (PostHog's order: this override, a person property `language`, the browser language).
 - posthog-js drops events from automated browsers as bots: a headless user agent, `navigator.webdriver`, or "HeadlessChrome" in `navigator.userAgentData.brands`. Browser checks against the real project have to override all three.

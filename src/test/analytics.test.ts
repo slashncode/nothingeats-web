@@ -5,6 +5,7 @@ const client = {
     init: vi.fn(),
     identify: vi.fn(),
     setPersonProperties: vi.fn(),
+    set_config: vi.fn(),
     capture: vi.fn(),
     opt_in_capturing: vi.fn(),
     opt_out_capturing: vi.fn(),

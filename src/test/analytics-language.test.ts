@@ -5,11 +5,12 @@ const client = {
     init: vi.fn(),
     identify: vi.fn(),
     setPersonProperties: vi.fn(),
+    set_config: vi.fn(),
     has_opted_out_capturing: vi.fn(() => false),
 };
 vi.mock('posthog-js', () => ({ default: client }));
 
-it('keeps the UI language on the profile of a logged-in user, not of anonymous visitors', async () => {
+it('shows surveys in the UI language and keeps it on the profile of a logged-in user only', async () => {
     localStorage.setItem('ne.consent', 'granted');
     vi.resetModules();
     window.__NOTHINGEATS__ = { posthogKey: 'phc_test' };
@@ -18,8 +19,12 @@ it('keeps the UI language on the profile of a logged-in user, not of anonymous v
     await i18next.changeLanguage('de');
     await analyticsReady();
 
+    expect(client.init).toHaveBeenCalledWith('phc_test', expect.objectContaining({ override_display_language: 'de' }));
+
     await i18next.changeLanguage('en');
     expect(client.setPersonProperties).not.toHaveBeenCalled();
+    // Surveys switch language for everyone, visitors included.
+    expect(client.set_config).toHaveBeenLastCalledWith({ override_display_language: 'en' });
 
     identifyUser({ id: 'user-1', locale: 'de' });
     expect(client.identify).toHaveBeenCalledWith('user-1', { locale: 'de', ui_language: 'en' });
