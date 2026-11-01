@@ -108,7 +108,8 @@
             "PASSWORD_RESET_TOKEN_INVALID": "Dieser Link ist ungültig, abgelaufen oder schon benutzt worden.",
             "PASSWORD_INVALID": "Das Passwort braucht mindestens 10 Zeichen.",
             "MAGIC_LINK_INVALID": "Dieser Anmeldelink ist ungültig, abgelaufen oder schon benutzt worden.",
-            "PASSWORD_CONFIRMATION_FAILED": "Das Passwort stimmt nicht."
+            "PASSWORD_CONFIRMATION_FAILED": "Das Passwort stimmt nicht.",
+            "ACCOUNT_LOCKED": "Dieses Konto ist gesperrt. Schreib uns, wenn das ein Irrtum ist."
         }
     },
     "consent": {

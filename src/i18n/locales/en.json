@@ -108,7 +108,8 @@
             "PASSWORD_RESET_TOKEN_INVALID": "This link is invalid, has expired or was used already.",
             "PASSWORD_INVALID": "The password needs at least 10 characters.",
             "MAGIC_LINK_INVALID": "This login link is invalid, has expired or was used already.",
-            "PASSWORD_CONFIRMATION_FAILED": "The password is wrong."
+            "PASSWORD_CONFIRMATION_FAILED": "The password is wrong.",
+            "ACCOUNT_LOCKED": "This account is locked. Write to us if that is a mistake."
         }
     },
     "consent": {

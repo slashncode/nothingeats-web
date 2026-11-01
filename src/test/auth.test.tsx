@@ -148,4 +148,21 @@ describe('forgotten passwords', () => {
 
         expect(await screen.findByRole('alert')).toHaveTextContent('Zu viele Versuche. Bitte warte 9 Minuten und versuch es dann noch einmal.');
     });
+
+    it('says when an admin has locked the account', async () => {
+        server.use(http.post('/api/identity/v1/sessions', () => HttpResponse.json(
+            { title: 'This account is locked', status: 403, code: 'ACCOUNT_LOCKED' },
+            {
+                status: 403,
+                headers: { 'Content-Type': 'application/problem+json' },
+            },
+        )));
+        const { user } = renderApp('/login');
+
+        await user.type(await screen.findByRole('textbox', { name: 'E-Mail' }), 'ghost@nothingeats.dev');
+        await user.type(screen.getByLabelText('Passwort'), 'correct horse battery');
+        await user.click(screen.getByRole('button', { name: 'Anmelden' }));
+
+        expect(await screen.findByRole('alert')).toHaveTextContent('Dieses Konto ist gesperrt.');
+    });
 });
