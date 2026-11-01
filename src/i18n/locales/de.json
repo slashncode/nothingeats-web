@@ -343,5 +343,13 @@
         "readingMinutes": "{count, plural, one {# Minute} other {# Minuten}} Lesezeit",
         "tags": "Schlagwörter",
         "notFound": "Diesen Artikel gibt es nicht (oder nicht auf Deutsch)."
+    },
+    "push": {
+        "title": "Benachrichtigungen",
+        "label": "Push-Nachrichten auf diesem Gerät",
+        "hint": "Wir melden uns, wenn dein Kurier losfährt, wenn nichts angekommen ist und wenn du ein Level oder Abzeichen erreichst. Nur wenn NothingEats gerade nicht offen ist.",
+        "unsupported": "Dieser Browser kann keine Push-Nachrichten. Auf dem iPhone geht es, sobald du NothingEats zum Home-Bildschirm hinzufügst.",
+        "denied": "Du hast Benachrichtigungen für NothingEats blockiert. Erlaube sie in den Einstellungen deines Browsers, dann geht es hier weiter.",
+        "failed": "Das hat nicht geklappt. Bitte versuch es noch einmal."
     }
 }

@@ -89,6 +89,9 @@ export const handlers = [
     })),
     http.get('/api/ordering/v1/me/export', () => HttpResponse.json([])),
     http.get('/api/assistant/v1/me/export', () => HttpResponse.json({ conversations: [] })),
+    // Push is off in the cluster by default; push.test.tsx switches it on.
+    http.get('/api/notification/v1/push/key', () => problem(404, 'PUSH_DISABLED')),
+    http.get('/api/notification/v1/push/subscriptions', () => HttpResponse.json({ items: [] })),
     http.get('/api/assistant/v1/availability', () => HttpResponse.json({ enabled: true })),
     http.get('/api/loyalty/v1/me/export', () => HttpResponse.json({
         member: null,

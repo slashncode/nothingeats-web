@@ -343,5 +343,13 @@
         "readingMinutes": "{count, plural, one {# minute} other {# minutes}} read",
         "tags": "Tags",
         "notFound": "There is no such article (or not in English)."
+    },
+    "push": {
+        "title": "Notifications",
+        "label": "Push notifications on this device",
+        "hint": "We let you know when your courier leaves, when nothing has arrived and when you reach a level or a badge. Only while NothingEats is not open.",
+        "unsupported": "This browser cannot receive push notifications. On an iPhone it can once you add NothingEats to the home screen.",
+        "denied": "You blocked notifications for NothingEats. Allow them in your browser's settings, then switch them on here.",
+        "failed": "That did not work. Please try again."
     }
 }

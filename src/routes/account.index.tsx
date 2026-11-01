@@ -7,12 +7,14 @@ import { analyticsEnabled, setConsent, useConsent } from '../analytics/analytics
 import { assistant } from '../api/assistant';
 import { identity } from '../api/identity';
 import { loyalty } from '../api/loyalty';
+import { notification } from '../api/notification';
 import { ordering } from '../api/ordering';
 import { useSession } from '../auth/session';
 import { AccountNav } from '../components/AccountNav';
 import { authErrorMessage, validateRequired } from '../components/authErrors';
 import forms from '../components/forms.module.scss';
 import { Page } from '../components/Page';
+import { PushSettings } from '../components/PushSettings';
 import styles from './account.module.scss';
 
 export const Route = createFileRoute('/account/')({
@@ -38,13 +40,20 @@ function Account() {
         setExporting(true);
         try {
             // GDPR art. 15/20: what every service holds about the customer, in one file.
-            const [account, orders, rewards, coach] = await Promise.all([
+            const [account, orders, rewards, coach, push] = await Promise.all([
                 identity.exportAccount(),
                 ordering.exportOrders(),
                 loyalty.exportRewards(),
                 assistant.exportConversations(),
+                notification.exportSubscriptions(),
             ]);
-            const data = { account, orders, rewards, coach };
+            const data = {
+                account,
+                orders,
+                rewards,
+                coach,
+                push,
+            };
             const url = URL.createObjectURL(new Blob([
                 JSON.stringify(data, null, 2),
             ], { type: 'application/json' }));
@@ -117,6 +126,8 @@ function Account() {
                     </Switch>
                 </section>
             )}
+
+            <PushSettings className={styles.section} titleClassName={styles.sectionTitle} />
 
             <section aria-labelledby="export" className={styles.section}>
                 <h2 id="export" className={styles.sectionTitle}>{t('auth.exportTitle')}</h2>

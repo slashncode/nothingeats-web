@@ -30,7 +30,10 @@ export type ProductEvent
         | { event: 'coach_message_sent'; properties: { length: number; suggestion: boolean; turn: number } }
         | { event: 'coach_conversation_started'; properties: Record<string, never> }
         | { event: 'article_viewed'; properties: { slug: string; category: string | null } }
-        | { event: 'articles_filtered'; properties: { filter: 'category' | 'tag'; value: string } };
+        | { event: 'articles_filtered'; properties: { filter: 'category' | 'tag'; value: string } }
+        | { event: 'push_enabled'; properties: Record<string, never> }
+        | { event: 'push_disabled'; properties: Record<string, never> }
+        | { event: 'pwa_installed'; properties: Record<string, never> };
 
 export type Consent = 'granted' | 'denied' | 'pending';
 

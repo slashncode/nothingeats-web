@@ -24,6 +24,7 @@ After changing nothingeats-ui: rebuild it, then `pnpm install --force` here to r
 - **Sessions**: the access token lives in memory only; the refresh token is an httpOnly cookie the app never sees. On start and before expiry the app refreshes, never two refreshes at once (shared promise per tab, Web Locks across tabs), because a reused refresh token revokes the whole session family.
 - **Language**: a saved choice, else the browser's, else German; after login the account's locale if nothing was chosen. Texts from the catalog come in the same language (`?lang=`), formats through React Aria's `I18nProvider` (`de-DE`, `en-GB`).
 - **Analytics**: see [TRACKING_PLAN.md](TRACKING_PLAN.md).
+- **App and push**: a web app manifest and icons make the shop installable. `public/sw.js` is a service worker for web push only, with no fetch handler: it never caches, so it cannot serve a stale shop or touch `/admin` on the same origin, and a new version takes over at once. The account page switches push on per device (the language on screen goes with it); logout and account deletion take the browser off. The worker shows nothing while a tab of the shop is visible, the live stream does that. Pushes come from notification-service.
 - **Runtime config**: `/env.js`, written at container start from `POSTHOG_KEY` and `POSTHOG_HOST`, so one image serves every environment.
 
 ## Container

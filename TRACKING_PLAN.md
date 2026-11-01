@@ -29,6 +29,9 @@ Product events of the web app, sent to PostHog (EU) **only after consent**. Name
 | `coach_conversation_started` | "New conversation" in the chat | — |
 | `article_viewed` | An article of the magazine is opened | `slug`, `category` (slug or null) |
 | `articles_filtered` | The magazine is filtered by a category or a tag | `filter` (`category`, `tag`), `value` (slug, `all` for no category) |
+| `push_enabled` | Push notifications switched on for this device (permission granted and subscribed) | — |
+| `push_disabled` | Push notifications switched off for this device on the account page (logout removes them silently) | — |
+| `pwa_installed` | The browser installed NothingEats as an app (`appinstalled`) | — |
 | `language_changed` | The language switch is used | `from`, `to` (`de`/`en`) |
 | `login_failed` | A login attempt fails | `code` (API error code, e.g. `INVALID_CREDENTIALS`) |
 | `search_filter_changed` | A filter on the search page changes | `filter` (`cuisine`, `diet`, `mood`, `without`, `max_spice`, `max_price`, `open_now`, `reset`), `value` (comma-separated, `none` when cleared) |

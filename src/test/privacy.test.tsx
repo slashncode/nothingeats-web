@@ -103,6 +103,10 @@ describe('privacy', () => {
                 asked.push('assistant');
                 return HttpResponse.json({ conversations: [] });
             }),
+            http.get('/api/notification/v1/push/subscriptions', () => {
+                asked.push('notification');
+                return HttpResponse.json({ items: [] });
+            }),
         );
         const files: Blob[] = [];
         URL.createObjectURL = vi.fn((blob: Blob) => {
@@ -119,6 +123,7 @@ describe('privacy', () => {
             'assistant',
             'identity',
             'loyalty',
+            'notification',
             'ordering',
         ]);
         expect(Object.keys(JSON.parse(await files[0]!.text()) as object)).toEqual([
@@ -126,6 +131,7 @@ describe('privacy', () => {
             'orders',
             'rewards',
             'coach',
+            'push',
         ]);
     });
 });

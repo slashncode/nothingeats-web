@@ -5,6 +5,7 @@ import { currentConsent, identifyUser, onConsentDecided, resetAnalytics, setCons
 import { setAccessToken, setUnauthorizedHandler } from '../api/http';
 import { identity } from '../api/identity';
 import { hasRememberedLanguage, i18next, isLanguage } from '../i18n';
+import { disablePush } from '../push/push';
 
 export type SessionState
     = | { status: 'loading' }
@@ -87,6 +88,8 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     }, [apply]);
 
     const forget = useCallback(() => {
+        // The account is gone, and notification-service forgot its devices with it.
+        void disablePush({ server: false });
         resetAnalytics();
         apply(undefined);
     }, [apply]);
@@ -98,6 +101,8 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     }), [state.status]);
 
     const logout = useCallback(async () => {
+        // While the session still works: this browser stops getting the account's pushes.
+        await disablePush();
         await identity.logout().catch(() => undefined);
         resetAnalytics();
         apply(undefined);
