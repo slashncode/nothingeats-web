@@ -1,7 +1,10 @@
 import process from 'node:process';
+import { fileURLToPath } from 'node:url';
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
+
+import { publishedTexts } from './published-texts';
 
 // The API lives behind the same gateway in every environment. Locally, Vite forwards /api to the
 // k3d cluster, so cookies (refresh token) and paths behave exactly like in production.
@@ -11,6 +14,7 @@ export default defineConfig({
     plugins: [
         tanstackRouter({ target: 'react', autoCodeSplitting: true }),
         react(),
+        publishedTexts(fileURLToPath(new URL('.', import.meta.url))),
     ],
     optimizeDeps: {
         // nothingeats-ui imports MapLibre's worker with `?url`, which only Vite's own pipeline
@@ -21,6 +25,8 @@ export default defineConfig({
         port: 5173,
         proxy: {
             '/api': { target: gateway, changeOrigin: true },
+            // Images from Garage through the gateway, like in the cluster.
+            '/media': { target: gateway, changeOrigin: true },
         },
     },
     build: {

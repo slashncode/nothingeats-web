@@ -1,5 +1,5 @@
 import type { RouterContext } from '../router';
-import { Button, Link, ToastRegion } from '@slashncode/nothingeats-ui';
+import { Button, Link, ToastRegion, UiStringsProvider } from '@slashncode/nothingeats-ui';
 import { createRootRouteWithContext, Outlet, useRouter } from '@tanstack/react-router';
 import { RouterProvider as AriaRouterProvider, I18nProvider } from 'react-aria-components';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,7 @@ import { Footer } from '../components/Footer';
 import { Header } from '../components/Header';
 import { Page } from '../components/Page';
 import { currentLanguage, RAC_LOCALES } from '../i18n';
+import { useUiOverrides } from '../i18n/overrides';
 import { LiveStream } from '../live/LiveStream';
 import { RewardToasts } from '../live/RewardToasts';
 
@@ -23,6 +24,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootLayout() {
     const router = useRouter();
     const { t } = useTranslation();
+    const uiOverrides = useUiOverrides();
     useColorScheme();
     return (
         <AriaRouterProvider
@@ -30,17 +32,19 @@ function RootLayout() {
             useHref={to => router.buildLocation({ to: to as never }).href}
         >
             <I18nProvider locale={RAC_LOCALES[currentLanguage()]}>
-                <a href="#main" className="skip-link">{t('app.skipToContent')}</a>
-                <Header />
-                <main id="main" tabIndex={-1}>
-                    <Outlet />
-                </main>
-                <Footer />
-                <ConsentBanner />
-                <LiveStream />
-                <RewardToasts />
-                <CravingCoach />
-                <ToastRegion position="bottom-left" />
+                <UiStringsProvider overrides={uiOverrides}>
+                    <a href="#main" className="skip-link">{t('app.skipToContent')}</a>
+                    <Header />
+                    <main id="main" tabIndex={-1}>
+                        <Outlet />
+                    </main>
+                    <Footer />
+                    <ConsentBanner />
+                    <LiveStream />
+                    <RewardToasts />
+                    <CravingCoach />
+                    <ToastRegion position="bottom-left" />
+                </UiStringsProvider>
             </I18nProvider>
         </AriaRouterProvider>
     );

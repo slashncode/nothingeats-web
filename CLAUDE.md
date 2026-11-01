@@ -15,6 +15,8 @@ Package manager: **pnpm** (version pinned in `package.json`), Node from the work
 
 - Components come from `@slashncode/nothingeats-ui` (soren-ui base + domain components). New reusable UI goes there, not here; app-only layout lives in `src/components/`.
 - Every user-facing string is in `src/i18n/locales/{de,en}.json` (ICU syntax). Never rely on browser-native validation messages; they follow the browser's language.
+- Editors override texts in the backoffice (journal record 042): the build publishes the defaults as `/locales/{web,ui}.{de,en}.json`, `src/i18n/overrides.ts` loads the overrides before the first render (short timeout) and on a language switch. Keys stay in code; arrays are not editable (coach chips come from the backoffice's own endpoint).
+- The magazine, coach suggestions and text overrides come from the backoffice's public API (`src/api/backoffice.ts`, nothingeats-backoffice `docs/api.md`). Article bodies are HTML the backoffice escaped; nothing else is rendered as HTML.
 - API calls go through `src/api/http.ts` (problem+json → `ApiError` with `code`). Map error codes to messages, never show server text.
 - The access token stays in memory. Never store tokens in localStorage or sessionStorage; refreshes go through `refreshOnce` only.
 - Analytics: only typed `capture()` calls from `src/analytics/analytics.ts`; new events go into `ProductEvent` and `TRACKING_PLAN.md` together. Nothing is sent before consent.

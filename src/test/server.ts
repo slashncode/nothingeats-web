@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
-import { gyrosPlate, margherita, restaurants, searchPage, session, truffleFries } from './fixtures';
+import { gyrosPlate, margherita, pizzaStory, recipe, restaurants, searchPage, session, truffleFries } from './fixtures';
 
 function problem(status: number, code: string) {
     return HttpResponse.json({
@@ -148,6 +148,43 @@ export const handlers = [
             ? new HttpResponse(null, { status: 204 })
             : problem(400, 'VERIFICATION_TOKEN_INVALID');
     }),
+    // The backoffice's content (nothingeats-backoffice docs/api.md); tests override what they need.
+    http.get('/api/backoffice/v1/texts', () => HttpResponse.json({ web: {}, ui: {} })),
+    http.get('/api/backoffice/v1/coach-suggestions', () => HttpResponse.json({ items: [] })),
+    http.get('/api/backoffice/v1/article-categories', () => HttpResponse.json({
+        items: [
+            { slug: 'geschichten', name: 'Geschichten' },
+            { slug: 'rezepte', name: 'Rezepte' },
+        ],
+    })),
+    http.get('/api/backoffice/v1/tags', () => HttpResponse.json({
+        items: [
+            { slug: 'pizza', name: 'Pizza' },
+        ],
+    })),
+    http.get('/api/backoffice/v1/articles', ({ request }) => {
+        const url = new URL(request.url);
+        const category = url.searchParams.get('category');
+        const tag = url.searchParams.get('tag');
+        const items = [pizzaStory, recipe]
+            .filter(article => !category || article.category?.slug === category)
+            .filter(article => !tag || article.tags.some((candidate: { slug: string }) => candidate.slug === tag));
+        return HttpResponse.json({ items, page: 1, totalPages: 1 });
+    }),
+    http.get('/api/backoffice/v1/articles/:slug', ({ params }) => (params.slug === pizzaStory.slug
+        ? HttpResponse.json({ ...pizzaStory, bodyHtml: '<p>Sie kam nie. <strong>Gut so.</strong></p>', readingMinutes: 2 })
+        : problem(404, 'ARTICLE_NOT_FOUND'))),
+    http.get('/api/loyalty/v1/wheel', () => HttpResponse.json({
+        prizes: [
+            { key: 'PERCENT_10', label: '10 %' },
+            { key: 'FREE_DELIVERY', label: 'Lieferung' },
+            { key: 'AMOUNT_5', label: '5 €' },
+            { key: 'BONUS_XP', label: '+100 XP' },
+            { key: 'PERCENT_20', label: '20 %' },
+            { key: 'FREE_DISH', label: 'Gericht' },
+            { key: 'GOLDEN_FORK', label: 'Gabel' },
+        ],
+    })),
 ];
 
 export const server = setupServer(...handlers);

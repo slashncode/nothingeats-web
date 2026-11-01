@@ -1,5 +1,5 @@
 import type { ErrorComponentProps } from '@tanstack/react-router';
-import { DishCard, FoodCover, Link, OpenStatus, Rating, useCatalogLabels } from '@slashncode/nothingeats-ui';
+import { DishCard, FoodCover, Link, OpenStatus, Photo, Rating, useCatalogLabels } from '@slashncode/nothingeats-ui';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { ArrowLeft, Bike, Clock } from 'lucide-react';
@@ -38,7 +38,9 @@ function Restaurant() {
                 {t('restaurant.back')}
             </Link>
             <header className={styles.header}>
-                <FoodCover cuisine={restaurant.cuisine} size="lg" className={styles.cover} />
+                {restaurant.image
+                    ? <Photo image={restaurant.image} variant="wide" priority className={styles.photo} />
+                    : <FoodCover cuisine={restaurant.cuisine} size="lg" className={styles.cover} />}
                 <div className={styles.intro}>
                     <p className={styles.cuisine}>{labels.cuisine(restaurant.cuisine)}</p>
                     <h1 className={styles.name}>{restaurant.name}</h1>

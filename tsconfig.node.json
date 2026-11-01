@@ -3,5 +3,5 @@
     "compilerOptions": {
         "types": ["node"]
     },
-    "include": ["vite.config.ts", "eslint.config.mjs"]
+    "include": ["vite.config.ts", "published-texts.ts", "eslint.config.mjs"]
 }

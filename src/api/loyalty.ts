@@ -80,6 +80,18 @@ export const loyaltyQueries = {
         }),
     }),
 
+    /** The wheel's segments and their labels, as the backoffice published them. */
+    wheel: (language: Language) => queryOptions({
+        queryKey: [...loyaltyKeys.all, 'wheel', language],
+        queryFn: ({ signal }) => request<{ prizes: { key: string; label: string }[] }>('/api/loyalty/v1/wheel', {
+            auth: true,
+            query: { lang: language },
+            signal,
+        })
+            .then(wheel => wheel.prizes),
+        staleTime: 5 * 60_000,
+    }),
+
     coupons: () => queryOptions({
         queryKey: [...loyaltyKeys.all, 'coupons'],
         queryFn: ({ signal }) => request<{ items: Coupon[] }>('/api/loyalty/v1/coupons', { auth: true, signal }).then(page => page.items),

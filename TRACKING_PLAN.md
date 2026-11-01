@@ -27,6 +27,8 @@ Product events of the web app, sent to PostHog (EU) **only after consent**. Name
 | `coach_opened` | The Craving Coach chat is opened (visitors see the sign-in hint) | `signed_in` |
 | `coach_message_sent` | A message goes to the coach, typed or from a suggestion | `length`, `suggestion`, `turn` (1 for the first message of a conversation) |
 | `coach_conversation_started` | "New conversation" in the chat | — |
+| `article_viewed` | An article of the magazine is opened | `slug`, `category` (slug or null) |
+| `articles_filtered` | The magazine is filtered by a category or a tag | `filter` (`category`, `tag`), `value` (slug, `all` for no category) |
 | `language_changed` | The language switch is used | `from`, `to` (`de`/`en`) |
 | `login_failed` | A login attempt fails | `code` (API error code, e.g. `INVALID_CREDENTIALS`) |
 | `search_filter_changed` | A filter on the search page changes | `filter` (`cuisine`, `diet`, `mood`, `without`, `max_spice`, `max_price`, `open_now`, `reset`), `value` (comma-separated, `none` when cleared) |

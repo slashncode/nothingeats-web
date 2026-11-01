@@ -13,7 +13,7 @@ import {
 } from '@slashncode/nothingeats-ui';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNumberFormatter } from 'react-aria';
 import { useTranslation } from 'react-i18next';
 
@@ -163,6 +163,8 @@ function Wheel({ spins, nextLevel }: { spins: number; nextLevel: number }) {
     const [spinId, setSpinId] = useState(0);
     const [announcement, setAnnouncement] = useState('');
     const [failed, setFailed] = useState(false);
+    const wheel = useQuery(loyaltyQueries.wheel(language));
+    const labels = useMemo(() => Object.fromEntries((wheel.data ?? []).map(prize => [prize.key, prize.label])), [wheel.data]);
 
     async function spin() {
         setSpinning(true);
@@ -217,7 +219,14 @@ function Wheel({ spins, nextLevel }: { spins: number; nextLevel: number }) {
                     </p>
                 )}
             </div>
-            <SpinWheel result={result?.prize ?? null} spinId={spinId} onSpinEnd={landed} className={styles.wheelGraphic} />
+            <SpinWheel
+                prizes={wheel.data?.map(prize => prize.key)}
+                labels={labels}
+                result={result?.prize ?? null}
+                spinId={spinId}
+                onSpinEnd={landed}
+                className={styles.wheelGraphic}
+            />
         </section>
     );
 }

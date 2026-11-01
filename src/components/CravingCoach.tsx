@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 import { capture } from '../analytics/analytics';
 import { assistant, CHAT_ENDPOINT, coachFetch } from '../api/assistant';
+import { backofficeQueries } from '../api/backoffice';
 import { ApiError } from '../api/http';
 import { useSession } from '../auth/session';
 import { currentLanguage } from '../i18n';
@@ -73,6 +74,7 @@ function asDish(dish: CoachDish): DishSummary {
         calories: dish.calories,
         moods: dish.moods,
         available: true,
+        image: dish.image ?? null,
     };
 }
 
@@ -242,7 +244,11 @@ function ChatSession({ id, initial }: { id: string; initial: CoachMessage[] }) {
         setText('');
     }
 
-    const suggestions = t('coach.suggestions', { returnObjects: true }) as string[];
+    // The backoffice's chips; the bundled ones while it has none (or does not answer).
+    const edited = useQuery(backofficeQueries.coachSuggestions(currentLanguage()));
+    const suggestions = edited.data?.length
+        ? edited.data
+        : t('coach.suggestions', { returnObjects: true }) as string[];
 
     return (
         <>

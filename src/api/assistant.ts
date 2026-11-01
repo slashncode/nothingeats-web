@@ -1,3 +1,4 @@
+import type { ImageSummary } from '@slashncode/nothingeats-ui';
 import type { UIMessage } from 'ai';
 import { analyticsHeaders } from '../analytics/analytics';
 import { ApiError, currentAccessToken, refreshAccessToken, request } from './http';
@@ -20,6 +21,8 @@ export interface CoachDish {
     moods: string[];
     openNow: boolean;
     reason: string;
+    /** The dish's photo (search's `Dish.image`), if it has one. */
+    image?: ImageSummary | null;
 }
 
 // A type, not an interface: UIMessage wants a record of tools.

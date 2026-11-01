@@ -1,0 +1,116 @@
+.lead {
+    margin: 0 0 var(--spacing-4);
+    color: var(--muted-foreground);
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    margin-bottom: var(--spacing-4);
+}
+
+.filter {
+    padding: var(--spacing-1) var(--spacing-3);
+    border: var(--border-width-1) solid var(--border);
+    border-radius: var(--radius-full);
+}
+
+.current {
+    color: var(--primary-foreground);
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.tag {
+    display: flex;
+    gap: var(--spacing-2);
+    align-items: center;
+}
+
+.empty {
+    color: var(--muted-foreground);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+    gap: var(--spacing-4);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.pages {
+    display: flex;
+    gap: var(--spacing-4);
+    align-items: center;
+    justify-content: center;
+    margin-top: var(--spacing-6);
+}
+
+.back {
+    display: inline-flex;
+    gap: var(--spacing-1);
+    align-items: center;
+    margin-bottom: var(--spacing-4);
+}
+
+.article {
+    display: grid;
+    gap: var(--spacing-3);
+}
+
+.cover {
+    aspect-ratio: 21 / 9;
+    border-radius: var(--radius-xl);
+}
+
+.category {
+    justify-self: start;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.meta {
+    margin: 0;
+    color: var(--muted-foreground);
+}
+
+// The backoffice's HTML: readable text, images within the column.
+.body {
+    font-size: var(--font-size-md);
+    line-height: 1.7;
+
+    :where(h2, h3) {
+        margin: var(--spacing-6) 0 var(--spacing-2);
+        font-family: var(--font-display);
+    }
+
+    :where(p, ul, ol, blockquote) {
+        margin: 0 0 var(--spacing-4);
+    }
+
+    :where(blockquote) {
+        padding-left: var(--spacing-4);
+        color: var(--muted-foreground);
+        border-left: 4px solid var(--border);
+    }
+
+    :where(img) {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+    }
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-3);
+    padding: 0;
+    margin: var(--spacing-4) 0 0;
+    list-style: none;
+}

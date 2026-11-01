@@ -28,7 +28,9 @@ export type ProductEvent
         | { event: 'coupon_apply_clicked'; properties: { kind: string } }
         | { event: 'coach_opened'; properties: { signed_in: boolean } }
         | { event: 'coach_message_sent'; properties: { length: number; suggestion: boolean; turn: number } }
-        | { event: 'coach_conversation_started'; properties: Record<string, never> };
+        | { event: 'coach_conversation_started'; properties: Record<string, never> }
+        | { event: 'article_viewed'; properties: { slug: string; category: string | null } }
+        | { event: 'articles_filtered'; properties: { filter: 'category' | 'tag'; value: string } };
 
 export type Consent = 'granted' | 'denied' | 'pending';
 

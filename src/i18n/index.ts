@@ -70,6 +70,8 @@ void i18next
         interpolation: { escapeValue: false },
         returnNull: false,
         initAsync: false,
+        // Overrides from the backoffice arrive as added resources; components re-render with them.
+        react: { bindI18nStore: 'added' },
     });
 
 export { i18next };

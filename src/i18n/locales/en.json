@@ -16,7 +16,8 @@
         "account": "Account",
         "search": "Search",
         "cart": "{count, plural, =0 {Cart, empty} one {Cart, # dish} other {Cart, # dishes}}",
-        "orders": "Orders"
+        "orders": "Orders",
+        "articles": "Magazine"
     },
     "language": {
         "switch": "Language: English. Switch to German",
@@ -244,7 +245,8 @@
         "nav": {
             "label": "Account",
             "settings": "Account & data",
-            "rewards": "Rewards"
+            "rewards": "Rewards",
+            "backoffice": "Backoffice"
         }
     },
     "rewards": {
@@ -323,5 +325,22 @@
             "unavailable": "The Craving Coach can't be reached right now. Try again later.",
             "limit": "You've asked enough for now. More later."
         }
+    },
+    "articles": {
+        "title": "Magazine",
+        "lead": "Stories about food that never arrives.",
+        "categories": "Categories",
+        "all": "All",
+        "taggedWith": "Tag: {tag}",
+        "clearTag": "Remove tag",
+        "empty": "Nothing here yet. Fitting.",
+        "pages": "Pages",
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page {page} of {pages}",
+        "back": "Back to the magazine",
+        "readingMinutes": "{count, plural, one {# minute} other {# minutes}} read",
+        "tags": "Tags",
+        "notFound": "There is no such article (or not in English)."
     }
 }

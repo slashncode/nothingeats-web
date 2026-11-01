@@ -1,4 +1,4 @@
-import type { DishSummary, RestaurantSummary } from '@slashncode/nothingeats-ui';
+import type { ArticleSummary, DishSummary, RestaurantSummary } from '@slashncode/nothingeats-ui';
 import type { Session } from '../api/identity';
 import type { DishHit, DishSearchPage } from '../api/search';
 
@@ -114,3 +114,25 @@ export function searchPage(items: DishHit[]): DishSearchPage {
         },
     };
 }
+
+export const pizzaStory: ArticleSummary = {
+    slug: 'die-pizza-die-nie-kam',
+    title: 'Die Pizza, die nie kam',
+    excerpt: 'Warum die beste Bestellung die ist, auf die man ewig wartet.',
+    cover: null,
+    category: { slug: 'geschichten', name: 'Geschichten' },
+    tags: [
+        { slug: 'pizza', name: 'Pizza' },
+    ],
+    publishedAt: '2026-10-30T09:00:00Z',
+};
+
+export const recipe: ArticleSummary = {
+    slug: 'luftbrot-backen',
+    title: 'Luftbrot backen',
+    excerpt: 'Null Zutaten, null Kalorien, voller Erfolg.',
+    cover: null,
+    category: { slug: 'rezepte', name: 'Rezepte' },
+    tags: [],
+    publishedAt: '2026-10-28T09:00:00Z',
+};

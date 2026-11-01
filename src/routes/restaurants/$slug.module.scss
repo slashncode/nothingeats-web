@@ -84,3 +84,9 @@
 
     > li { display: grid; }
 }
+
+// An uploaded photo in the FoodCover's place and proportions.
+.photo {
+    aspect-ratio: 21 / 9;
+    border-radius: var(--radius-xl);
+}

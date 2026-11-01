@@ -16,7 +16,8 @@
         "account": "Konto",
         "search": "Suche",
         "cart": "{count, plural, =0 {Warenkorb, leer} one {Warenkorb, # Gericht} other {Warenkorb, # Gerichte}}",
-        "orders": "Bestellungen"
+        "orders": "Bestellungen",
+        "articles": "Magazin"
     },
     "language": {
         "switch": "Sprache: Deutsch. Auf Englisch wechseln",
@@ -244,7 +245,8 @@
         "nav": {
             "label": "Konto",
             "settings": "Konto & Daten",
-            "rewards": "Belohnungen"
+            "rewards": "Belohnungen",
+            "backoffice": "Backoffice"
         }
     },
     "rewards": {
@@ -323,5 +325,22 @@
             "unavailable": "Der Craving Coach ist gerade nicht erreichbar. Versuch es später noch mal.",
             "limit": "Du hast für den Moment genug gefragt. Später geht es weiter."
         }
+    },
+    "articles": {
+        "title": "Magazin",
+        "lead": "Geschichten über Essen, das nie ankommt.",
+        "categories": "Rubriken",
+        "all": "Alle",
+        "taggedWith": "Schlagwort: {tag}",
+        "clearTag": "Schlagwort entfernen",
+        "empty": "Hier steht noch nichts. Wie passend.",
+        "pages": "Seiten",
+        "previous": "Zurück",
+        "next": "Weiter",
+        "page": "Seite {page} von {pages}",
+        "back": "Zum Magazin",
+        "readingMinutes": "{count, plural, one {# Minute} other {# Minuten}} Lesezeit",
+        "tags": "Schlagwörter",
+        "notFound": "Diesen Artikel gibt es nicht (oder nicht auf Deutsch)."
     }
 }

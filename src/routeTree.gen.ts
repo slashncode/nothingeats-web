@@ -22,6 +22,8 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as VerifyRouteImport } from './routes/verify'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
 import { Route as AccountRewardsRouteImport } from './routes/account.rewards'
+import { Route as ArticlesIndexRouteImport } from './routes/articles.index'
+import { Route as ArticlesSlugRouteImport } from './routes/articles.$slug'
 import { Route as OrdersIndexRouteImport } from './routes/orders/index'
 import { Route as OrdersOrderIdRouteImport } from './routes/orders/$orderId'
 import { Route as RestaurantsSlugRouteImport } from './routes/restaurants/$slug'
@@ -91,6 +93,16 @@ const AccountRewardsRoute = AccountRewardsRouteImport.update({
   path: '/rewards',
   getParentRoute: () => AccountRoute,
 } as any)
+const ArticlesIndexRoute = ArticlesIndexRouteImport.update({
+  id: '/articles/',
+  path: '/articles/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
+  id: '/articles/$slug',
+  path: '/articles/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OrdersIndexRoute = OrdersIndexRouteImport.update({
   id: '/orders/',
   path: '/orders/',
@@ -120,9 +132,11 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
   '/account/rewards': typeof AccountRewardsRoute
+  '/articles/$slug': typeof ArticlesSlugRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
   '/account/': typeof AccountIndexRoute
+  '/articles/': typeof ArticlesIndexRoute
   '/orders/': typeof OrdersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -137,9 +151,11 @@ export interface FileRoutesByTo {
   '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
   '/account/rewards': typeof AccountRewardsRoute
+  '/articles/$slug': typeof ArticlesSlugRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
   '/account': typeof AccountIndexRoute
+  '/articles': typeof ArticlesIndexRoute
   '/orders': typeof OrdersIndexRoute
 }
 export interface FileRoutesById {
@@ -156,9 +172,11 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
   '/account/rewards': typeof AccountRewardsRoute
+  '/articles/$slug': typeof ArticlesSlugRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
   '/account/': typeof AccountIndexRoute
+  '/articles/': typeof ArticlesIndexRoute
   '/orders/': typeof OrdersIndexRoute
 }
 export interface FileRouteTypes {
@@ -176,9 +194,11 @@ export interface FileRouteTypes {
     | '/search'
     | '/verify'
     | '/account/rewards'
+    | '/articles/$slug'
     | '/orders/$orderId'
     | '/restaurants/$slug'
     | '/account/'
+    | '/articles/'
     | '/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -193,9 +213,11 @@ export interface FileRouteTypes {
     | '/search'
     | '/verify'
     | '/account/rewards'
+    | '/articles/$slug'
     | '/orders/$orderId'
     | '/restaurants/$slug'
     | '/account'
+    | '/articles'
     | '/orders'
   id:
     | '__root__'
@@ -211,9 +233,11 @@ export interface FileRouteTypes {
     | '/search'
     | '/verify'
     | '/account/rewards'
+    | '/articles/$slug'
     | '/orders/$orderId'
     | '/restaurants/$slug'
     | '/account/'
+    | '/articles/'
     | '/orders/'
   fileRoutesById: FileRoutesById
 }
@@ -229,8 +253,10 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SearchRoute: typeof SearchRoute
   VerifyRoute: typeof VerifyRoute
+  ArticlesSlugRoute: typeof ArticlesSlugRoute
   OrdersOrderIdRoute: typeof OrdersOrderIdRoute
   RestaurantsSlugRoute: typeof RestaurantsSlugRoute
+  ArticlesIndexRoute: typeof ArticlesIndexRoute
   OrdersIndexRoute: typeof OrdersIndexRoute
 }
 
@@ -327,6 +353,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountRewardsRouteImport
       parentRoute: typeof AccountRoute
     }
+    '/articles/': {
+      id: '/articles/'
+      path: '/articles'
+      fullPath: '/articles/'
+      preLoaderRoute: typeof ArticlesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/articles/$slug': {
+      id: '/articles/$slug'
+      path: '/articles/$slug'
+      fullPath: '/articles/$slug'
+      preLoaderRoute: typeof ArticlesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/orders/': {
       id: '/orders/'
       path: '/orders'
@@ -376,8 +416,10 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SearchRoute: SearchRoute,
   VerifyRoute: VerifyRoute,
+  ArticlesSlugRoute: ArticlesSlugRoute,
   OrdersOrderIdRoute: OrdersOrderIdRoute,
   RestaurantsSlugRoute: RestaurantsSlugRoute,
+  ArticlesIndexRoute: ArticlesIndexRoute,
   OrdersIndexRoute: OrdersIndexRoute,
 }
 export const routeTree = rootRouteImport
