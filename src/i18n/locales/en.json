@@ -350,6 +350,11 @@
         "hint": "We let you know when your courier leaves, when nothing has arrived and when you reach a level or a badge. Only while NothingEats is not open.",
         "unsupported": "This browser cannot receive push notifications. On an iPhone it can once you add NothingEats to the home screen.",
         "denied": "You blocked notifications for NothingEats. Allow them in your browser's settings, then switch them on here.",
-        "failed": "That did not work. Please try again."
+        "failed": "That did not work. Please try again.",
+        "test": "Send a test notification",
+        "testSent": "Sent. It shows up on {count, plural, one {your device} other {your # devices}} in a moment, even with NothingEats open.",
+        "testGone": "The push service no longer knows this device. Switch push notifications off and on again.",
+        "testFailed": "The push service refused the notification. Please try again later.",
+        "testNoDevice": "No device is signed up for your account. Switch push notifications off and on again."
     }
 }

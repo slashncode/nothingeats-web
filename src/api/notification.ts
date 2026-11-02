@@ -37,6 +37,11 @@ export const notification = {
         auth: true,
         query: { endpoint },
     }),
+    /** A push to every device of the account now; how many the push services took, forgot or refused. */
+    sendTestPush: () => request<{ sent: number; gone: number; failed: number }>('/api/notification/v1/push/test', {
+        method: 'POST',
+        auth: true,
+    }),
     /** For the GDPR download: the account's devices by push service. */
     exportSubscriptions: () => request<{ items: PushDevice[] }>('/api/notification/v1/push/subscriptions', { auth: true }),
 };

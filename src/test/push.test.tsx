@@ -81,17 +81,42 @@ describe('push notifications', () => {
 
         await waitFor(() => expect(toggle).toBeChecked());
         expect(pushManager.subscribe).toHaveBeenCalledWith(expect.objectContaining({ userVisibleOnly: true }));
-        expect(saved).toEqual([
-            {
-                endpoint,
-                keys: { p256dh: 'BPublicKey', auth: 'secret' },
-                language: 'de',
-            },
-        ]);
+        // Saved on switching on, and again by the account page's re-registration: always the same device.
+        expect(saved.length).toBeGreaterThanOrEqual(1);
+        saved.forEach(item => expect(item).toEqual({
+            endpoint,
+            keys: { p256dh: 'BPublicKey', auth: 'secret' },
+            language: 'de',
+        }));
 
         await user.click(screen.getByRole('button', { name: 'Abmelden' }));
         await waitFor(() => expect(removed).toEqual([endpoint]));
         expect(unsubscribe).toHaveBeenCalled();
+    });
+
+    it('send a test that renews a device the push service forgot', async () => {
+        const { pushManager, unsubscribe } = stubPushApi();
+        const answers = [
+            { sent: 0, gone: 1, failed: 0 },
+            { sent: 1, gone: 0, failed: 0 },
+        ];
+        const saved: unknown[] = [];
+        server.use(
+            http.put('/api/notification/v1/push/subscriptions', async ({ request }) => {
+                saved.push(await request.json());
+                return new HttpResponse(null, { status: 204 });
+            }),
+            http.post('/api/notification/v1/push/test', () => HttpResponse.json(answers.shift())),
+        );
+        const { user } = renderApp('/account');
+        await user.click(await screen.findByRole('switch', { name: 'Push-Nachrichten auf diesem Gerät' }));
+
+        await user.click(await screen.findByRole('button', { name: 'Testnachricht senden' }));
+
+        expect(await screen.findByText(/Gesendet. Die Nachricht erscheint gleich auf deinem Gerät/)).toBeInTheDocument();
+        expect(unsubscribe).toHaveBeenCalled();
+        expect(pushManager.subscribe).toHaveBeenCalledTimes(2);
+        expect(saved.length).toBeGreaterThanOrEqual(2);
     });
 
     it('explain why they cannot be switched on', async () => {

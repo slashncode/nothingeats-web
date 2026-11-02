@@ -350,6 +350,11 @@
         "hint": "Wir melden uns, wenn dein Kurier losfährt, wenn nichts angekommen ist und wenn du ein Level oder Abzeichen erreichst. Nur wenn NothingEats gerade nicht offen ist.",
         "unsupported": "Dieser Browser kann keine Push-Nachrichten. Auf dem iPhone geht es, sobald du NothingEats zum Home-Bildschirm hinzufügst.",
         "denied": "Du hast Benachrichtigungen für NothingEats blockiert. Erlaube sie in den Einstellungen deines Browsers, dann geht es hier weiter.",
-        "failed": "Das hat nicht geklappt. Bitte versuch es noch einmal."
+        "failed": "Das hat nicht geklappt. Bitte versuch es noch einmal.",
+        "test": "Testnachricht senden",
+        "testSent": "Gesendet. Die Nachricht erscheint gleich auf {count, plural, one {deinem Gerät} other {deinen # Geräten}}, auch wenn NothingEats offen ist.",
+        "testGone": "Der Push-Dienst kennt dieses Gerät nicht mehr. Schalte Push-Nachrichten aus und wieder ein.",
+        "testFailed": "Der Push-Dienst hat die Nachricht abgelehnt. Versuch es später noch einmal.",
+        "testNoDevice": "Für dein Konto ist kein Gerät angemeldet. Schalte Push-Nachrichten aus und wieder ein."
     }
 }

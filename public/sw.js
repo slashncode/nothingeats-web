@@ -12,7 +12,7 @@ sw.addEventListener('activate', event => event.waitUntil(sw.clients.claim()));
 
 /**
  * What notification-service sends (nothingeats-notification-service, `PushPayload`).
- * @typedef {{ title: string, body: string, url: string, tag: string }} Push
+ * @typedef {{ title: string, body: string, url: string, tag: string, always?: boolean }} Push
  */
 
 /** Paths in the shop only: a notification never opens another site. */
@@ -36,11 +36,12 @@ sw.addEventListener('push', (event) => {
     }
     if (!push?.title)
         return;
-    const { title, body, url, tag } = push;
+    const { title, body, url, tag, always } = push;
     event.waitUntil((async () => {
         const windows = await sw.clients.matchAll({ type: 'window', includeUncontrolled: true });
         // A visible tab already shows it live (toast, timeline, confetti); a notification would repeat it.
-        if (windows.some(client => client.visibilityState === 'visible'))
+        // The test push from the account page shows anyway: that is where it is asked for.
+        if (!always && windows.some(client => client.visibilityState === 'visible'))
             return;
         await sw.registration.showNotification(title, {
             body,

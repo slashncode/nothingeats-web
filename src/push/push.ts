@@ -68,6 +68,15 @@ export async function disablePush({ server = true } = {}): Promise<void> {
     await subscription.unsubscribe().catch(() => false);
 }
 
+/**
+ * The push service forgot this browser (the test push said so): drop the old subscription and
+ * take a new one. The permission stays, so nothing asks again.
+ */
+export async function renewPush(publicKey: string, language: Language): Promise<PushStatus> {
+    await disablePush({ server: false });
+    return enablePush(publicKey, language);
+}
+
 /** The language on screen changed: this browser's pushes follow it (only for a signed-in user). */
 export async function updatePushLanguage(language: Language): Promise<void> {
     if (!currentAccessToken())
