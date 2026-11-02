@@ -17,7 +17,7 @@
         "search": "Suche",
         "cart": "{count, plural, =0 {Warenkorb, leer} one {Warenkorb, # Gericht} other {Warenkorb, # Gerichte}}",
         "orders": "Bestellungen",
-        "articles": "Magazin"
+        "blog": "Blog"
     },
     "language": {
         "switch": "Sprache: Deutsch. Auf Englisch wechseln",
@@ -327,8 +327,8 @@
             "limit": "Du hast für den Moment genug gefragt. Später geht es weiter."
         }
     },
-    "articles": {
-        "title": "Magazin",
+    "blog": {
+        "title": "Blog",
         "lead": "Geschichten über Essen, das nie ankommt.",
         "categories": "Rubriken",
         "all": "Alle",
@@ -339,7 +339,7 @@
         "previous": "Zurück",
         "next": "Weiter",
         "page": "Seite {page} von {pages}",
-        "back": "Zum Magazin",
+        "back": "Zum Blog",
         "readingMinutes": "{count, plural, one {# Minute} other {# Minuten}} Lesezeit",
         "tags": "Schlagwörter",
         "notFound": "Diesen Artikel gibt es nicht (oder nicht auf Deutsch)."

@@ -13,9 +13,9 @@ import { ApiError } from '../api/http';
 import { Page } from '../components/Page';
 import { currentLanguage } from '../i18n';
 import { ErrorState } from './__root';
-import styles from './articles.module.scss';
+import styles from './blog.module.scss';
 
-export const Route = createFileRoute('/articles/$slug')({
+export const Route = createFileRoute('/blog/$slug')({
     loader: ({ context, params }) => context.queryClient.ensureQueryData(backofficeQueries.article(currentLanguage(), params.slug)),
     component: ArticlePage,
     errorComponent: ArticleError,
@@ -40,14 +40,14 @@ function ArticlePage() {
 
     return (
         <Page narrow>
-            <Link href="/articles" className={styles.back}>
+            <Link href="/blog" className={styles.back}>
                 <ArrowLeft aria-hidden size={16} />
-                {t('articles.back')}
+                {t('blog.back')}
             </Link>
             <article className={styles.article}>
                 {cover && <Photo image={cover} variant="wide" priority className={styles.cover} />}
                 {article.data.category && (
-                    <Link href={`/articles?category=${encodeURIComponent(article.data.category.slug)}`} variant="secondary" className={styles.category}>
+                    <Link href={`/blog?category=${encodeURIComponent(article.data.category.slug)}`} variant="secondary" className={styles.category}>
                         {article.data.category.name}
                     </Link>
                 )}
@@ -55,15 +55,15 @@ function ArticlePage() {
                 <p className={styles.meta}>
                     {publishedAt && <time dateTime={publishedAt}>{date.format(new Date(publishedAt))}</time>}
                     {' · '}
-                    {t('articles.readingMinutes', { count: readingMinutes })}
+                    {t('blog.readingMinutes', { count: readingMinutes })}
                 </p>
                 {/* The backoffice escapes text and checks links (its Lexical converter); editors are admins. */}
                 <div className={styles.body} dangerouslySetInnerHTML={{ __html: bodyHtml }} />
                 {tags.length > 0 && (
-                    <ul aria-label={t('articles.tags')} className={styles.tags}>
+                    <ul aria-label={t('blog.tags')} className={styles.tags}>
                         {tags.map(tag => (
                             <li key={tag.slug}>
-                                <Link href={`/articles?tag=${encodeURIComponent(tag.slug)}`} variant="secondary">{`#${tag.name}`}</Link>
+                                <Link href={`/blog?tag=${encodeURIComponent(tag.slug)}`} variant="secondary">{`#${tag.name}`}</Link>
                             </li>
                         ))}
                     </ul>
@@ -78,8 +78,8 @@ function ArticleError({ error, reset }: ErrorComponentProps) {
     if (error instanceof ApiError && error.code === 'ARTICLE_NOT_FOUND') {
         return (
             <Page narrow>
-                <h1>{t('articles.notFound')}</h1>
-                <Link href="/articles">{t('articles.back')}</Link>
+                <h1>{t('blog.notFound')}</h1>
+                <Link href="/blog">{t('blog.back')}</Link>
             </Page>
         );
     }

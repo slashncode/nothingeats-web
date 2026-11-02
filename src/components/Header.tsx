@@ -41,7 +41,7 @@ export function Header() {
                 <nav aria-label={t('nav.main')} className={styles.nav}>
                     <Link href="/" variant="secondary">{t('nav.restaurants')}</Link>
                     <Link href="/search" variant="secondary">{t('nav.search')}</Link>
-                    <Link href="/articles" variant="secondary">{t('nav.articles')}</Link>
+                    <Link href="/blog" variant="secondary">{t('nav.blog')}</Link>
                     {state.status === 'authenticated' && <Link href="/orders" variant="secondary">{t('nav.orders')}</Link>}
                 </nav>
                 <div className={styles.actions}>

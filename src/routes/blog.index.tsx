@@ -10,7 +10,7 @@ import { backofficeQueries } from '../api/backoffice';
 import { Page } from '../components/Page';
 import { currentLanguage } from '../i18n';
 import { ErrorState } from './__root';
-import styles from './articles.module.scss';
+import styles from './blog.module.scss';
 
 interface ArticleSearch {
     category?: string;
@@ -18,7 +18,7 @@ interface ArticleSearch {
     page?: number;
 }
 
-export const Route = createFileRoute('/articles/')({
+export const Route = createFileRoute('/blog/')({
     validateSearch: (search: Record<string, unknown>): ArticleSearch => ({
         category: typeof search.category === 'string' && search.category
             ? search.category
@@ -35,10 +35,10 @@ export const Route = createFileRoute('/articles/')({
         context.queryClient.ensureQueryData(backofficeQueries.articles(currentLanguage(), deps, deps.page)),
         context.queryClient.ensureQueryData(backofficeQueries.categories(currentLanguage())),
     ]),
-    component: Magazine,
+    component: Blog,
 });
 
-function Magazine() {
+function Blog() {
     const { t } = useTranslation();
     const search = Route.useSearch();
     const language = currentLanguage();
@@ -50,11 +50,11 @@ function Magazine() {
 
     return (
         <Page>
-            <h1>{t('articles.title')}</h1>
-            <p className={styles.lead}>{t('articles.lead')}</p>
-            <nav aria-label={t('articles.categories')} className={styles.filters}>
+            <h1>{t('blog.title')}</h1>
+            <p className={styles.lead}>{t('blog.lead')}</p>
+            <nav aria-label={t('blog.categories')} className={styles.filters}>
                 <Link
-                    href="/articles"
+                    href="/blog"
                     variant="secondary"
                     aria-current={!search.category
                         ? 'page'
@@ -62,12 +62,12 @@ function Magazine() {
                     className={clsx(styles.filter, !search.category && styles.current)}
                     onPress={() => capture('articles_filtered', { filter: 'category', value: 'all' })}
                 >
-                    {t('articles.all')}
+                    {t('blog.all')}
                 </Link>
                 {categories.data?.map(category => (
                     <Link
                         key={category.slug}
-                        href={`/articles?category=${encodeURIComponent(category.slug)}`}
+                        href={`/blog?category=${encodeURIComponent(category.slug)}`}
                         variant="secondary"
                         aria-current={search.category === category.slug
                             ? 'page'
@@ -81,31 +81,31 @@ function Magazine() {
             </nav>
             {search.tag && (
                 <p className={styles.tag}>
-                    {t('articles.taggedWith', { tag: tagName })}
+                    {t('blog.taggedWith', { tag: tagName })}
                     <Link
                         href={search.category
-                            ? `/articles?category=${encodeURIComponent(search.category)}`
-                            : '/articles'}
-                        aria-label={t('articles.clearTag')}
+                            ? `/blog?category=${encodeURIComponent(search.category)}`
+                            : '/blog'}
+                        aria-label={t('blog.clearTag')}
                     >
                         <X aria-hidden size={16} />
                     </Link>
                 </p>
             )}
             {articles.isError && <ErrorState onRetry={() => void articles.refetch()} />}
-            {articles.isSuccess && articles.data.items.length === 0 && <p className={styles.empty}>{t('articles.empty')}</p>}
+            {articles.isSuccess && articles.data.items.length === 0 && <p className={styles.empty}>{t('blog.empty')}</p>}
             <ul className={styles.grid}>
                 {articles.data?.items.map(article => (
                     <li key={article.slug}>
-                        <ArticleCard article={article} href={`/articles/${article.slug}`} headingLevel={2} />
+                        <ArticleCard article={article} href={`/blog/${article.slug}`} headingLevel={2} />
                     </li>
                 ))}
             </ul>
             {articles.data && articles.data.totalPages > 1 && (
-                <nav aria-label={t('articles.pages')} className={styles.pages}>
-                    {page > 1 && <Link href={pageHref(search, page - 1)}>{t('articles.previous')}</Link>}
-                    <span>{t('articles.page', { page, pages: articles.data.totalPages })}</span>
-                    {page < articles.data.totalPages && <Link href={pageHref(search, page + 1)}>{t('articles.next')}</Link>}
+                <nav aria-label={t('blog.pages')} className={styles.pages}>
+                    {page > 1 && <Link href={pageHref(search, page - 1)}>{t('blog.previous')}</Link>}
+                    <span>{t('blog.page', { page, pages: articles.data.totalPages })}</span>
+                    {page < articles.data.totalPages && <Link href={pageHref(search, page + 1)}>{t('blog.next')}</Link>}
                 </nav>
             )}
         </Page>
@@ -122,6 +122,6 @@ function pageHref(search: ArticleSearch, page: number) {
         params.set('page', String(page));
     const query = params.toString();
     return query
-        ? `/articles?${query}`
-        : '/articles';
+        ? `/blog?${query}`
+        : '/blog';
 }

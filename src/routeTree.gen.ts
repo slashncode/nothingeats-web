@@ -22,8 +22,8 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as VerifyRouteImport } from './routes/verify'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
 import { Route as AccountRewardsRouteImport } from './routes/account.rewards'
-import { Route as ArticlesIndexRouteImport } from './routes/articles.index'
-import { Route as ArticlesSlugRouteImport } from './routes/articles.$slug'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as OrdersIndexRouteImport } from './routes/orders/index'
 import { Route as OrdersOrderIdRouteImport } from './routes/orders/$orderId'
 import { Route as RestaurantsSlugRouteImport } from './routes/restaurants/$slug'
@@ -93,14 +93,14 @@ const AccountRewardsRoute = AccountRewardsRouteImport.update({
   path: '/rewards',
   getParentRoute: () => AccountRoute,
 } as any)
-const ArticlesIndexRoute = ArticlesIndexRouteImport.update({
-  id: '/articles/',
-  path: '/articles/',
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
-  id: '/articles/$slug',
-  path: '/articles/$slug',
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrdersIndexRoute = OrdersIndexRouteImport.update({
@@ -132,11 +132,11 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
   '/account/rewards': typeof AccountRewardsRoute
-  '/articles/$slug': typeof ArticlesSlugRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
   '/account/': typeof AccountIndexRoute
-  '/articles/': typeof ArticlesIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/orders/': typeof OrdersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -151,11 +151,11 @@ export interface FileRoutesByTo {
   '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
   '/account/rewards': typeof AccountRewardsRoute
-  '/articles/$slug': typeof ArticlesSlugRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
   '/account': typeof AccountIndexRoute
-  '/articles': typeof ArticlesIndexRoute
+  '/blog': typeof BlogIndexRoute
   '/orders': typeof OrdersIndexRoute
 }
 export interface FileRoutesById {
@@ -172,11 +172,11 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/verify': typeof VerifyRoute
   '/account/rewards': typeof AccountRewardsRoute
-  '/articles/$slug': typeof ArticlesSlugRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/restaurants/$slug': typeof RestaurantsSlugRoute
   '/account/': typeof AccountIndexRoute
-  '/articles/': typeof ArticlesIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/orders/': typeof OrdersIndexRoute
 }
 export interface FileRouteTypes {
@@ -194,11 +194,11 @@ export interface FileRouteTypes {
     | '/search'
     | '/verify'
     | '/account/rewards'
-    | '/articles/$slug'
+    | '/blog/$slug'
     | '/orders/$orderId'
     | '/restaurants/$slug'
     | '/account/'
-    | '/articles/'
+    | '/blog/'
     | '/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -213,11 +213,11 @@ export interface FileRouteTypes {
     | '/search'
     | '/verify'
     | '/account/rewards'
-    | '/articles/$slug'
+    | '/blog/$slug'
     | '/orders/$orderId'
     | '/restaurants/$slug'
     | '/account'
-    | '/articles'
+    | '/blog'
     | '/orders'
   id:
     | '__root__'
@@ -233,11 +233,11 @@ export interface FileRouteTypes {
     | '/search'
     | '/verify'
     | '/account/rewards'
-    | '/articles/$slug'
+    | '/blog/$slug'
     | '/orders/$orderId'
     | '/restaurants/$slug'
     | '/account/'
-    | '/articles/'
+    | '/blog/'
     | '/orders/'
   fileRoutesById: FileRoutesById
 }
@@ -253,10 +253,10 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SearchRoute: typeof SearchRoute
   VerifyRoute: typeof VerifyRoute
-  ArticlesSlugRoute: typeof ArticlesSlugRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   OrdersOrderIdRoute: typeof OrdersOrderIdRoute
   RestaurantsSlugRoute: typeof RestaurantsSlugRoute
-  ArticlesIndexRoute: typeof ArticlesIndexRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   OrdersIndexRoute: typeof OrdersIndexRoute
 }
 
@@ -353,18 +353,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountRewardsRouteImport
       parentRoute: typeof AccountRoute
     }
-    '/articles/': {
-      id: '/articles/'
-      path: '/articles'
-      fullPath: '/articles/'
-      preLoaderRoute: typeof ArticlesIndexRouteImport
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/articles/$slug': {
-      id: '/articles/$slug'
-      path: '/articles/$slug'
-      fullPath: '/articles/$slug'
-      preLoaderRoute: typeof ArticlesSlugRouteImport
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/orders/': {
@@ -416,10 +416,10 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SearchRoute: SearchRoute,
   VerifyRoute: VerifyRoute,
-  ArticlesSlugRoute: ArticlesSlugRoute,
+  BlogSlugRoute: BlogSlugRoute,
   OrdersOrderIdRoute: OrdersOrderIdRoute,
   RestaurantsSlugRoute: RestaurantsSlugRoute,
-  ArticlesIndexRoute: ArticlesIndexRoute,
+  BlogIndexRoute: BlogIndexRoute,
   OrdersIndexRoute: OrdersIndexRoute,
 }
 export const routeTree = rootRouteImport

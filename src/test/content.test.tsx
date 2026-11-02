@@ -8,12 +8,12 @@ import { margherita, session } from './fixtures';
 import { renderApp } from './render';
 import { server } from './server';
 
-describe('the magazine', () => {
+describe('the blog', () => {
     it('lists articles, filters by category and by tag', async () => {
-        const { user } = renderApp('/articles');
+        const { user } = renderApp('/blog');
 
-        expect(await screen.findByRole('heading', { level: 1, name: 'Magazin' })).toBeInTheDocument();
-        expect(await screen.findByRole('link', { name: 'Die Pizza, die nie kam' })).toHaveAttribute('href', '/articles/die-pizza-die-nie-kam');
+        expect(await screen.findByRole('heading', { level: 1, name: 'Blog' })).toBeInTheDocument();
+        expect(await screen.findByRole('link', { name: 'Die Pizza, die nie kam' })).toHaveAttribute('href', '/blog/die-pizza-die-nie-kam');
         expect(screen.getByRole('link', { name: 'Luftbrot backen' })).toBeInTheDocument();
 
         await user.click(within(screen.getByRole('navigation', { name: 'Rubriken' })).getByRole('link', { name: 'Rezepte' }));
@@ -22,7 +22,7 @@ describe('the magazine', () => {
     });
 
     it('shows an article with its body and tags; an unknown one says so', async () => {
-        const { user } = renderApp('/articles/die-pizza-die-nie-kam');
+        const { user } = renderApp('/blog/die-pizza-die-nie-kam');
 
         expect(await screen.findByRole('heading', { level: 1, name: 'Die Pizza, die nie kam' })).toBeInTheDocument();
         expect(screen.getByText('Gut so.')).toBeInTheDocument();
@@ -30,7 +30,7 @@ describe('the magazine', () => {
         await user.click(screen.getByRole('link', { name: '#Pizza' }));
         expect(await screen.findByText('Schlagwort: Pizza')).toBeInTheDocument();
 
-        renderApp('/articles/gibt-es-nicht');
+        renderApp('/blog/gibt-es-nicht');
         expect(await screen.findByRole('heading', { name: /Diesen Artikel gibt es nicht/ })).toBeInTheDocument();
     });
 });
@@ -38,12 +38,12 @@ describe('the magazine', () => {
 describe('texts from the backoffice', () => {
     afterEach(() => {
         resetOverrides();
-        i18next.addResource('de', 'translation', 'nav.articles', 'Magazin');
+        i18next.addResource('de', 'translation', 'nav.blog', 'Blog');
     });
 
     it('override the bundled wording of the app and of the components', async () => {
         server.use(http.get('/api/backoffice/v1/texts', () => HttpResponse.json({
-            web: { 'nav.articles': 'Lesestoff' },
+            web: { 'nav.blog': 'Lesestoff' },
             ui: { 'dish.calories': '{calories} kcal gespart' },
         })));
         await loadOverrides('de');
