@@ -1,5 +1,5 @@
 import type { MapPoint, OrderStep } from '@slashncode/nothingeats-ui';
-import { DeliveryMap, Link, OrderTimeline, PriceTag } from '@slashncode/nothingeats-ui';
+import { DeliveryMap, Link, ORDER_STEPS, OrderTimeline, PriceTag } from '@slashncode/nothingeats-ui';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute, Navigate } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
@@ -32,6 +32,17 @@ function useCountdown(target: string | undefined) {
     return target
         ? Math.max(0, Math.round((new Date(target).getTime() - now) / 1000))
         : undefined;
+}
+
+/**
+ * The step to show. Steps come from delivery-service, the order's status from ordering's
+ * projection of the same events (both consume `delivery.delivery.v1`). A live update can reach
+ * this page before ordering has caught up, and nothing follows the last step: the later one wins.
+ */
+function laterStep(order: OrderStep, delivery: OrderStep | undefined): OrderStep {
+    return delivery && ORDER_STEPS.indexOf(delivery) > ORDER_STEPS.indexOf(order)
+        ? delivery
+        : order;
 }
 
 function Tracking() {
@@ -69,15 +80,16 @@ function OrderTracking() {
         }
     }, [order.data]);
 
+    const status = order.data && laterStep(order.data.status, delivery.data?.status);
+
     // The trigger for the post-delivery survey in PostHog: once per page view that sees the arrival.
     useEffect(() => {
-        if (order.data?.status === 'DELIVERED' && !deliveredSeen.current) {
+        if (status === 'DELIVERED' && !deliveredSeen.current) {
             deliveredSeen.current = true;
-            capture('order_delivered_seen', { order_id: order.data.id });
+            capture('order_delivered_seen', { order_id: orderId });
         }
-    }, [order.data]);
+    }, [status, orderId]);
 
-    const status = order.data?.status;
     const seconds = useCountdown(status === 'DELIVERED'
         ? undefined
         : order.data?.estimatedArrivalAt);
@@ -96,9 +108,10 @@ function OrderTracking() {
         return <Page narrow><p role="status">{t('app.loading')}</p></Page>;
 
     const data = order.data;
+    const step = laterStep(data.status, delivery.data?.status);
     const times: Partial<Record<OrderStep, string>> = { PLACED: data.placedAt };
-    delivery.data?.steps.forEach((step) => {
-        times[step.status] = step.at;
+    delivery.data?.steps.forEach((it) => {
+        times[it.status] = it.at;
     });
     const position = courier ?? delivery.data?.courier.position;
 
@@ -111,7 +124,7 @@ function OrderTracking() {
             <header className={styles.header}>
                 <h1 className={styles.title}>{t('tracking.title', { restaurant: data.restaurant.name })}</h1>
                 <p className={styles.eta} aria-live="polite">
-                    {data.status === 'DELIVERED'
+                    {step === 'DELIVERED'
                         ? t('tracking.arrived')
                         : seconds !== undefined && seconds > 0
                             ? t('tracking.eta', {
@@ -120,22 +133,22 @@ function OrderTracking() {
                                 })
                             : t('tracking.anyMoment')}
                 </p>
-                {data.status === 'DELIVERED' && (
+                {step === 'DELIVERED' && (
                     <p className={styles.courier}>
                         <Link href="/account/rewards">{t('tracking.rewards')}</Link>
                     </p>
                 )}
-                {delivery.data && data.status !== 'DELIVERED' && (
+                {delivery.data && step !== 'DELIVERED' && (
                     <p className={styles.courier}>{t(`tracking.vehicle.${delivery.data.courier.vehicle}`, { name: delivery.data.courier.name })}</p>
                 )}
             </header>
             <div className={styles.layout}>
-                <OrderTimeline status={data.status} times={times} />
+                <OrderTimeline status={step} times={times} />
                 <DeliveryMap
                     label={t('tracking.map')}
                     pickup={{ latitude: data.restaurant.latitude, longitude: data.restaurant.longitude }}
                     dropOff={{ latitude: data.dropOff.latitude, longitude: data.dropOff.longitude }}
-                    courier={data.status === 'DELIVERED'
+                    courier={step === 'DELIVERED'
                         ? null
                         : position}
                     approachRoute={delivery.data?.approachRoute}

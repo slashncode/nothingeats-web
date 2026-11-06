@@ -61,6 +61,7 @@ function orderingWorld() {
     const orders: Order[] = [];
     const keys: string[] = [];
     const replaced: boolean[] = [];
+    const delivery = { status: 'ACCEPTED' };
     let push: (event: string, data: object) => void = () => {};
 
     server.use(
@@ -135,7 +136,7 @@ function orderingWorld() {
         http.get('/api/ordering/v1/orders', () => HttpResponse.json({ items: orders, nextCursor: null })),
         http.get('/api/delivery/v1/deliveries/:id', ({ params }) => HttpResponse.json({
             orderId: params.id,
-            status: 'ACCEPTED',
+            status: delivery.status,
             restaurantName: restaurant.name,
             pickup: { latitude: restaurant.latitude, longitude: restaurant.longitude },
             dropOff: { latitude: 53.5636, longitude: 9.9654 },
@@ -149,7 +150,7 @@ function orderingWorld() {
             deliveryRoute: [],
             steps: [
                 {
-                    status: 'ACCEPTED',
+                    status: delivery.status,
                     at: new Date().toISOString(),
                     done: true,
                 },
@@ -176,6 +177,7 @@ function orderingWorld() {
         orders,
         keys,
         replaced,
+        delivery,
         push: (event: string, data: object) => push(event, data),
     };
 }
@@ -206,6 +208,25 @@ describe('ordering nothing', () => {
 
         // The delivery service says it's done; the stream tells the page, the page reloads the order.
         world.orders[0]!.status = 'DELIVERED';
+        await waitFor(() => world.push('order.updated', { orderId: 'order-1', status: 'DELIVERED' }), { timeout: 5000 });
+        expect(await screen.findByText('Nichts ist angekommen. Guten Appetit!', {}, { timeout: 5000 })).toBeInTheDocument();
+    });
+
+    it('shows the arrival even when ordering has not caught up with the delivery yet', async () => {
+        const world = orderingWorld();
+        const { user } = renderApp('/restaurants/phantom-pizza');
+        const pizza = await screen.findByRole('region', { name: 'Pizza' });
+        await user.click(within(pizza).getByRole('button', { name: 'Margherita des Nichts in den Warenkorb' }));
+        await user.click(within(pizza).getByRole('button', { name: 'Margherita des Nichts in den Warenkorb' }));
+        await user.click(await screen.findByRole('link', { name: 'Warenkorb, 2 Gerichte' }));
+        await screen.findByText(/Ankunft in etwa 3 Minuten\./);
+        await user.click(screen.getByRole('button', { name: 'Mit Willenskraft bezahlen' }));
+        expect(await screen.findByText('Nora Nebel kommt mit dem Fahrrad.')).toBeInTheDocument();
+
+        // Both ordering and notification consume the delivery's last step; the live update can win
+        // the race, and the order reloaded on it still says "en route". Nothing follows to fix it.
+        world.orders[0]!.status = 'EN_ROUTE';
+        world.delivery.status = 'DELIVERED';
         await waitFor(() => world.push('order.updated', { orderId: 'order-1', status: 'DELIVERED' }), { timeout: 5000 });
         expect(await screen.findByText('Nichts ist angekommen. Guten Appetit!', {}, { timeout: 5000 })).toBeInTheDocument();
     });
