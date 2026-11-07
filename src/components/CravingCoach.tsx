@@ -11,7 +11,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Dialog, Heading } from 'react-aria-components';
 import { useTranslation } from 'react-i18next';
 
-import { capture } from '../analytics/analytics';
+import { analyticsEnabled, capture, useConsent } from '../analytics/analytics';
 import { assistant, CHAT_ENDPOINT, coachFetch } from '../api/assistant';
 import { backofficeQueries } from '../api/backoffice';
 import { ApiError } from '../api/http';
@@ -99,9 +99,10 @@ export function CravingCoach() {
         enabled: signedIn,
         staleTime: 5 * 60_000,
     });
+    const consent = useConsent();
 
-    // At checkout the corner belongs to the pay button.
-    if (location.pathname === '/checkout')
+    // At checkout the corner belongs to the pay button, while the analytics banner asks to its buttons.
+    if (location.pathname === '/checkout' || (analyticsEnabled && consent === 'pending'))
         return null;
     if (signedIn && availability.data?.enabled !== true)
         return null;
