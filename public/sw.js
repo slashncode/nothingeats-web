@@ -55,6 +55,33 @@ sw.addEventListener('push', (event) => {
     })());
 });
 
+/**
+ * The push service replaced this browser's subscription (Firefox does that now and then). The
+ * worker has no session, so it hands notification-service the old endpoint as proof, and the new
+ * subscription takes over the old one's account and language. Without an old subscription there
+ * is nothing to prove; the account page registers the browser again on the next visit.
+ */
+sw.addEventListener('pushsubscriptionchange', (event) => {
+    const change = /** @type {PushSubscriptionChangeEvent} */ (event);
+    const old = change.oldSubscription;
+    if (!old)
+        return;
+    change.waitUntil((async () => {
+        const next = change.newSubscription ?? await sw.registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: old.options.applicationServerKey,
+        });
+        await fetch(new URL('/api/notification/v1/push/subscriptions/rotation', sw.location.origin), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                oldEndpoint: old.endpoint,
+                ...next.toJSON(),
+            }),
+        });
+    })());
+});
+
 sw.addEventListener('notificationclick', (event) => {
     event.notification.close();
     const url = shopUrl(event.notification.data?.url);
